@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array 
+        name ="randomsplashmessages">
+        <item >Hitting monkey with a wrench.</item>
+        <item >Paragliding.</item>
+        <item >Doing pushups.</item>
+        <item >Saving the world.</item>
+        <item >Fixing Oil Spill.</item>
+        <item >Dancing with the wolves.</item>
+        <item >Multiplying by zero and half.</item>
+        <item >Bouncing the ball.</item>
+        <item >Wait, I am killing Hitler.</item>
+        <item >Salad.</item>
+        <item >Where are we?</item>
+        <item >Where are my keys?!</item>
+        <item >RUN YOU FOULS!</item>
+        <item >No, haven\'t been there</item>
+        <item >Who told you THAT?!</item>
+        <item >Yes!</item>
+        <item >No!</item>
+        <item >Maaaybe</item>
+        <item >Maaaybe?</item>
+        <item >Maaaybe!</item>
+        <item >I don\'t visit such places</item>
+        <item >Then I did her a tea</item>
+        <item >Ever read Ulysses? Neither did I</item>
+        <item >Why is he stomping his feet?</item>
+        <item >Carpet bombing</item>
+        <item >Violence is bad!</item>
+        <item >Violence is good!</item>
+        <item >Listen or I will not repeat myself.</item>
+        <item >Blimps, blimps everywhere.</item>
+        <item >Playing Frogger.</item>
+        <item >How much are you looking to get out if it?</item>        
+        <item >Bubbles.</item>
+        <item ></item>
+    </string-array>    
+</resources>

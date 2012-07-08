@@ -1,0 +1,50 @@
+<!-- REPLACE SPACES IN XML TAGS WITH UNDERSCORE "_" they will be weeded out by parser -->
+<!-- VILLAINS -->
+<descriptions>
+<Gangster>One of the many members of organized crime gangs that plagued the period.</Gangster>
+<Occultist>A villain with an interest or skill in Occult matters \(whether magic is real or fake is up to the GM\).</Occultist>
+<Murderer>Someone who has killed another person this individual may not have been a “Villain” prior to this event, and may not fit the classical villain modes best used in murder mystery adventures.</Murderer>
+<Supernatural_Threat> A ghost, a mummy, a vampire, etc. \(The GM will have to determine whether or not the supernatural exists, or whether this is a “scooby doo” mystery\)</Supernatural_Threat>
+<Communist>Used almost interchangeably with Nazis in latter pulps. An 171 evil member of the International Communist Conspiracy, looking to subvert and  conquer freedom-loving countries.</Communist>
+<Cult_Leader>The mad leader of a group of fanatics</Cult_Leader>
+<Ruler_of_Lost_Civilization>Anything ranging from a descendant of Genghis Khan trying to re-assert the Mongol Horde, to a Witch Doctor who rules a hidden African Tribe. </Ruler_of_Lost_Civilization>
+<Mad_Scientist>“They called me Mad at the University!” They were right</Mad_Scientist>
+<Wicked_Foreigner>Historically speaking, these were almost always Oriental \(q.v. Fu Manchu\), but any foreign culture will do.</Wicked_Foreigner>
+<Thief>A villain who specializes in burglary and other forms of theft.</Thief>
+<Assassin> An individual whose business is killing. Not a simple murderer, but a professional. </Assassin>
+<Femme_Fatale> You knew she was trouble when you got a look at those gams....</Femme_Fatale>
+<Crooked_Cop> A man who has turned his back on his oath to uphold the law.</Crooked_Cop>
+<Dictator> The power-hungry despotic ruler of a nation.</Dictator>
+<Nazi>Evil Fascist. The classic pulp villain. I hate these guys.</Nazi>
+<Business_Magnate>Capitalist gone wrong.</Business_Magnate>
+<Crime_Lord>The ruler of a vast criminal empire, not neccesarily connected to “classical” organized crime.</Crime_Lord>
+<Pirate> One who steals from \(and using\) vehicles, whether on sea, land, or in the air.</Pirate>
+<Anarchist>Madman dedicated to the overthrow of civilization.</Anarchist>
+<Society_Swell>A member of the upper class, including the rich and famous</Society_Swell>
+<Crooked_Politician>Power-mad and sticking it to the little guy.</Crooked_Politician>
+<Alien_Invader> Either the actual invaders themselves, or their earth-bound servant trying to bring about the invasion.</Alien_Invader>
+<Mastermind>The pinnacle of the criminal class.</Mastermind>
+<Nemesis>If the main hero \(or team if there is no main hero\) has a nemesis, they re-appear. If none exists, create one a dark reflection of the the Hero, Moriarty to Holmes...The Joker to Batman.</Nemesis>
+<!-- THE HOOKS -->
+<Solicitation> The simplest of plot hooks an NPC \(unknown to the characters\) comes to the characters and asks for their help.</Solicitation>
+<Dead_Body> The characters encounter a corpse, which has some clue on it regarding the Fiendish Plot.</Dead_Body>
+<Disaster> A horrible disaster occurs, somehow related to the Fiendish Plot, and draws the character’s attention.</Disaster>
+<Attack> An attack occurs \(on someone other than the characters\), somehow related to the Fiendish Plot.</Attack>
+<Bizarre_Occurance> A strange, inexplicable event happens, somehow related to the Fiendish Plot. In the tradition of the pulps, the more outlandish and bizarre, the better an early test of the Villain’s new ray cannon, for example, turns the sky over the city a brilliant green for 10 minutes at Noon.</Bizarre_Occurance>
+<News> The characters read a story in the paper, or hear a story on the radio, that is related to the Fiendish Plot. </News>
+<Friend_in_Need> Similar to the Solicitation hook, except that the NPC is a friend of the characters. The NPC comes to the characters for help.</Friend_in_Need>
+<Up_To_Our_Necks> In media res: The characters are involved in the plot from the starting gun. They are attacked, or implicated in a crime, or the victim of a theft, or somehow made to suffer in a manner that is directly related to the Fiendish Plot.</Up_To_Our_Necks>
+<!-- COMPLICATIONS -->
+<Bystanders>The action sequence will feature non-participants who will get in the way.</Bystanders>
+<Environment>The environment in which the sequence occurs causes difficulties \(examples include rain, dangerous surroundings, hazardous conditions\). All combatants should be taking penalties on their actions due to this.</Environment>
+<Props> The sequence features elements of the setting which can be used by the participants during the sequence \(examples would include metal rods at a foundry, or trash cans in a street chase, etc.\).</Props>
+<New_Sequence> The original action sequence will lead immediately into another sequence re-roll this new sequence from the beginning. It is possible to have a linked chain of multiple sequences!</New_Sequence>
+<!-- PLOTTWISTS -->
+<Betrayal> An NPC changes his or her allegiance in a dramatic fashion.</Betrayal>
+<New_Location> Roll again on the Location Table. The plot will move to that location at the beginning of the next act.</New_Location>
+<Greater_Villain> The villain of the adventure is actually a henchman of an even greater villain.</Greater_Villain>
+<Hidden_Plot> The supposed plot is actually a smokescreen for the villain’s true purpose. </Hidden_Plot>
+<Reversal> Events shift, leading to a direct reversal of the PC’s fortunes. If they are working with the police, they suddenly become implicated in the crime. If they are following clues, the trail goes cold. This works both ways, however. If they are losing, they suddenly start to win.</Reversal>
+<Bizarre_Occurance> Similar to the Hook of the same name. Something weird happens, without apparent explanation.</Bizarre_Occurance>
+<Deus_Ex_Machina> Help comes from some improbable source, not hinted at all previously. This can apply to the villain as well he just happens to have a underwater breathing invention when he’s apparently drowned, etc.</Deus_Ex_Machina>
+</descriptions>

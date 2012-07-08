@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:id="@+id/vf_main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout 
+        android:id="@+id/ll_saved_frame_main"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+		<ScrollView 
+			android:id="@+id/sv_generated"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:scrollbars="none">	
+		    <LinearLayout 
+		        android:id="@+id/ll_main"
+		       	android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical">        
+		    </LinearLayout>
+		</ScrollView>
+	</LinearLayout>
+</ViewFlipper>
