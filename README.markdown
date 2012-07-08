@@ -9,8 +9,8 @@
 
 ----
 #QR CODE
-###Latest [*.apk package](bin/ThrillingTales.apk "Package").
-![QRCODE](qrcode.png "QRCODE")
+###Latest [*.apk package](https://github.com/bhm/Thrilling-Tales/blob/master/bin/ThrillingTales.apk "Package").
+![QRCODE](/qrcode.png "QRCODE")
 
 ----
 #Thrilling Tales
