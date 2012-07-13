@@ -10,14 +10,15 @@
 	        android:layout_height="wrap_content"
 	        android:textSize="@dimen/large"
 	        android:text="@string/act"
-	        android:textStyle="bold"
-	        android:textColor="@color/lightgray"
+	        android:textStyle="bold"	        
+	        android:textColor="@color/aliceblue"
 	        android:tag="act_title"/>
     	<TextView 
 	        android:id="@+id/tv_setting_title"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:textSize="@dimen/medium"
+	        android:textStyle="bold"
 	        android:text="@string/setting"
 	        android:textColor="@color/darkgray"
 	        android:tag="settings"/>
@@ -26,6 +27,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:textSize="@dimen/medium"
+	        android:textStyle="bold"
 	        android:text="@string/sequence"
 	        android:textColor="@color/darkgray"
 	        android:tag="sequences"/>
@@ -34,6 +36,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:textSize="@dimen/medium"
+	        android:textStyle="bold"
 	        android:text="@string/complications"
 	        android:textColor="@color/darkgray"
 	        android:tag="complications"/>   
@@ -42,6 +45,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:textSize="@dimen/medium"
+	        android:textStyle="bold"
 	        android:text="@string/participants"
 	        android:textColor="@color/darkgray"
 	        android:tag="participants"/> 	   
@@ -50,6 +54,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:textSize="@dimen/medium"
+	        android:textStyle="bold"
 	        android:text="@string/plottwist"
 	        android:textColor="@color/darkgray"
 	        android:tag="plottwists"/> 

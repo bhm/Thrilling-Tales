@@ -15,13 +15,15 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int active=0x7f080003;
+        public static final int active=0x7f080005;
         /**  		COLORS							 
          */
         public static final int aliceblue=0x7f080000;
-        public static final int darkgray=0x7f080002;
-        public static final int lightgray=0x7f080001;
-        public static final int notactive=0x7f080004;
+        public static final int black_pulp=0x7f080004;
+        public static final int darkgray=0x7f080001;
+        public static final int darkgrey_pulp=0x7f080003;
+        public static final int lightgray=0x7f080002;
+        public static final int notactive=0x7f080006;
     }
     public static final class dimen {
         public static final int large=0x7f070003;
@@ -56,18 +58,18 @@ public final class R {
         public static final int ll_saved_frame=0x7f0a0023;
         public static final int ll_saved_frame_main=0x7f0a001f;
         public static final int ll_saved_main=0x7f0a0026;
-        public static final int ll_supportingCharacter=0x7f0a003c;
+        public static final int ll_supportingCharacter=0x7f0a003e;
         public static final int ll_sv_description_body=0x7f0a000d;
         public static final int loading_image=0x7f0a001c;
         public static final int loading_message_tv=0x7f0a001d;
-        public static final int oi_about=0x7f0a0047;
-        public static final int oi_generate=0x7f0a0041;
-        public static final int oi_quit=0x7f0a0048;
-        public static final int oi_save_script=0x7f0a0042;
-        public static final int oi_settings=0x7f0a0046;
-        public static final int oi_show_saved=0x7f0a0044;
-        public static final int oi_show_saved_alt=0x7f0a0045;
-        public static final int oi_update_script=0x7f0a0043;
+        public static final int oi_about=0x7f0a0049;
+        public static final int oi_generate=0x7f0a0043;
+        public static final int oi_quit=0x7f0a004a;
+        public static final int oi_save_script=0x7f0a0044;
+        public static final int oi_settings=0x7f0a0048;
+        public static final int oi_show_saved=0x7f0a0046;
+        public static final int oi_show_saved_alt=0x7f0a0047;
+        public static final int oi_update_script=0x7f0a0045;
         public static final int rebuild_database_summary=0x7f0a0039;
         public static final int rebuild_database_tv=0x7f0a0038;
         public static final int remove_scripts_summary=0x7f0a003b;
@@ -94,8 +96,8 @@ public final class R {
         public static final int tv_description_body=0x7f0a000e;
         public static final int tv_description_title=0x7f0a000b;
         public static final int tv_descriptions_back=0x7f0a0011;
-        public static final int tv_descriptior1=0x7f0a003d;
-        public static final int tv_descriptior2=0x7f0a003e;
+        public static final int tv_descriptior1=0x7f0a003f;
+        public static final int tv_descriptior2=0x7f0a0040;
         public static final int tv_fiendishplan_title=0x7f0a0017;
         public static final int tv_hook_title=0x7f0a0019;
         public static final int tv_location_title=0x7f0a0018;
@@ -106,9 +108,11 @@ public final class R {
         public static final int tv_sequence_participants_title=0x7f0a0008;
         public static final int tv_sequence_title=0x7f0a0006;
         public static final int tv_setting_title=0x7f0a0005;
-        public static final int tv_supportingCharacters_title=0x7f0a0040;
-        public static final int tv_type=0x7f0a003f;
+        public static final int tv_supportingCharacters_title=0x7f0a0042;
+        public static final int tv_type=0x7f0a0041;
         public static final int tv_villain_title=0x7f0a0016;
+        public static final int use_style_summary=0x7f0a003d;
+        public static final int use_style_tv=0x7f0a003c;
         public static final int vf_main=0x7f0a001e;
         public static final int vf_saved=0x7f0a0022;
     }
@@ -133,21 +137,20 @@ public final class R {
     }
     public static final class raw {
         public static final int complications=0x7f040000;
-        public static final int desc=0x7f040001;
-        public static final int descriptions=0x7f040002;
-        public static final int descriptor1=0x7f040003;
-        public static final int descriptor2=0x7f040004;
-        public static final int fiendishplan1=0x7f040005;
-        public static final int fiendishplan2=0x7f040006;
-        public static final int hooks=0x7f040007;
-        public static final int locations=0x7f040008;
-        public static final int participants=0x7f040009;
-        public static final int plottwists=0x7f04000a;
-        public static final int sequences=0x7f04000b;
-        public static final int settings=0x7f04000c;
-        public static final int type=0x7f04000d;
-        public static final int types=0x7f04000e;
-        public static final int villains=0x7f04000f;
+        public static final int descriptions=0x7f040001;
+        public static final int descriptor1=0x7f040002;
+        public static final int descriptor2=0x7f040003;
+        public static final int fiendishplan1=0x7f040004;
+        public static final int fiendishplan2=0x7f040005;
+        public static final int hooks=0x7f040006;
+        public static final int locations=0x7f040007;
+        public static final int participants=0x7f040008;
+        public static final int plottwists=0x7f040009;
+        public static final int sequences=0x7f04000a;
+        public static final int settings=0x7f04000b;
+        public static final int type=0x7f04000c;
+        public static final int types=0x7f04000d;
+        public static final int villains=0x7f04000e;
     }
     public static final class string {
         public static final int act=0x7f06000c;
@@ -214,6 +217,9 @@ public final class R {
         public static final int supporting_characters=0x7f060006;
         public static final int sure_=0x7f060039;
         public static final int text_about_the_app=0x7f060001;
+        public static final int use_style_off=0x7f06003d;
+        public static final int use_style_on=0x7f06003c;
+        public static final int use_style_summary=0x7f06003e;
         /**  		GENERATED VIEW STRINGS		 
          */
         public static final int villain_title=0x7f060002;

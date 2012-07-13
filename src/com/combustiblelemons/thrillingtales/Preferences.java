@@ -8,6 +8,7 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,11 +35,15 @@ public class Preferences extends Activity {
 	private static Context context;
 	private static AlertDialog.Builder alert, databaseDialogBuilder;
 	private static Settings settings;
+	private static boolean useStyle;
+	private static Resources resources;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {	
 		super.onCreate(savedInstanceState);
+		Log.d(LOG_TAG, "onCreate | Preferences");
 		context = getApplicationContext();
+		resources = context.getResources();
 		settings_view = LayoutInflater.from(context).inflate(R.layout.settingsview, null);
 		setContentView( settings_view);
 		settings = new Settings(context);
@@ -278,6 +283,31 @@ public class Preferences extends Activity {
 		
 	}	
 	
+	@Override
+	protected void onResume() {	
+		super.onResume();
+		Log.d(LOG_TAG, "onResume | Preferences");
+		useStyle  = settings.useStyle();		
+		final TextView use_style_tv = (TextView) settings_view.findViewById(R.id.use_style_tv);
+		use_style_tv.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				useStyle = !useStyle;
+				if(useStyle){
+					use_style_tv.setText(resources.getString(R.string.use_style_on));
+				} else {
+					use_style_tv.setText(resources.getString(R.string.use_style_off));
+				}
+				Log.d(LOG_TAG, "useStyle = " + useStyle);
+			}
+		});
+		if(useStyle){
+			use_style_tv.setText(resources.getString(R.string.use_style_on));
+		} else {
+			use_style_tv.setText(resources.getString(R.string.use_style_off));
+		}
+		
+	}
 	
 	@Override
 	protected void onPause() {
@@ -287,7 +317,9 @@ public class Preferences extends Activity {
 		settings.setActsNumber(Integer.valueOf((String)((TextView) acts_number).getText()));
 		String _dice = minVal.getText() + "d" + maxVal.getText();
 		settings.setSupportDice(_dice);
-		Log.d(LOG_TAG, "Dice = " + _dice);
+		Log.d(LOG_TAG, "Dice = " + _dice);		
+		settings.useStyle(useStyle);
+		Log.d(LOG_TAG, "Use Style " + useStyle);
 		super.onPause();
 	}
 	

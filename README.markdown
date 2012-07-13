@@ -9,7 +9,7 @@
 
 ----
 #QR CODE
-###Latest [*.apk package](https://github.com/bhm/Thrilling-Tales/blob/master/bin/ThrillingTales.apk?raw=true "Package").
+###Latest [*.apk package](https://github.com/bhm/Thrilling-Tales/blob/master/bin/ThrillingTales.apk?raw=true "THE PACKAGE").
 ![QRCODE](https://github.com/bhm/Thrilling-Tales/raw/master/qrcode.png "QRCODE")
 
 ----
@@ -21,3 +21,13 @@ And Android app that generates pulp scenarios on the basis of a backend of table
 Two SQLite databases. One for saved scripts/scenarios. Other with handful of tables for random generation.
 
 #BREAK IT
+
+#VERSION
+
+## 1.0.2
+* MAXIMUM PULP ON/OFF Option added. Changes the view; makes use of different fonts and the Drawable background.
+* Fixed: removing inserted script.
+* Code formating.
+
+## 1.0
+* Initial release.

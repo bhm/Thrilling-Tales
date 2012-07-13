@@ -10,7 +10,8 @@
         android:layout_alignParentTop="true"
         android:tag="descriptiontitle"
         android:textSize="@dimen/large"
-        android:textStyle="bold"        
+        android:textStyle="bold"       
+        android:textColor="@color/aliceblue" 
         android:gravity="center"
         android:padding="@dimen/medium"/>
     <ScrollView 
@@ -28,6 +29,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:textSize="@dimen/verysmall"
+		        android:textColor="@color/aliceblue" 
 		        android:gravity="center"
 		        android:hint="@string/no_description"
 		        android:longClickable="true"/>
@@ -94,7 +96,6 @@
             android:textColor="@color/aliceblue"
             android:gravity="center"
             android:paddingBottom="@dimen/large"
-            android:visibility="gone"/>
-        
+            android:visibility="gone"/>        
     </LinearLayout>
 </RelativeLayout>
