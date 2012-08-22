@@ -108,25 +108,6 @@ public class ViewSetup {
 		description_edit = (EditText) description_view.findViewById(R.id.et_description_body);
 	}
 	
-	protected int hideThose(View...views) {
-		int hidden = 0;
-		for (int i=0; i<views.length; i++) {
-			View _view = views[i];
-			_view.setVisibility(View.GONE);
-			hidden++;
-		}		
-		return hidden;
-	}
-	protected int showThose(View...views) {
-		int shown = 0;
-		for (int i=0; i<views.length; i++) {
-			View _view = views[i];
-			_view.setVisibility(View.VISIBLE);
-			shown++;
-		}
-		return shown;
-	}
-	
 	protected int switchVisibility(int Visibility, View...views) {
 		int affected = 0;
 		for (int i=0; i<views.length; i++) {
@@ -209,7 +190,8 @@ public class ViewSetup {
 									description_cancel.setOnClickListener(new OnClickListener() {
 												@Override
 												public void onClick(View v) {
-													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);//															
+													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),
+																								InputMethodManager.HIDE_NOT_ALWAYS);//															
 													hideEditControls();
 												}
 											});
@@ -226,7 +208,8 @@ public class ViewSetup {
 													} catch (SQLException e) {
 														e.printStackTrace();
 													}
-													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),
+																								InputMethodManager.HIDE_NOT_ALWAYS);
 												}
 											});
 									return false;
@@ -245,8 +228,7 @@ public class ViewSetup {
 		return true;
 	}
 
-	public View generate(String _item) {
-		final String item = _item;
+	public View generate(final String item) {		
 		HorizontalScrollView _view = (HorizontalScrollView) LayoutInflater.from(context).inflate(R.layout.item, null);
 		try {
 			database.Open();
@@ -295,9 +277,8 @@ public class ViewSetup {
 	}
 
 	protected void pulpAgain() {
-		if (datesBarShown) {
+		if (datesBarShown)
 			ThrillingTales.SCRIPT_CHANGED = true;
-		}
 		((ViewGroup) main).removeAllViews();
 		pulpScript();
 	}
@@ -609,28 +590,22 @@ public class ViewSetup {
 	 * @return generated HorizontalScrollView with dates.
 	 */
 	private View fillDatesBar(Cursor cursor) {
-		final HorizontalScrollView _view = (HorizontalScrollView) LayoutInflater
-				.from(context).inflate(R.layout.item, null);
-		final LinearLayout _line = (LinearLayout) _view
-				.findViewById(R.id.ll_item);
+		final HorizontalScrollView _view = (HorizontalScrollView) LayoutInflater.from(context).inflate(R.layout.item, null);
+		final LinearLayout _line = (LinearLayout) _view.findViewById(R.id.ll_item);
 		try {
 			cursor.getString(cursor.getColumnIndex(SavedScript.DATE));
 		} catch (CursorIndexOutOfBoundsException e) {
 			Log.d(LOG_TAG, e.getMessage());
-			TextView noneSaved = (TextView) LayoutInflater.from(context)
-					.inflate(R.layout.singleitem, null);
-			noneSaved.setText(context.getResources().getString(
-					R.string.nonesaved));
+			TextView noneSaved = (TextView) LayoutInflater.from(context).inflate(R.layout.singleitem, null);
+			noneSaved.setText(context.getResources().getString(R.string.nonesaved));
 			noneSaved.setTextColor(DARKGREY);
 			_line.addView(noneSaved);
 			return _view;
 		}
 
 		do {
-			final TextView singleDate = (TextView) LayoutInflater.from(context)
-					.inflate(R.layout.singleitem, null);
-			singleDate.setText(cursor.getString(cursor
-					.getColumnIndex(SavedScript.DATE)));
+			final TextView singleDate = (TextView) LayoutInflater.from(context).inflate(R.layout.singleitem, null);
+			singleDate.setText(cursor.getString(cursor.getColumnIndex(SavedScript.DATE)));
 			singleDate.setTextColor(DARKGREY);
 			singleDate.setOnClickListener(new OnClickListener() {
 				@Override
@@ -649,23 +624,17 @@ public class ViewSetup {
 					dialog.setTitle("Delete").setMessage("Do you want to delete this entry?");
 					dialog.setNegativeButton("Cancel",
 							new DialogInterface.OnClickListener() {
-
 								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
+								public void onClick(DialogInterface dialog,int which) {
 									dialog.cancel();
 								}
 							})
 							.setPositiveButton("Delete",
 									new DialogInterface.OnClickListener() {
-
-										public void onClick(
-												DialogInterface dialog,
-												int which) {
+										public void onClick(DialogInterface dialog,int which) {
 											try {
 												database.OpenScripts();
-												database.deleteScript((String) ((TextView) v)
-														.getText());
+												database.deleteScript((String) ((TextView) v).getText());
 											} catch (SQLException e) {
 												e.printStackTrace();
 												database.Close();
@@ -759,26 +728,22 @@ public class ViewSetup {
 			Cursor headerCursor = database.getScript(forDate);
 			Cursor actCursor = database.getActs(forDate);
 			Cursor supportCursor = database.getSupportCharacters(forDate);
-			View header = LayoutInflater.from(context).inflate(R.layout.header,
-					null);
-			View support = LayoutInflater.from(context).inflate(
-					R.layout.supportview, null);
+			View header = LayoutInflater.from(context).inflate(R.layout.header,null);
+			View support = LayoutInflater.from(context).inflate(R.layout.supportview, null);
 			fillView(header, headerCursor);
 			((ViewGroup) main).addView(header);
 			fillView(support, supportCursor);
 			((ViewGroup) main).addView(support);
 			int act_c = 0;
 			do {
-				final View act = LayoutInflater.from(context).inflate(
-						R.layout.act, null);
+				final View act = LayoutInflater.from(context).inflate(R.layout.act, null);
 				Log.d(LOG_TAG, "Act " + act_c++);
 				fillAct(act, actCursor, act_c);
 				act.setTag("act");
 				((ViewGroup) main).addView(act);
 			} while (actCursor.moveToNext());
 
-			final LinearLayout _date = (LinearLayout) main_frame
-					.findViewById(R.id.ll_item);
+			final LinearLayout _date = (LinearLayout) main_frame.findViewById(R.id.ll_item);
 			int dates = ((ViewGroup) _date).getChildCount();
 			for (int i = 0; i < dates; i++) {
 				View _v = _date.getChildAt(i);
@@ -810,11 +775,9 @@ public class ViewSetup {
 			String _tag = (String) _v.getTag();
 			if (_tag != null) {
 				if (_tag.equalsIgnoreCase("act_title")) {
-					((TextView) _v).setText(((TextView) _v).getText() + " "
-							+ actCount);
+					((TextView) _v).setText(((TextView) _v).getText() + " "+ actCount);
 				} else {
-					((ViewGroup) viewToFill).addView(populate(_tag, cursor),
-							i + 1);
+					((ViewGroup) viewToFill).addView(populate(_tag, cursor),i + 1);
 				}
 			}
 		}
@@ -855,8 +818,7 @@ public class ViewSetup {
 
 	protected void applyBackground(boolean pulpBackground) {
 		if (pulpBackground) {
-			vf_main.setBackgroundDrawable(resources
-					.getDrawable(R.drawable.background));
+			vf_main.setBackgroundDrawable(resources.getDrawable(R.drawable.background));
 		} else {
 			vf_main.setBackgroundDrawable(null);
 		}
@@ -872,11 +834,9 @@ public class ViewSetup {
 					if (style == Typeface.BOLD) {
 						((TextView) view).setTypeface(Typeface.DEFAULT_BOLD);
 					} else if (style == Typeface.BOLD_ITALIC) {
-						((TextView) view).setTypeface(Typeface.DEFAULT,
-								Typeface.BOLD_ITALIC);
+						((TextView) view).setTypeface(Typeface.DEFAULT,Typeface.BOLD_ITALIC);
 					} else if (style == Typeface.ITALIC) {
-						((TextView) view).setTypeface(Typeface.DEFAULT,
-								Typeface.ITALIC);
+						((TextView) view).setTypeface(Typeface.DEFAULT,Typeface.ITALIC);
 					} else if (style == Typeface.NORMAL) {
 						((TextView) view).setTypeface(Typeface.DEFAULT);
 					}
@@ -885,8 +845,7 @@ public class ViewSetup {
 				if (colors.getDefaultColor() == resources
 						.getColor(R.color.black_pulp)) {
 					((TextView) view).setTextColor(ALICEBLUE);
-				} else if (colors.getDefaultColor() == resources
-						.getColor(R.color.darkgrey_pulp)) {
+				} else if (colors.getDefaultColor() == resources.getColor(R.color.darkgrey_pulp)) {
 					((TextView) view).setTextColor(DARKGREY);
 				}
 			} else if (_class == EditText.class) {
@@ -896,11 +855,9 @@ public class ViewSetup {
 					if (style == Typeface.BOLD) {
 						((EditText) view).setTypeface(Typeface.DEFAULT_BOLD);
 					} else if (style == Typeface.BOLD_ITALIC) {
-						((EditText) view).setTypeface(Typeface.DEFAULT,
-								Typeface.BOLD_ITALIC);
+						((EditText) view).setTypeface(Typeface.DEFAULT,Typeface.BOLD_ITALIC);
 					} else if (style == Typeface.ITALIC) {
-						((EditText) view).setTypeface(Typeface.DEFAULT,
-								Typeface.ITALIC);
+						((EditText) view).setTypeface(Typeface.DEFAULT,Typeface.ITALIC);
 					} else if (style == Typeface.NORMAL) {
 						((EditText) view).setTypeface(Typeface.DEFAULT);
 					}
@@ -939,8 +896,7 @@ public class ViewSetup {
 				if (colors.getDefaultColor() == resources
 						.getColor(R.color.aliceblue)) {
 					((TextView) view).setTextColor(BLACK_PULP);
-				} else if (colors.getDefaultColor() == resources
-						.getColor(R.color.darkgray)) {
+				} else if (colors.getDefaultColor() == resources.getColor(R.color.darkgray)) {
 					((TextView) view).setTextColor(DARKGREY_PULP);
 				}
 			} else if (_class == EditText.class) {
