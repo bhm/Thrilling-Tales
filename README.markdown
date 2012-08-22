@@ -13,9 +13,13 @@
 ![QRCODE](https://github.com/bhm/Thrilling-Tales/raw/master/qrcode.png "QRCODE")
 
 ----
+![ICON](https://raw.github.com/bhm/Thrilling-Tales/master/res/drawable/ic_launcher.png "An icon")
 #Thrilling Tales
 
 And Android app that generates pulp scenarios on the basis of a backend of tables taken from [Thrilling Tales handbook](http://rpg.drivethrustuff.com/product/64454/Thrilling-Tales-2nd-Edition-(Savage-Worlds)) for [Savage Worlds](http://en.wikipedia.org/wiki/Savage_Worlds).
+
+![COVER](http://www.rpgnow.com/images/92/64454.jpg "Image from rpgnow.com"))
+
 
 ###Belly
 Two SQLite databases. One for saved scripts/scenarios. Other with handful of tables for random generation.
