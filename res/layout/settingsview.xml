@@ -11,7 +11,7 @@
 
         <TextView
             android:id="@+id/support_header_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/support_header"
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/more"
                     android:textColor="@color/aliceblue"
-                    android:textSize="@dimen/large"
+                    android:textSize="@dimen/medium"
                     android:textStyle="bold" />
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/less"
                     android:textColor="@color/aliceblue"
-                    android:textSize="@dimen/large"
+                    android:textSize="@dimen/medium"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/more"
                     android:textColor="@color/aliceblue"
-                    android:textSize="@dimen/large"
+                    android:textSize="@dimen/medium"
                     android:textStyle="bold" />
 
                 <TextView
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/less"
                     android:textColor="@color/aliceblue"
-                    android:textSize="@dimen/large"
+                    android:textSize="@dimen/medium"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -115,7 +115,7 @@
             android:gravity="center"
             android:paddingTop="@dimen/large"
             android:text="@string/support_summary"
-            android:textColor="@color/lightgray"
+            android:textColor="@color/darkgray"
             android:textSize="@dimen/verysmall"
             android:textStyle="italic" />
 
@@ -129,6 +129,17 @@
             android:paddingTop="2dp"
             android:scaleType="fitXY"
             android:src="@android:drawable/divider_horizontal_dark" />
+
+        <TextView
+            android:id="@+id/acts_header_tv"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/acts_header"
+            android:textColor="@color/aliceblue"
+            android:textSize="@dimen/large"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -179,7 +190,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/acts_summary"
-            android:textColor="@color/lightgray"
+            android:textColor="@color/darkgray"
             android:textSize="@dimen/verysmall"
             android:textStyle="italic" />
 
@@ -213,7 +224,7 @@
             android:gravity="center"
             android:paddingBottom="@dimen/large"
             android:text="@string/rebuild_database_summary"
-            android:textColor="@color/lightgray"
+            android:textColor="@color/darkgray"
             android:textSize="@dimen/verysmall"
             android:textStyle="italic" />
 
@@ -247,7 +258,7 @@
             android:gravity="center"
             android:paddingBottom="@dimen/verysmall"
             android:text="@string/remove_scripts_summary"
-            android:textColor="@color/lightgray"
+            android:textColor="@color/darkgray"
             android:textSize="@dimen/verysmall"
             android:textStyle="italic" />
 
@@ -281,7 +292,7 @@
             android:gravity="center"
             android:paddingBottom="@dimen/verysmall"
             android:text="@string/use_style_summary"
-            android:textColor="@color/lightgray"
+            android:textColor="@color/darkgray"
             android:textSize="@dimen/verysmall"
             android:textStyle="italic" />
     </LinearLayout>

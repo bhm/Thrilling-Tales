@@ -655,10 +655,16 @@ public class DatabaseAdapter {
 		return desc;
 	}
 
-	public long insertDescription(String descrpition, String forItem) {
+	/**
+	 * Uses db.update to put a new description for an item.
+	 * @param description Description for an item
+	 * @param forItem item that is to have a new description
+	 * @return
+	 */
+	public long insertDescription(String description, String forItem) {
 		ContentValues values = new ContentValues();
 		values.put(Descriptions.TITLE, forItem);
-		values.put(Descriptions.DESCRIPTIONS, descrpition);
+		values.put(Descriptions.DESCRIPTIONS, description);
 		long rows = database.update(Descriptions.NAME, values, null, null);
 		return rows;
 	}

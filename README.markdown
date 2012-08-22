@@ -26,7 +26,9 @@ Two SQLite databases. One for saved scripts/scenarios. Other with handful of tab
 
 ## 1.0.2
 * MAXIMUM PULP ON/OFF Option added. Changes the view; makes use of different fonts and the Drawable background.
+* Changes in settings view.
 * Fixed: removing inserted script.
+* Deprecated functions and library;
 * Code formating.
 
 ## 1.0

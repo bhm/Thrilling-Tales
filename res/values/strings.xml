@@ -59,6 +59,7 @@
     <string name="support_header">SUPPORT DICE POOL</string>
     <string name="number_of_acts">Number of acts</string>
     <string name="acts_summary">Classic adventure composes of 4 acts. The last one should have a rough outline in which heroes fight their way out.</string>
+    <string name="acts_header">NUMBER OF ACTS</string>
     <string name="less">LESS</string>
     <string name="more">MORE</string>
     <string name="acts_number_default">3</string>

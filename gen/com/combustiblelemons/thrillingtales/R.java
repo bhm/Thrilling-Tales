@@ -16,7 +16,7 @@ public final class R {
     }
     public static final class color {
         public static final int active=0x7f080005;
-        /**  		COLORS							 
+        /**  COLORS 
          */
         public static final int aliceblue=0x7f080000;
         public static final int black_pulp=0x7f080004;
@@ -30,7 +30,7 @@ public final class R {
         public static final int medium=0x7f070002;
         public static final int small=0x7f070001;
         public static final int verylarge=0x7f070004;
-        /**  		DIMENOSIONS. PRIME NUMBERS 		
+        /**  DIMENOSIONS. PRIME NUMBERS 
          */
         public static final int verysmall=0x7f070000;
     }
@@ -42,10 +42,11 @@ public final class R {
     public static final class id {
         public static final int about_app_name=0x7f0a0001;
         public static final int about_text_about=0x7f0a0002;
-        public static final int acts_less_tv=0x7f0a0034;
-        public static final int acts_more_tv=0x7f0a0036;
-        public static final int acts_number_tv=0x7f0a0035;
-        public static final int acts_summary=0x7f0a0037;
+        public static final int acts_header_tv=0x7f0a0035;
+        public static final int acts_less_tv=0x7f0a0036;
+        public static final int acts_more_tv=0x7f0a0038;
+        public static final int acts_number_tv=0x7f0a0037;
+        public static final int acts_summary=0x7f0a0039;
         public static final int et_description_body=0x7f0a000f;
         public static final int hs_item=0x7f0a001a;
         public static final int hs_saved_dates=0x7f0a0024;
@@ -58,32 +59,33 @@ public final class R {
         public static final int ll_saved_frame=0x7f0a0023;
         public static final int ll_saved_frame_main=0x7f0a001f;
         public static final int ll_saved_main=0x7f0a0026;
-        public static final int ll_supportingCharacter=0x7f0a003e;
+        public static final int ll_supportingCharacter=0x7f0a0040;
         public static final int ll_sv_description_body=0x7f0a000d;
         public static final int loading_image=0x7f0a001c;
         public static final int loading_message_tv=0x7f0a001d;
-        public static final int oi_about=0x7f0a0049;
-        public static final int oi_generate=0x7f0a0043;
-        public static final int oi_quit=0x7f0a004a;
-        public static final int oi_save_script=0x7f0a0044;
-        public static final int oi_settings=0x7f0a0048;
-        public static final int oi_show_saved=0x7f0a0046;
-        public static final int oi_show_saved_alt=0x7f0a0047;
-        public static final int oi_update_script=0x7f0a0045;
-        public static final int rebuild_database_summary=0x7f0a0039;
-        public static final int rebuild_database_tv=0x7f0a0038;
-        public static final int remove_scripts_summary=0x7f0a003b;
-        public static final int remove_scripts_tv=0x7f0a003a;
+        public static final int oi_about=0x7f0a004b;
+        public static final int oi_generate=0x7f0a0045;
+        public static final int oi_quit=0x7f0a004c;
+        public static final int oi_save_script=0x7f0a0046;
+        public static final int oi_settings=0x7f0a004a;
+        public static final int oi_show_saved=0x7f0a0048;
+        public static final int oi_show_saved_alt=0x7f0a0049;
+        public static final int oi_update_script=0x7f0a0047;
+        public static final int rebuild_database_summary=0x7f0a003b;
+        public static final int rebuild_database_tv=0x7f0a003a;
+        public static final int remove_scripts_summary=0x7f0a003d;
+        public static final int remove_scripts_tv=0x7f0a003c;
         public static final int rl_description=0x7f0a000a;
-        public static final int supportDice=0x7f0a002f;
-        public static final int supportValMaxDec_settings_tv=0x7f0a0032;
-        public static final int supportValMaxInc_settings_tv=0x7f0a0030;
-        public static final int supportValMax_settings_tv=0x7f0a0031;
-        public static final int supportValMinDec_settings_tv=0x7f0a002e;
-        public static final int supportValMinInc_settings_tv=0x7f0a002c;
-        public static final int supportValMin_settings_tv=0x7f0a002d;
-        public static final int support_settings_ll=0x7f0a002b;
-        public static final int support_summary=0x7f0a0033;
+        public static final int supportDice=0x7f0a0030;
+        public static final int supportValMaxDec_settings_tv=0x7f0a0033;
+        public static final int supportValMaxInc_settings_tv=0x7f0a0031;
+        public static final int supportValMax_settings_tv=0x7f0a0032;
+        public static final int supportValMinDec_settings_tv=0x7f0a002f;
+        public static final int supportValMinInc_settings_tv=0x7f0a002d;
+        public static final int supportValMin_settings_tv=0x7f0a002e;
+        public static final int support_header_tv=0x7f0a002b;
+        public static final int support_settings_ll=0x7f0a002c;
+        public static final int support_summary=0x7f0a0034;
         public static final int sv_description_body=0x7f0a000c;
         public static final int sv_generated=0x7f0a0020;
         public static final int sv_saved=0x7f0a0027;
@@ -96,8 +98,8 @@ public final class R {
         public static final int tv_description_body=0x7f0a000e;
         public static final int tv_description_title=0x7f0a000b;
         public static final int tv_descriptions_back=0x7f0a0011;
-        public static final int tv_descriptior1=0x7f0a003f;
-        public static final int tv_descriptior2=0x7f0a0040;
+        public static final int tv_descriptior1=0x7f0a0041;
+        public static final int tv_descriptior2=0x7f0a0042;
         public static final int tv_fiendishplan_title=0x7f0a0017;
         public static final int tv_hook_title=0x7f0a0019;
         public static final int tv_location_title=0x7f0a0018;
@@ -108,11 +110,11 @@ public final class R {
         public static final int tv_sequence_participants_title=0x7f0a0008;
         public static final int tv_sequence_title=0x7f0a0006;
         public static final int tv_setting_title=0x7f0a0005;
-        public static final int tv_supportingCharacters_title=0x7f0a0042;
-        public static final int tv_type=0x7f0a0041;
+        public static final int tv_supportingCharacters_title=0x7f0a0044;
+        public static final int tv_type=0x7f0a0043;
         public static final int tv_villain_title=0x7f0a0016;
-        public static final int use_style_summary=0x7f0a003d;
-        public static final int use_style_tv=0x7f0a003c;
+        public static final int use_style_summary=0x7f0a003f;
+        public static final int use_style_tv=0x7f0a003e;
         public static final int vf_main=0x7f0a001e;
         public static final int vf_saved=0x7f0a0022;
     }
@@ -157,35 +159,34 @@ public final class R {
         public static final int act1=0x7f06000d;
         public static final int act2=0x7f06000e;
         public static final int act3=0x7f06000f;
-        public static final int acts_number_default=0x7f06002c;
-        public static final int acts_summary=0x7f060029;
+        public static final int acts_header=0x7f06002b;
+        public static final int acts_number_default=0x7f06002e;
+        public static final int acts_summary=0x7f06002a;
         public static final int app_name=0x7f060000;
-        public static final int are_you=0x7f060037;
+        public static final int are_you=0x7f060039;
         public static final int back=0x7f06001e;
         public static final int cancel=0x7f060020;
         public static final int complications=0x7f06000a;
-        public static final int dice=0x7f06003a;
+        public static final int dice=0x7f06003c;
         public static final int edit=0x7f06001d;
         public static final int exit=0x7f06001a;
         public static final int fiendish_plot=0x7f060003;
         public static final int fill_description=0x7f060023;
         public static final int hook=0x7f060005;
-        public static final int less=0x7f06002a;
+        public static final int less=0x7f06002c;
         public static final int loading=0x7f060024;
         public static final int location=0x7f060004;
-        /**  		ITEM OPTIONS					 
+        /**  ITEM OPTIONS 
          */
         public static final int lock=0x7f060010;
         public static final int makingdatabase=0x7f060025;
-        public static final int more=0x7f06002b;
+        public static final int more=0x7f06002d;
         public static final int no=0x7f06001c;
         public static final int no_description=0x7f060022;
         public static final int nonesaved=0x7f060026;
         public static final int notdoneyet=0x7f060027;
-        /**  		PREFERENCES						 
-         */
-        public static final int number_of_acts=0x7f060028;
-        /**  		INTERFACE							 
+        public static final int number_of_acts=0x7f060029;
+        /**  INTERFACE 
          */
         public static final int oi_about_text=0x7f060012;
         public static final int oi_generate_text=0x7f060013;
@@ -198,29 +199,32 @@ public final class R {
         public static final int plottwist=0x7f06000b;
         public static final int processing_database=0x7f060019;
         public static final int quit=0x7f060021;
-        public static final int really=0x7f060038;
-        public static final int rebuild_database=0x7f06002d;
-        public static final int rebuild_database_no=0x7f060031;
-        public static final int rebuild_database_question=0x7f06002f;
-        public static final int rebuild_database_summary=0x7f06002e;
-        public static final int rebuild_database_yes=0x7f060030;
-        public static final int remove_scripts=0x7f060032;
-        public static final int remove_scripts_no=0x7f060036;
-        public static final int remove_scripts_question=0x7f060034;
-        public static final int remove_scripts_summary=0x7f060033;
-        public static final int remove_scripts_yes=0x7f060035;
+        public static final int really=0x7f06003a;
+        public static final int rebuild_database=0x7f06002f;
+        public static final int rebuild_database_no=0x7f060033;
+        public static final int rebuild_database_question=0x7f060031;
+        public static final int rebuild_database_summary=0x7f060030;
+        public static final int rebuild_database_yes=0x7f060032;
+        public static final int remove_scripts=0x7f060034;
+        public static final int remove_scripts_no=0x7f060038;
+        public static final int remove_scripts_question=0x7f060036;
+        public static final int remove_scripts_summary=0x7f060035;
+        public static final int remove_scripts_yes=0x7f060037;
         public static final int reroll=0x7f060011;
         public static final int save=0x7f06001f;
         public static final int sequence=0x7f060008;
         public static final int setting=0x7f060007;
-        public static final int support_summary=0x7f06003b;
+        /**  PREFERENCES 
+         */
+        public static final int support_header=0x7f060028;
+        public static final int support_summary=0x7f06003d;
         public static final int supporting_characters=0x7f060006;
-        public static final int sure_=0x7f060039;
+        public static final int sure_=0x7f06003b;
         public static final int text_about_the_app=0x7f060001;
-        public static final int use_style_off=0x7f06003d;
-        public static final int use_style_on=0x7f06003c;
-        public static final int use_style_summary=0x7f06003e;
-        /**  		GENERATED VIEW STRINGS		 
+        public static final int use_style_off=0x7f06003f;
+        public static final int use_style_on=0x7f06003e;
+        public static final int use_style_summary=0x7f060040;
+        /**  GENERATED VIEW STRINGS 
          */
         public static final int villain_title=0x7f060002;
         public static final int yes=0x7f06001b;

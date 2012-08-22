@@ -85,228 +85,179 @@ public class ViewSetup {
 		ViewSetup.vf_main = (ViewFlipper) vf_main;
 		ViewSetup.inputMethodManager = inputMethodManager;
 		ViewSetup.database = new DatabaseAdapter(_context);
-		ViewSetup.main_frame = (LinearLayout) vf_main
-				.findViewById(R.id.ll_saved_frame_main);
+		ViewSetup.main_frame = (LinearLayout) vf_main.findViewById(R.id.ll_saved_frame_main);
 		ViewSetup.currentScriptShown = "";
 		resources = context.getResources();
 		DARKGREY = resources.getColor(R.color.darkgray);
 		ALICEBLUE = resources.getColor(R.color.aliceblue);
 		BLACK_PULP = resources.getColor(R.color.black_pulp);
 		DARKGREY_PULP = resources.getColor(R.color.darkgrey_pulp);
-		QUEENS = Typeface.createFromAsset(context.getAssets(),
-				"fonts/queens.ttf");
-		QUEENS_BOLD = Typeface.createFromAsset(context.getAssets(),
-				"fonts/queensb.ttf");
-		QUEENS_ITALICS = Typeface.createFromAsset(context.getAssets(),
-				"fonts/queensi.ttf");
-		QUEENS_BOLD_ITALICS = Typeface.createFromAsset(context.getAssets(),
-				"fonts/queensbi.ttf");
+		QUEENS = Typeface.createFromAsset(context.getAssets(),"fonts/queens.ttf");
+		QUEENS_BOLD = Typeface.createFromAsset(context.getAssets(),"fonts/queensb.ttf");
+		QUEENS_ITALICS = Typeface.createFromAsset(context.getAssets(),"fonts/queensi.ttf");
+		QUEENS_BOLD_ITALICS = Typeface.createFromAsset(context.getAssets(),"fonts/queensbi.ttf");
+		
+		description_view = LayoutInflater.from(context).inflate(R.layout.descriptionview, null);
+		description_title = (TextView) description_view.findViewById(R.id.tv_description_title);
+		description_body = (TextView) description_view.findViewById(R.id.tv_description_body);
+		description_back = (TextView) description_view.findViewById(R.id.tv_descriptions_back);
+		description_edit = (EditText) description_view.findViewById(R.id.et_description_body);
+		description_reroll = (TextView) description_view.findViewById(R.id.tv_decription_reroll);
+		description_save = (TextView) description_view.findViewById(R.id.tv_decription_save);
+		description_cancel = (TextView) description_view.findViewById(R.id.tv_decription_cancel);
+		description_edit = (EditText) description_view.findViewById(R.id.et_description_body);
+	}
+	
+	protected int hideThose(View...views) {
+		int hidden = 0;
+		for (int i=0; i<views.length; i++) {
+			View _view = views[i];
+			_view.setVisibility(View.GONE);
+			hidden++;
+		}		
+		return hidden;
+	}
+	protected int showThose(View...views) {
+		int shown = 0;
+		for (int i=0; i<views.length; i++) {
+			View _view = views[i];
+			_view.setVisibility(View.VISIBLE);
+			shown++;
+		}
+		return shown;
+	}
+	
+	protected int switchVisibility(int Visibility, View...views) {
+		int affected = 0;
+		for (int i=0; i<views.length; i++) {
+			views[i].setVisibility(Visibility);
+			affected++;
+		}
+		return affected;
+	}
+	
+	protected boolean showEditControls() {
+		switchVisibility(View.GONE, description_back, description_reroll, description_body);
+		switchVisibility(View.VISIBLE, description_save, description_cancel, description_edit);
+		return false;
+	}
+	
+	protected boolean hideEditControls() {
+		switchVisibility(View.VISIBLE, description_back, description_reroll, description_body);
+		switchVisibility(View.GONE, description_save, description_cancel, description_edit);
+		return false;
+	}
+	
+	private boolean setupListeners(final TextView view, final String item, final String column) {
+		view.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				try {
+					database.Open();
+					view.setText(database.getRandom(item, column));
+					database.Close();
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				return true;
+			}
+		});
+		view.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					database.Open();							
+					String title = (String) ((TextView) v).getText();
+					description_title.setText(title);
+					String description = database.getDescription(title);
+					if (!description.equalsIgnoreCase("")) {
+						description_body.setText(description);
+						description_body.setTextSize(context.getResources().getDimension(R.dimen.small));
+					}							
+					description_back.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							vf_main.showPrevious();
+							vf_main.removeView(description_view);
+						}
+					});
+					
+					description_reroll.setOnClickListener(new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									try {
+										database.Open();
+										String new_title = database.getRandom(item, column);
+										description_title.setText(new_title);
+										view.setText(new_title);
+										description_body.setText(database.getDescription(new_title));
+										database.Close();
+									} catch (SQLException e) {
+										e.printStackTrace();
+									}
+								}
+							});
+					description_body.setOnLongClickListener(new OnLongClickListener() {
+								@Override
+								public boolean onLongClick(View v) {									
+									if (!((String) description_body.getText()).equalsIgnoreCase(context.getResources().getString(R.string.no_description))) {
+										description_edit.setText((String) description_body.getText());
+									}										
+									showEditControls();										
+									description_cancel.setOnClickListener(new OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);//															
+													hideEditControls();
+												}
+											});
+									description_save.setOnClickListener(new OnClickListener() {
+												@Override
+												public void onClick(View v) {//															
+													hideEditControls();
+													try {
+														database.Open();
+														database.insertDescription(description_edit.getText().toString(),
+																					description_title.getText().toString());
+														description_body.setText(database.getDescription(description_title.getText().toString()));
+														database.Close();
+													} catch (SQLException e) {
+														e.printStackTrace();
+													}
+													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+												}
+											});
+									return false;
+								}
+							});
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
+				changeStyle(description_view);
+				vf_main.addView(description_view);
+				vf_main.showNext();
+			}
+		});
+		return true;
 	}
 
 	public View generate(String _item) {
 		final String item = _item;
-		final DatabaseAdapter database = new DatabaseAdapter(context);
-		HorizontalScrollView _view = (HorizontalScrollView) LayoutInflater
-				.from(context).inflate(R.layout.item, null);
+		HorizontalScrollView _view = (HorizontalScrollView) LayoutInflater.from(context).inflate(R.layout.item, null);
 		try {
 			database.Open();
 			LinearLayout line = (LinearLayout) (_view).getChildAt(0);
 			String[] columns = settings.getColumns(item);
 			for (final String column : columns) {
-				final TextView single = (TextView) LayoutInflater.from(context)
-						.inflate(R.layout.singleitem, null);
+				final TextView single = (TextView) LayoutInflater.from(context).inflate(R.layout.singleitem, null);
 				final String text = database.getRandom(item, column);
 				single.setText(text);
-				single.setTag(column + "_text"); // well that'll be a dirty
-													// trick :|
-				single.setOnLongClickListener(new OnLongClickListener() {
-
-					@Override
-					public boolean onLongClick(View v) {
-						try {
-							database.Open();
-							single.setText(database.getRandom(item, column));
-							database.Close();
-
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-
-						return true;
-					}
-				});
-				single.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						try {
-							database.Open();
-							description_view = LayoutInflater.from(context)
-									.inflate(R.layout.descriptionview, null);
-							description_title = (TextView) description_view
-									.findViewById(R.id.tv_description_title);
-							description_body = (TextView) description_view
-									.findViewById(R.id.tv_description_body);
-							description_title.setText(text);
-							String text = (String) ((TextView) v).getText();
-							String description = database.getDescription(text);
-							if (!description.equalsIgnoreCase("")) {
-								description_body.setText(description);
-								description_body.setTextSize(context
-										.getResources().getDimension(
-												R.dimen.small));
-							}
-
-							description_back = (TextView) description_view
-									.findViewById(R.id.tv_descriptions_back);
-							description_back
-									.setOnClickListener(new OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											vf_main.showPrevious();
-											vf_main.removeView(description_view);
-											description_view = null;
-										}
-									});
-							description_reroll = (TextView) description_view
-									.findViewById(R.id.tv_decription_reroll);
-							description_reroll
-									.setOnClickListener(new OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											try {
-												database.Open();
-												String new_text = database
-														.getRandom(item, column);
-												description_title
-														.setText(new_text);
-												single.setText(new_text);
-												description_body.setText(database
-														.getDescription(new_text));
-												database.Close();
-											} catch (SQLException e) {
-												e.printStackTrace();
-											}
-										}
-									});
-							description_body
-									.setOnLongClickListener(new OnLongClickListener() {
-										@Override
-										public boolean onLongClick(View v) {
-											description_edit = (EditText) description_view
-													.findViewById(R.id.et_description_body);
-											if (!((String) description_body
-													.getText())
-													.equalsIgnoreCase(context
-															.getResources()
-															.getString(
-																	R.string.no_description))) {
-												description_edit
-														.setText((String) description_body
-																.getText());
-											}
-											description_body
-													.setVisibility(View.GONE);
-											description_edit
-													.setVisibility(View.VISIBLE);
-											description_reroll
-													.setVisibility(View.GONE);
-											description_back
-													.setVisibility(View.GONE);
-
-											description_save = (TextView) description_view
-													.findViewById(R.id.tv_decription_save);
-											description_save
-													.setVisibility(View.VISIBLE);
-											description_cancel = (TextView) description_view
-													.findViewById(R.id.tv_decription_cancel);
-											description_cancel
-													.setVisibility(View.VISIBLE);
-											description_cancel
-													.setOnClickListener(new OnClickListener() {
-														@Override
-														public void onClick(
-																View v) {
-															inputMethodManager
-																	.hideSoftInputFromWindow(
-																			description_edit
-																					.getWindowToken(),
-																			InputMethodManager.HIDE_NOT_ALWAYS);
-															description_back
-																	.setVisibility(View.VISIBLE);
-															description_reroll
-																	.setVisibility(View.VISIBLE);
-															description_view
-																	.setVisibility(View.VISIBLE);
-															description_body
-																	.setVisibility(View.VISIBLE);
-															description_edit
-																	.setVisibility(View.GONE);
-															v.setVisibility(View.GONE);
-															description_save
-																	.setVisibility(View.GONE);
-															inputMethodManager
-																	.hideSoftInputFromInputMethod(
-																			description_edit
-																					.getWindowToken(),
-																			0);
-														}
-													});
-											description_save
-													.setOnClickListener(new OnClickListener() {
-														@Override
-														public void onClick(
-																View v) {
-															description_back
-																	.setVisibility(View.VISIBLE);
-															description_reroll
-																	.setVisibility(View.VISIBLE);
-															description_body
-																	.setVisibility(View.VISIBLE);
-															description_edit
-																	.setVisibility(View.GONE);
-															v.setVisibility(View.GONE);
-															description_cancel
-																	.setVisibility(View.GONE);
-															description_reroll
-																	.forceLayout();
-															try {
-																database.Open();
-																database.insertDescription(
-																		description_edit
-																				.getText()
-																				.toString(),
-																		description_title
-																				.getText()
-																				.toString());
-																description_body
-																		.setText(database
-																				.getDescription(description_title
-																						.getText()
-																						.toString()));
-																database.Close();
-															} catch (SQLException e) {
-																e.printStackTrace();
-															}
-															inputMethodManager
-																	.hideSoftInputFromWindow(
-																			description_edit
-																					.getWindowToken(),
-																			InputMethodManager.HIDE_NOT_ALWAYS);
-														}
-													});
-											return false;
-										}
-									});
-						} catch (SQLException e) {
-							e.printStackTrace();
-						} catch (NullPointerException e) {
-							e.printStackTrace();
-						}
-						changeStyle(description_view);
-						vf_main.addView(description_view);
-						vf_main.showNext();
-					}
-				});
+				single.setTag(column + "_text");
+				setupListeners(single, item, column);
 				line.setTag(item);
 				line.addView(single);
 			}
@@ -315,6 +266,30 @@ public class ViewSetup {
 			e.printStackTrace();
 		} finally {
 			database.Close();
+		}
+		return _view;
+	}
+	
+	/**Used in get saved data
+	 * @param _tag
+	 * @param cursor
+	 * @return Horizontal ScrollView populated with proper TextViews
+	 */
+	private View populate(final String _tag, Cursor cursor) {
+		Log.d(LOG_TAG, "Tag = " + _tag);
+		String[] columns = settings.getColumns(_tag);
+		HorizontalScrollView _view = (HorizontalScrollView) LayoutInflater.from(context).inflate(R.layout.item, null);
+		final LinearLayout _line = (LinearLayout) (_view).getChildAt(0);
+		_line.setTag(_tag);
+		for (final String column : columns) {
+			final TextView _single = (TextView) LayoutInflater.from(context).inflate(R.layout.singleitem, null);
+			final String _title = cursor.getString(cursor.getColumnIndex(column));
+			_single.setText(_title);
+			String ftag = column + "_text";
+			Log.d(LOG_TAG, "Future tag = " + ftag);
+			_single.setTag(ftag);
+			setupListeners(_single, _tag, column);
+			_line.addView(_single);
 		}
 		return _view;
 	}
@@ -329,11 +304,10 @@ public class ViewSetup {
 
 	private int pulpScript(int acts, int minSupportC, int maxSupportC) {
 		try {
-			LinearLayout header = (LinearLayout) LayoutInflater.from(context)
-					.inflate(R.layout.header, null);
+			LinearLayout header = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.header, null);
 			fillViewWith(header, DatabaseAdapter.Villains.NAME,
-					DatabaseAdapter.Fiendishplans.NAME, Locations.NAME,
-					Hooks.NAME);
+						DatabaseAdapter.Fiendishplans.NAME, Locations.NAME,
+						Hooks.NAME);
 			((ViewGroup) main).addView(header);
 			Dice d8 = new Dice(minSupportC, maxSupportC);
 			int value = d8.getValue();
@@ -558,222 +532,7 @@ public class ViewSetup {
 		}
 	}
 
-	/**
-	 * @param _tag
-	 * @param cursor
-	 * @return Horizontal ScrollView populated with proper TextViews
-	 */
-	private View populate(final String _tag, Cursor cursor) {
-		Log.d(LOG_TAG, "Tag = " + _tag);
-		String[] columns = settings.getColumns(_tag);
-		HorizontalScrollView _view = (HorizontalScrollView) LayoutInflater
-				.from(context).inflate(R.layout.item, null);
-		final LinearLayout _line = (LinearLayout) (_view).getChildAt(0);
-		_line.setTag(_tag);
-		for (final String column : columns) {
-			final TextView _single = (TextView) LayoutInflater.from(context)
-					.inflate(R.layout.singleitem, null);
-			final String _text = cursor
-					.getString(cursor.getColumnIndex(column));
-			_single.setText(_text);
-			String ftag = column + "_text";
-			Log.d(LOG_TAG, "Future tag = " + ftag);
-			_single.setTag(ftag);
-			_single.setOnLongClickListener(new OnLongClickListener() {
-				public boolean onLongClick(View v) {
-					boolean _ret = true;
-					try {
-						database.Open();
-						_single.setText(database.getRandom(_tag, column));
-						database.Close();
-						ThrillingTales.SCRIPT_CHANGED = true;
-					} catch (SQLException e) {
-						e.printStackTrace();
-						_ret = false;
-					} catch (NullPointerException e) {
-						e.printStackTrace();
-						_ret = false;
-					}
-					return _ret;
-				}
-			});
-			_single.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					description_view = (RelativeLayout) LayoutInflater.from(
-							context).inflate(R.layout.descriptionview, null);
-					description_title = (TextView) description_view
-							.findViewById(R.id.tv_description_title);
-					description_body = (TextView) description_view
-							.findViewById(R.id.tv_description_body);
-					if (_text != null) {
-						description_title.setText(_text);
-						try {
-							database.Open();
-							String description = database.getDescription(_text);
-							if (!description.equalsIgnoreCase("")) {
-								description_body.setText(description);
-								description_body.setTextSize(context
-										.getResources().getDimension(
-												R.dimen.small));
-							}
-							database.Close();
-						} catch (SQLException e) {
-							e.printStackTrace();
-							database.Close();
-						} finally {
-							database.Close();
-						}
-					}
-					description_back = (TextView) description_view
-							.findViewById(R.id.tv_descriptions_back);
-					description_back.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							vf_main.showPrevious();
-							vf_main.removeView(description_view);
-						}
-					});
-					;
-					description_reroll = (TextView) description_view
-							.findViewById(R.id.tv_decription_reroll);
-					description_reroll
-							.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									try {
-										database.Open();
-										String new_text = database.getRandom(
-												_tag, column);
-										description_title.setText(new_text);
-										_single.setText(new_text);
-										String description = database
-												.getDescription(new_text);
-										if (!description.equalsIgnoreCase("")) {
-											description_body
-													.setText(description);
-											description_body
-													.setTextSize(context
-															.getResources()
-															.getDimension(
-																	R.dimen.medium));
-										}
-										description_body.setText(database
-												.getDescription(description));
-										database.Close();
-										ThrillingTales.SCRIPT_CHANGED = true;
-									} catch (SQLException e) {
-										e.printStackTrace();
-									}
-								}
-							});
-					description_body
-							.setOnLongClickListener(new OnLongClickListener() {
-								@Override
-								public boolean onLongClick(View v) {
-									description_edit = (EditText) description_view
-											.findViewById(R.id.et_description_body);
-									if (!((String) description_body.getText())
-											.equalsIgnoreCase(context
-													.getResources()
-													.getString(
-															R.string.no_description))) {
-										description_edit
-												.setText((String) description_body
-														.getText());
-									}
-									description_body.setVisibility(View.GONE);
-									description_edit
-											.setVisibility(View.VISIBLE);
-									description_reroll.setVisibility(View.GONE);
-									description_back.setVisibility(View.GONE);
-
-									description_save = (TextView) description_view
-											.findViewById(R.id.tv_decription_save);
-									description_save
-											.setVisibility(View.VISIBLE);
-									description_cancel = (TextView) description_view
-											.findViewById(R.id.tv_decription_cancel);
-									description_cancel
-											.setVisibility(View.VISIBLE);
-									description_cancel
-											.setOnClickListener(new OnClickListener() {
-												@Override
-												public void onClick(View v) {
-													inputMethodManager
-															.hideSoftInputFromWindow(
-																	description_edit
-																			.getWindowToken(),
-																	InputMethodManager.HIDE_NOT_ALWAYS);
-													description_back
-															.setVisibility(View.VISIBLE);
-													description_reroll
-															.setVisibility(View.VISIBLE);
-													description_view
-															.setVisibility(View.VISIBLE);
-													description_body
-															.setVisibility(View.VISIBLE);
-													description_edit
-															.setVisibility(View.GONE);
-													v.setVisibility(View.GONE);
-													description_save
-															.setVisibility(View.GONE);
-												}
-											});
-									description_save
-											.setOnClickListener(new OnClickListener() {
-												@Override
-												public void onClick(View v) {
-													description_back
-															.setVisibility(View.VISIBLE);
-													description_reroll
-															.setVisibility(View.VISIBLE);
-													description_body
-															.setVisibility(View.VISIBLE);
-													description_edit
-															.setVisibility(View.GONE);
-													v.setVisibility(View.GONE);
-													description_cancel
-															.setVisibility(View.GONE);
-													description_reroll
-															.forceLayout();
-													try {
-														database.Open();
-														database.insertDescription(
-																description_edit
-																		.getText()
-																		.toString(),
-																description_title
-																		.getText()
-																		.toString());
-														description_body
-																.setText(database
-																		.getDescription(description_title
-																				.getText()
-																				.toString()));
-														database.Close();
-													} catch (SQLException e) {
-														e.printStackTrace();
-													}
-													inputMethodManager
-															.hideSoftInputFromWindow(
-																	description_edit
-																			.getWindowToken(),
-																	InputMethodManager.HIDE_NOT_ALWAYS);
-												}
-											});
-									return false;
-								}
-							});
-					changeStyle(description_view);
-					vf_main.addView(description_view);
-					vf_main.showNext();
-				}
-			});
-			_line.addView(_single);
-		}
-		return _view;
-	}
+	
 
 	/**
 	 * Generates HorizontalScrollView on the basis of a tag and places the view
@@ -830,8 +589,7 @@ public class ViewSetup {
 		try {
 			parseUpdatedTheScript(main);
 			database.OpenScripts();
-			database.updateScript(header, supportingCharacters, acts,
-					currentScriptShown);
+			database.updateScript(header, supportingCharacters, acts,currentScriptShown);
 			database.Close();
 			ThrillingTales.SCRIPT_CHANGED = false;
 		} catch (SQLException e) {
@@ -888,8 +646,7 @@ public class ViewSetup {
 				@Override
 				public boolean onLongClick(final View v) {
 					AlertDialog.Builder dialog = ThrillingTales.dialog;
-					dialog.setTitle("Delete").setMessage(
-							"Do you want to delete this entry?");
+					dialog.setTitle("Delete").setMessage("Do you want to delete this entry?");
 					dialog.setNegativeButton("Cancel",
 							new DialogInterface.OnClickListener() {
 
