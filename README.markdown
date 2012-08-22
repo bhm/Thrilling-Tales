@@ -25,6 +25,10 @@ Two SQLite databases. One for saved scripts/scenarios. Other with handful of tab
 #VERSION
 
 ## 1.0.2
+
+* Code clean up of megamoths
+
+## 1.0.2
 * MAXIMUM PULP ON/OFF Option added. Changes the view; makes use of different fonts and the Drawable background.
 * Changes in settings view.
 * Fixed: removing inserted script.
