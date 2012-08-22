@@ -137,11 +137,9 @@ public class ViewSetup {
 					database.Open();
 					view.setText(database.getRandom(item, column));
 					database.Close();
-
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-
 				return true;
 			}
 		});
@@ -156,7 +154,8 @@ public class ViewSetup {
 					if (!description.equalsIgnoreCase("")) {
 						description_body.setText(description);
 						description_body.setTextSize(context.getResources().getDimension(R.dimen.small));
-					}							
+					}	
+					
 					description_back.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -177,6 +176,8 @@ public class ViewSetup {
 										database.Close();
 									} catch (SQLException e) {
 										e.printStackTrace();
+									} finally {
+										database.Close();
 									}
 								}
 							});
@@ -191,7 +192,7 @@ public class ViewSetup {
 												@Override
 												public void onClick(View v) {
 													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),
-																								InputMethodManager.HIDE_NOT_ALWAYS);//															
+																								InputMethodManager.HIDE_NOT_ALWAYS);															
 													hideEditControls();
 												}
 											});
@@ -207,6 +208,8 @@ public class ViewSetup {
 														database.Close();
 													} catch (SQLException e) {
 														e.printStackTrace();
+													} finally {
+														database.Close();
 													}
 													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),
 																								InputMethodManager.HIDE_NOT_ALWAYS);
@@ -219,6 +222,8 @@ public class ViewSetup {
 					e.printStackTrace();
 				} catch (NullPointerException e) {
 					e.printStackTrace();
+				} finally {
+					database.Close();
 				}
 				changeStyle(description_view);
 				vf_main.addView(description_view);
@@ -300,8 +305,7 @@ public class ViewSetup {
 			}
 			((ViewGroup) header).addView(supportCast);
 			for (int i = 0; i < acts; i++) {
-				LinearLayout act = (LinearLayout) LayoutInflater.from(context)
-						.inflate(R.layout.act, null);
+				LinearLayout act = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.act, null);
 				fillViewWith(act, Setting.NAME, Sequences.NAME,
 						Participants.NAME, Complications.NAME, PlotTwist.NAME);
 				act.setTag("act");
@@ -314,8 +318,7 @@ public class ViewSetup {
 				View _v = ((ViewGroup) header).getChildAt(i);
 				if ((String) _v.getTag() == "act" && _v != null) {
 					actCount++;
-					TextView _actNumber = (TextView) _v
-							.findViewWithTag("act_title");
+					TextView _actNumber = (TextView) _v.findViewWithTag("act_title");
 					_actNumber.setText(_actNumber.getText() + " " + actCount);
 				}
 			}
@@ -341,6 +344,7 @@ public class ViewSetup {
 		return pulpScript(acts, supportDice);
 	}
 
+	// TODO Future clean up, make it for-each
 	/**
 	 * 
 	 * @param fromView
