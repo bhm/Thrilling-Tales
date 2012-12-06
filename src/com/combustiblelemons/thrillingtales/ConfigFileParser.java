@@ -55,9 +55,9 @@ public class ConfigFileParser {
 	/**
 	 * Pass the item name so the function reads from settings all associated with it files with values in it, and then returns them in HashMap
 	 * @param itemName villains, locations, hooks, etc Get the item name for which all possible columns has to be filled.
-	 * @return {@literal HashMap<value, column>}
+	 * @return HashMap<value, column>
 	 * @throws FileNotFoundException
-	 * @throws {@link NotFoundException} thrown when file the identifier for a file was not found thus file does not exist in {@link raw} directory
+	 * @throws NotFoundException thrown when file the identifier for a file was not found thus file does not exist in {@link raw} directory
 	 * @throws IOException
 	 */
 	public HashMap<String, String> getColumns(String itemName) throws FileNotFoundException, IOException{

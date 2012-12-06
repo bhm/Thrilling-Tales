@@ -56,6 +56,10 @@ public class Settings {
 
 	private static final String KEY_SUPPORT_DICE = "support_dice";
 	private static final String KEY_SUPPORT_DICE_DEFAULT = "2d4";
+	/**
+	 * @param Defaults to 500 milliseconds.
+	 */
+	protected static final long DEFAULT_ANIMATION_TIME = 500;
 
 	private final SharedPreferences settings;
 	private final Context context;

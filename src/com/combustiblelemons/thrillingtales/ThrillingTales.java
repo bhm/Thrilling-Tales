@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ViewFlipper;
 
@@ -22,8 +24,18 @@ public class ThrillingTales extends Activity {
 	protected static Context context;
 	private static final String LOG_TAG = "Thrilling Tales";
 	private static Settings settings;
+	
+	/**
+	 * @param main Main scenario view.
+	 */
 	private static View main;
+	/**
+	 * @param vf_main ViewFlipper that holds views: About, Scenario and Description
+	 */
 	private static ViewFlipper vf_main;
+	/**
+	 * @param used in ViewSetup. Needed to hide and show the keyboard.
+	 */
 	private static InputMethodManager inputMethodManager;
 	protected static View description_view;
 	protected static View about_view;
@@ -33,6 +45,8 @@ public class ThrillingTales extends Activity {
 	protected static int SAVED_SHOWN = -1; // -1 on start, 0 hidden, 1 shown
 	protected static AlertDialog.Builder dialog;
 	protected static boolean EXISTS = false;
+	
+	Animation slideLeftIn, slideRightOut;
 
 	protected Dialog splash;
 
@@ -52,6 +66,10 @@ public class ThrillingTales extends Activity {
 		Log.d(LOG_TAG, "Now pulp");
 		setup.pulpScript();
 		EXISTS = true;
+		slideLeftIn = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+		slideRightOut = AnimationUtils.loadAnimation(context, android.R.anim.slide_out_right);
+		slideLeftIn.setDuration(500);
+		slideRightOut.setDuration(500);
 	}
 
 	@Override
@@ -112,7 +130,8 @@ public class ThrillingTales extends Activity {
 			menu.findItem(R.id.oi_show_saved_alt).setTitle("Show saved");
 		}
 		return super.onPrepareOptionsMenu(menu);
-	}
+	}	
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -123,7 +142,10 @@ public class ThrillingTales extends Activity {
 				about_view = LayoutInflater.from(getApplicationContext())
 						.inflate(R.layout.about, null);
 				vf_main.addView(about_view);
+//				ViewSetup.animate(about_view, ViewSetup.slideInLeft);
 				vf_main.showNext();
+				about_view.setAnimation(slideLeftIn);
+				about_view.startAnimation(slideLeftIn);
 			}
 			break;
 		case R.id.oi_save_script:
@@ -141,7 +163,16 @@ public class ThrillingTales extends Activity {
 			setup.showDatesBar();
 			break;
 		case R.id.oi_generate:
-			setup.pulpAgain();
+			/*
+			 * TODO That needs to be threaded.
+			 */
+			Thread _t = new Thread(new Runnable() {				
+				@Override
+				public void run() {
+					setup.pulpAgain();					
+				}
+			});
+			_t.run();
 			SCRIPT_CHANGED = false;
 			break;
 		case R.id.oi_settings:
@@ -164,20 +195,26 @@ public class ThrillingTales extends Activity {
 		description_view = vf_main.findViewById(R.id.rl_description);
 		if (description_view != null
 				&& description_view.getVisibility() == View.VISIBLE
-				&& forceQuit != true) {
-			vf_main.showPrevious();
-			vf_main.removeView(description_view);
+				&& forceQuit != true) {			
+			vf_main.showPrevious();				
+			ViewSetup.animate(main, ViewSetup.slideInLeft);
+			vf_main.removeView(description_view);			
 			description_view = null;
 			return false;
 		} else if (about_view != null
 				&& about_view.getVisibility() == View.VISIBLE
-				&& forceQuit != true) {
+				&& forceQuit != true) {						
 			vf_main.showPrevious();
+			main.startAnimation(ViewSetup.slideInRight);
 			vf_main.removeView(about_view);
 			about_view = null;
 			return false;
 		} else {
 			// final Context context = ThrillingTales.this;
+			/*
+			 * TODO BAD DESIGN! REDO IT onStart(), onResume and onPause plus Bundle.
+			 * 
+			 */
 			AlertDialog.Builder exit = new Builder(this);
 			exit.setTitle("");
 			exit.setMessage(context.getResources().getString(R.string.exit))

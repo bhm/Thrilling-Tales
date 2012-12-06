@@ -20,12 +20,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -60,6 +61,25 @@ public class ViewSetup {
 	private static TextView description_reroll;
 	private static TextView description_save;
 	private static TextView description_cancel;
+	/**
+	 * @param slideInRight Taken from source files for android 2.0 r1
+	 */
+	protected static Animation slideInLeft;
+	/**
+	 * @param slideInLeft  Taken from source files for android 2.0 r1
+	 */
+	protected static Animation slideInRight;
+	protected static Animation slideOutLeft, slideOutRight;
+	
+	/**
+	 * @param slideDown Taken from source files for android 2.0 r1
+	 */
+	protected static Animation slideDown;
+	
+	/**
+	 * @param slideUp Taken from source files for android 2.0 r1
+	 */
+	protected static Animation slideUp;
 
 	private static ContentValues header;
 	private static ArrayList<ContentValues> acts;
@@ -97,6 +117,13 @@ public class ViewSetup {
 		QUEENS_ITALICS = Typeface.createFromAsset(context.getAssets(),"fonts/queensi.ttf");
 		QUEENS_BOLD_ITALICS = Typeface.createFromAsset(context.getAssets(),"fonts/queensbi.ttf");
 		
+		slideInLeft = AnimationUtils.loadAnimation(_context, android.R.anim.slide_in_left);		
+		slideInRight = AnimationUtils.loadAnimation(_context, R.anim.slide_in_right);
+		slideOutLeft = AnimationUtils.loadAnimation(_context, R.anim.slide_out_left);
+		slideOutRight = AnimationUtils.loadAnimation(_context, android.R.anim.slide_out_right);
+		slideDown = AnimationUtils.loadAnimation(_context, R.anim.slide_down);
+		slideUp = AnimationUtils.loadAnimation(_context, R.anim.slide_up);
+		
 		description_view = LayoutInflater.from(context).inflate(R.layout.descriptionview, null);
 		description_title = (TextView) description_view.findViewById(R.id.tv_description_title);
 		description_body = (TextView) description_view.findViewById(R.id.tv_description_body);
@@ -128,6 +155,35 @@ public class ViewSetup {
 		switchVisibility(View.GONE, description_save, description_cancel, description_edit);
 		return false;
 	}
+
+	protected static boolean animate(View view, Animation animation){
+		return animate(view, animation, Settings.DEFAULT_ANIMATION_TIME);
+	}
+	
+	protected static boolean animate(View view, Animation animation, long Duration) {
+		try {
+			animation.setDuration(Duration);
+			view.setAnimation(animation);
+			view.startAnimation(animation);
+			return true;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return false;
+		}				
+	}
+	
+	protected static boolean animateMultiple(Animation animation, View...views) {
+		try {
+			for (View _v : views) {
+				animate(_v, animation);
+			}
+			return true;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return false;
+		} 
+	}
+	
 	
 	private boolean setupListeners(final TextView view, final String item, final String column) {
 		view.setOnLongClickListener(new OnLongClickListener() {
@@ -136,6 +192,7 @@ public class ViewSetup {
 				try {
 					database.Open();
 					view.setText(database.getRandom(item, column));
+					animate(view, slideInLeft);
 					database.Close();
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -146,21 +203,37 @@ public class ViewSetup {
 		view.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				final ArrayList<String> previousValues = new ArrayList<String>();
 				try {
 					database.Open();							
-					String title = (String) ((TextView) v).getText();
+					final String title = (String) ((TextView) v).getText();					
 					description_title.setText(title);
 					String description = database.getDescription(title);
 					if (!description.equalsIgnoreCase("")) {
 						description_body.setText(description);
 						description_body.setTextSize(context.getResources().getDimension(R.dimen.small));
 					}	
-					
+					/**
+					 * TODO Rewrite the button to work as a Previous button
+					 */
 					description_back.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							vf_main.showPrevious();
-							vf_main.removeView(description_view);
+							int _previousValuesSize = previousValues.size();
+							if (_previousValuesSize > 0) {
+								String prevTitle = previousValues.get(_previousValuesSize-1);
+								description_title.setText(prevTitle);
+								try {
+									database.Open();								
+									description_body.setText(database.getDescription(prevTitle));								
+								} catch (SQLException e) {							
+									e.printStackTrace();
+								} finally {								
+									database.Close();
+									animateMultiple(slideInRight, description_title, description_body);								
+									previousValues.remove(_previousValuesSize-1);
+								}
+							}
 						}
 					});
 					
@@ -168,11 +241,13 @@ public class ViewSetup {
 								@Override
 								public void onClick(View v) {
 									try {
+										previousValues.add((String) description_title.getText());
 										database.Open();
 										String new_title = database.getRandom(item, column);
 										description_title.setText(new_title);
-										view.setText(new_title);
+										view.setText(new_title);										
 										description_body.setText(database.getDescription(new_title));
+										animateMultiple(slideInLeft, description_title, description_body);
 										database.Close();
 									} catch (SQLException e) {
 										e.printStackTrace();
@@ -187,19 +262,22 @@ public class ViewSetup {
 									if (!((String) description_body.getText()).equalsIgnoreCase(context.getResources().getString(R.string.no_description))) {
 										description_edit.setText((String) description_body.getText());
 									}										
-									showEditControls();										
+									showEditControls();	
+									animateMultiple(slideUp, description_body, description_cancel, description_save, description_edit);
 									description_cancel.setOnClickListener(new OnClickListener() {
 												@Override
 												public void onClick(View v) {
-													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),
-																								InputMethodManager.HIDE_NOT_ALWAYS);															
 													hideEditControls();
+													animateMultiple(slideUp, description_back, description_reroll, description_body);
+													inputMethodManager.hideSoftInputFromWindow(description_edit.getWindowToken(),
+																								InputMethodManager.HIDE_NOT_ALWAYS);
 												}
 											});
 									description_save.setOnClickListener(new OnClickListener() {
 												@Override
-												public void onClick(View v) {//															
+												public void onClick(View v) {
 													hideEditControls();
+													animateMultiple(slideUp, description_back, description_reroll, description_body);													
 													try {
 														database.Open();
 														database.insertDescription(description_edit.getText().toString(),
@@ -228,11 +306,17 @@ public class ViewSetup {
 				changeStyle(description_view);
 				vf_main.addView(description_view);
 				vf_main.showNext();
+				description_view.startAnimation(slideInRight);
 			}
 		});
 		return true;
 	}
 
+	/**
+	 * HorizontalScrollView populated with views that already have set random text values and tags.
+	 * 
+	 * @param item name of a table with values to populate the view.  
+	 */
 	public View generate(final String item) {		
 		HorizontalScrollView _view = (HorizontalScrollView) LayoutInflater.from(context).inflate(R.layout.item, null);
 		try {
@@ -247,6 +331,7 @@ public class ViewSetup {
 				setupListeners(single, item, column);
 				line.setTag(item);
 				line.addView(single);
+				animate(line, slideInLeft);
 			}
 			return _view;
 		} catch (SQLException e) {
@@ -257,7 +342,8 @@ public class ViewSetup {
 		return _view;
 	}
 	
-	/**Used in get saved data
+	/**
+	 * Re-populates the view from a saved state.
 	 * @param _tag
 	 * @param cursor
 	 * @return Horizontal ScrollView populated with proper TextViews
@@ -534,7 +620,8 @@ public class ViewSetup {
 				View _v = ((ViewGroup) viewToFill).getChildAt(i);
 				String tag = (String) _v.getTag();
 				if (tag != null && ((String) tag).equalsIgnoreCase(item)) {
-					((ViewGroup) viewToFill).addView(generate(item), i + 1);
+					View _viewToAdd = generate(item);					
+					((ViewGroup) viewToFill).addView(_viewToAdd, i + 1);							
 				}
 			}
 		}
@@ -618,6 +705,7 @@ public class ViewSetup {
 					if (!currentScriptShown.equalsIgnoreCase(forDate)) {
 						((ViewGroup) main).removeAllViews();
 						showTheScript(forDate);
+						animate(main, slideUp,1000);
 					}
 				}
 			});
@@ -656,6 +744,7 @@ public class ViewSetup {
 			_line.addView(singleDate);
 		} while (cursor.moveToNext());
 		changeStyle(_view);
+		animate(_view, slideInRight);
 		return _view;
 	}
 
