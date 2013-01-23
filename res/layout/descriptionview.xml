@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_description"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@color/black_pulp" >
 
     <TextView
         android:id="@+id/tv_description_title"
@@ -36,6 +37,8 @@
                 android:layout_gravity="fill_vertical|fill_horizontal"
                 android:gravity="center"
                 android:hint="@string/no_description"
+                android:paddingLeft="@dimen/small"
+                android:paddingRight="@dimen/small"
                 android:longClickable="true"
                 android:textColor="@color/aliceblue"
                 android:textSize="@dimen/verysmall" />

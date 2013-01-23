@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import com.combustiblelemons.thrillingtales.DatabaseAdapter.Database;
+import static com.combustiblelemons.thrillingtales.Values.*;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -35,6 +35,15 @@ public class Splash extends Activity {
 		Log.d(LOG_TAG, "SPLASH onDestroy");
 		super.onDestroy();
 	}
+	
+	@Override
+	protected void onStart() {	
+		super.onStart();
+		context = getApplicationContext();
+		ViewUtils.loadAnimations(context);
+		ViewUtils.loadColors(context);
+		ViewUtils.loadCustomFonts(context);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +73,9 @@ public class Splash extends Activity {
 		final Handler handle = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
+				ViewUtils.animate(message_tv, ViewUtils.slideOutRight);
 				message_tv.setText((String) msg.obj);
+				ViewUtils.animate(message_tv, ViewUtils.slideInLeft);
 			}
 		};
 

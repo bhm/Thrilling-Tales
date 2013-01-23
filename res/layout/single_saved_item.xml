@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:paddingBottom="@dimen/small"
+    android:paddingTop="@dimen/small">
+    
+    <TextView
+        android:id="@+id/tv_single_saved_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/et_save_input"
+        android:paddingLeft="@dimen/verysmall"
+        android:paddingRight="@dimen/small"
+        android:paddingBottom="@dimen/verysmall"
+        android:text="@string/title"
+        android:textSize="@dimen/large"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_single_saved_item_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_single_saved_item_title"
+        android:paddingLeft="@dimen/small"
+        android:paddingRight="@dimen/small"
+        android:text="@string/date"
+        android:textSize="@dimen/small"
+        android:textStyle="bold|italic" />
+
+</RelativeLayout>

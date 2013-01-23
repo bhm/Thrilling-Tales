@@ -22,10 +22,17 @@ And Android app that generates pulp scenarios on the basis of a backend of table
 
 ###Belly
 Two SQLite databases. One for saved scripts/scenarios. Other with handful of tables for random generation.
+Now the app uses SherlockActionBar to provid ICS+ like UI
 
 #BREAK IT
 
 #VERSION
+
+## 1.1.7
+* Code clean up and major cut on objects created
+* Move to Fragments and SherlockActionbar framework
+* Slight UI redesign
+
 
 ## 1.0.2
 

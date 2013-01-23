@@ -22,6 +22,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import static com.combustiblelemons.thrillingtales.Values.*;
+
 public class DatabaseAdapter {
 	private static final String LOG_TAG = "Thrilling Tales";
 	private Context mContext;
@@ -30,249 +32,7 @@ public class DatabaseAdapter {
 	private static final String SCRIPTS_DATABASE_NAME = "scripts";
 	private static final int SCRIPTS_DATABASE_VERSION = 1;
 
-	private static String date = getDate();
-
-	protected static enum Database {
-		Script, Main
-	};
-
-	protected static class Table {
-		protected static final String ID = "_id";
-		protected static String NAME = "";
-		protected static final String DATE = "date";
-	}
-
-	protected static final class Villains extends Table {
-		protected final static String NAME = "villains";
-		protected final static String VILLAIN = "villains";
-		private final static String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ VILLAIN + " TEXT);";
-	}
-
-	protected static final class Fiendishplans extends Table {
-		protected final static String NAME = "fiendishplans";
-		protected final static String FIENDISHPLAN1 = "fiendishplan1";
-		protected final static String FIENDISHPLAN2 = "fiendishplan2";
-		private final static String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ FIENDISHPLAN1 + " TEXT, " + FIENDISHPLAN2 + " TEXT);";
-	}
-
-	protected static final class Locations extends Table {
-		protected final static String NAME = "locations";
-		protected final static String LOCATION = "locations";
-		private final static String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ LOCATION + " TEXT);";
-	}
-
-	protected static final class Hooks extends Table {
-		protected final static String NAME = "hooks";
-		protected final static String HOOKS = "hooks";
-		private final static String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ HOOKS + " TEXT);";
-	}
-
-	protected static final class SupportingCharacters extends Table {
-		protected final static String NAME = "supportingcharacters";
-		protected final static String DESCRIPTIOR1 = "descriptor1";
-		protected final static String DESCRIPTIOR2 = "descriptor2";
-		protected final static String TYPE = "type";
-		private final static String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ DESCRIPTIOR1
-				+ " TEXT, "
-				+ DESCRIPTIOR2
-				+ " TEXT, "
-				+ TYPE
-				+ " TEXT);";
-	}
-
-	protected static final class PlotTwist extends Table {
-		protected static final String NAME = "plottwists";
-		protected static final String PLOTTWIST = NAME;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ PLOTTWIST + " TEXT);";
-	}
-
-	protected static final class Sequences extends Table {
-		protected static final String NAME = "sequences";
-		protected static final String SEQUENCES = NAME;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ SEQUENCES + " TEXT);";
-	}
-
-	protected static final class Participants extends Table {
-		protected static final String NAME = "participants";
-		protected static final String PARTICIPIANTS = NAME;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ PARTICIPIANTS + " TEXT);";
-	}
-
-	protected static final class Complications extends Table {
-		protected static final String NAME = "complications";
-		protected static final String COMPLICATIONS = NAME;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ COMPLICATIONS + " TEXT);";
-	}
-
-	protected static final class Setting extends Table {
-		protected static final String NAME = "settings";
-		protected static final String SETTINGS = NAME;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ SETTINGS + " TEXT);";
-	}
-
-	protected static final class Descriptions extends Table {
-		protected static final String NAME = "descriptions";
-		protected static final String DESCRIPTIONS = "descriptions";
-		protected static final String ITEM = "title";
-		protected static final String TITLE = ITEM;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ ITEM + " TEXT, " + DESCRIPTIONS + " TEXT);";
-	}
-
-	/*
-	 * -------------------------------- SCRIPT DATABASE
-	 * --------------------------------
-	 */
-	protected static final class SavedScript extends Table {
-		protected static final String NAME = "savedscript";
-		protected static final String TITLE = "title";
-		protected static final String DATE = "date";
-		protected static final String TEXT = "text";
-		protected static final String VILLAIN = Villains.VILLAIN;
-		protected static final String FIENDISHPLAN1 = Fiendishplans.FIENDISHPLAN1;
-		protected static final String FIENDISHPLAN2 = Fiendishplans.FIENDISHPLAN2;
-		protected static final String LOCATION = Locations.LOCATION;
-		protected static final String HOOK = Hooks.HOOKS;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ DATE
-				+ " TEXT, "
-				+ TITLE
-				+ " TEXT, "
-				+ VILLAIN
-				+ " TEXT, "
-				+ LOCATION
-				+ " TEXT, "
-				+ FIENDISHPLAN1
-				+ " TEXT, "
-				+ FIENDISHPLAN2 + " TEXT, " + HOOK + " TEXT);";
-	}
-
-	protected static final class SavedAct extends Table {
-		protected static final String NAME = "savedact";
-		protected static final String TITLE = "title";
-		protected static final String ACT_TITLE = "act_title";
-		protected static final String DATE = "date";
-		protected static final String SETTING = Setting.SETTINGS;
-		protected static final String SEQUENCE = Sequences.SEQUENCES;
-		protected static final String COMPLICATIONS = Complications.COMPLICATIONS;
-		protected static final String PARTICIPANTS = Participants.PARTICIPIANTS;
-		protected static final String PLOTTWIST = PlotTwist.PLOTTWIST;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ DATE
-				+ " TEXT, "
-				+ TITLE
-				+ " TEXT, "
-				+ ACT_TITLE
-				+ " TEXT,"
-				+ SETTING
-				+ " TEXT, "
-				+ SEQUENCE
-				+ " TEXT, "
-				+ COMPLICATIONS
-				+ " TEXT, " + PARTICIPANTS + " TEXT, " + PLOTTWIST + " TEXT);";
-	}
-
-	protected static final class SavedSupport extends Table {
-		protected static final String NAME = "savedsupport";
-		protected static final String TITLE = "title";
-		protected static final String DATE = "date";
-		protected static final String DESCRIPTOR1 = SupportingCharacters.DESCRIPTIOR1;
-		protected static final String DESCRIPTOR2 = SupportingCharacters.DESCRIPTIOR2;
-		protected static final String TYPE = SupportingCharacters.TYPE;
-		private static final String CREATION_STRING = "CREATE TABLE IF NOT EXISTS "
-				+ NAME
-				+ " ("
-				+ ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ DATE
-				+ " TEXT, "
-				+ TITLE
-				+ " TEXT, "
-				+ DESCRIPTOR1
-				+ " TEXT, " + DESCRIPTOR2 + " TEXT, " + TYPE + " TEXT);";
-	}
-
-	private static final String[] MAIN_CREATION_STRINGS = {
-			Villains.CREATION_STRING, Fiendishplans.CREATION_STRING,
-			Locations.CREATION_STRING, Hooks.CREATION_STRING,
-			SupportingCharacters.CREATION_STRING, Sequences.CREATION_STRING,
-			Participants.CREATION_STRING, Complications.CREATION_STRING,
-			Setting.CREATION_STRING, PlotTwist.CREATION_STRING,
-			Descriptions.CREATION_STRING, };
-
-	private static final String[] MAIN_TABLES = { Villains.NAME,
-			Fiendishplans.NAME, Locations.NAME, Hooks.NAME,
-			SupportingCharacters.NAME, Sequences.NAME, Participants.NAME,
-			Complications.NAME, Setting.NAME, PlotTwist.NAME, Descriptions.NAME };
-
-	private static final String[] SCRIPTS_CREATION_STRINGS = {
-			SavedScript.CREATION_STRING, SavedAct.CREATION_STRING,
-			SavedSupport.CREATION_STRING };
-
-	private static final String[] SCRITP_TABLES = { SavedScript.NAME,
-			SavedAct.NAME, SavedSupport.NAME };
+	private static String date = getCurrentDate();
 
 	private SQLiteDatabase database;
 	private SQLiteDatabase scripts;
@@ -303,8 +63,7 @@ public class DatabaseAdapter {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			setState(DatabaseAdapter.INPROGRESS);
 			for (String table : MAIN_TABLES) {
-				Log.w(LOG_TAG, "Upgrade from " + oldVersion + " to "
-						+ newVersion + ". Destroys all data");
+				Log.w(LOG_TAG, "Upgrade from " + oldVersion + " to " + newVersion + ". Destroys all data");
 				db.execSQL("DROP TABLE IF EXISTS " + table);
 			}
 		}
@@ -312,8 +71,7 @@ public class DatabaseAdapter {
 
 	private class ScriptsHelper extends SQLiteOpenHelper {
 		public ScriptsHelper(Context context) {
-			super(context, SCRIPTS_DATABASE_NAME, null,
-					SCRIPTS_DATABASE_VERSION);
+			super(context, SCRIPTS_DATABASE_NAME, null, SCRIPTS_DATABASE_VERSION);
 		}
 
 		@Override
@@ -328,8 +86,7 @@ public class DatabaseAdapter {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			for (String _s : SCRITP_TABLES) {
-				Log.d(LOG_TAG, "Upgrade for " + _s + " from " + oldVersion
-						+ " to " + newVersion);
+				Log.d(LOG_TAG, "Upgrade for " + _s + " from " + oldVersion + " to " + newVersion);
 				db.execSQL("DROP TABLE IF EXISTS " + _s);
 			}
 		}
@@ -349,7 +106,8 @@ public class DatabaseAdapter {
 	}
 
 	/*
-	 * -------------------------------- DATABASE  -----------------------------------
+	 * -------------------------------- DATABASE
+	 * -----------------------------------
 	 */
 
 	private String getThrillingTalesDatabaseName() {
@@ -363,11 +121,9 @@ public class DatabaseAdapter {
 	public boolean Exists(Database _d) {
 		switch (_d) {
 		case Main:
-			return mContext.getDatabasePath(
-					this.getThrillingTalesDatabaseName()).exists();
+			return mContext.getDatabasePath(this.getThrillingTalesDatabaseName()).exists();
 		case Script:
-			return mContext.getDatabasePath(this.getScriptsDatabaseName())
-					.exists();
+			return mContext.getDatabasePath(this.getScriptsDatabaseName()).exists();
 		default:
 			return false;
 		}
@@ -408,7 +164,7 @@ public class DatabaseAdapter {
 
 	public DatabaseAdapter OpenScripts() throws SQLException {
 		scripts = Scripts.getWritableDatabase();
-		date = getDate();
+		date = getCurrentDate();
 		return this;
 	}
 
@@ -422,7 +178,7 @@ public class DatabaseAdapter {
 	 * ----------------------------------------
 	 */
 
-	public Cursor getAllScripts() throws SQLException {
+	private Cursor getAllScripts() throws SQLException {
 		Cursor _c = scripts.rawQuery("SELECT * FROM " + SavedScript.NAME, null);
 		if (_c != null) {
 			_c.moveToFirst();
@@ -430,57 +186,91 @@ public class DatabaseAdapter {
 		return _c;
 	}
 
-	public Cursor getDates() throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT date FROM " + SavedScript.NAME,
-				null);
+	protected static Cursor getAllScripts(Context context) throws SQLException {
+		DatabaseAdapter a = new DatabaseAdapter(context);
+		a.OpenScripts();
+		Cursor cursor = a.getAllScripts();
+		a.Close();
+		return cursor;
+	}
+
+	private Cursor getDates() throws SQLException {
+		Cursor _c = scripts.rawQuery("SELECT date, title FROM " + SavedScript.NAME, null);
 		if (_c != null) {
 			_c.moveToFirst();
 		}
 		return _c;
 	}
 
-	public Cursor getScript(String forDate) throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT * FROM " + SavedScript.NAME
-				+ " WHERE " + SavedScript.DATE + "=\"" + forDate + "\"", null);
+	protected static Cursor getSavedScripts(Context context) throws SQLException {
+		DatabaseAdapter a = new DatabaseAdapter(context);
+		a.OpenScripts();
+		Cursor cursor = a.getDates();
+		a.Close();
+		return cursor;
+	}
+
+	private Cursor getScript(String forDate) throws SQLException {
+		Cursor _c = scripts.rawQuery("SELECT * FROM " + SavedScript.NAME + " WHERE " + SavedScript.DATE + "=\""
+				+ forDate + "\"", null);
 		if (_c != null)
 			_c.moveToFirst();
 		return _c;
 	}
 
-	public Cursor getActs(String forDate) throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT * from " + SavedAct.NAME
-				+ " WHERE " + SavedAct.DATE + "=\"" + forDate + "\" ORDER BY "
-				+ SavedAct.TITLE + " ASC", null);
+	protected static Cursor getScript(Context context, String forDate) throws SQLException {
+		DatabaseAdapter a = new DatabaseAdapter(context);
+		a.OpenScripts();
+		Cursor cursor = a.getScript(forDate);
+		a.Close();
+		return cursor;
+	}
+
+	private Cursor getActs(String forDate) throws SQLException {
+		Cursor _c = scripts.rawQuery("SELECT * from " + SavedAct.NAME + " WHERE " + SavedAct.DATE + "=\"" + forDate
+				+ "\" ORDER BY " + SavedAct.TITLE + " ASC", null);
 		if (_c != null)
 			_c.moveToFirst();
 		return _c;
 	}
 
-	public Cursor getSupportCharacters(String forDate) throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT * from " + SavedSupport.NAME
-				+ " WHERE " + SavedSupport.DATE + "=\"" + forDate + "\"", null);
+	protected static Cursor getActs(Context context, String forDate) throws SQLException {
+		DatabaseAdapter a = new DatabaseAdapter(context);
+		a.OpenScripts();
+		Cursor cursor = a.getActs(forDate);
+		a.Close();
+		return cursor;
+	}
+
+	private Cursor getSupportCharacters(String forDate) throws SQLException {
+		Cursor _c = scripts.rawQuery("SELECT * from " + SavedSupport.NAME + " WHERE " + SavedSupport.DATE + "=\""
+				+ forDate + "\"", null);
 		if (_c != null)
 			_c.moveToFirst();
 		return _c;
 	}
 
-	public long updateScript(ContentValues header,
-			ArrayList<ContentValues> support, ArrayList<ContentValues> acts,
+	protected static Cursor getSupportCharacters(Context context, String forDate) throws SQLException {
+		DatabaseAdapter a = new DatabaseAdapter(context);
+		a.OpenScripts();
+		Cursor cursor = a.getSupportCharacters(forDate);
+		a.Close();
+		return cursor;
+	}
+
+	private long updateScript(ContentValues header, ArrayList<ContentValues> support, ArrayList<ContentValues> acts,
 			String forDate) throws SQLException {
 		long _r = 0;
 		Log.d(LOG_TAG, "Updating script");
-		_r += scripts.update(SavedScript.NAME, header, Table.DATE + "=\""
-				+ forDate + "\"", null);
+		_r += scripts.update(SavedScript.NAME, header, Table.DATE + "=\"" + forDate + "\"", null);
 		Iterator<ContentValues> _i = support.iterator();
 		Cursor _support = getActs(forDate);
 		while (_i.hasNext()) {
 			ContentValues values = _i.next();
 			if (_support.moveToNext()) {
-				int _id = _support.getInt(_support
-						.getColumnIndex(SavedSupport.ID));
-				_r += scripts.update(SavedSupport.NAME, values, Table.DATE
-						+ "=\"" + forDate + "\"" + SavedSupport.ID + "=\""
-						+ _id + "=\"", null);
+				int _id = _support.getInt(_support.getColumnIndex(SavedSupport.ID));
+				_r += scripts.update(SavedSupport.NAME, values, Table.DATE + "=\"" + forDate + "\"" + SavedSupport.ID
+						+ "=\"" + _id + "=\"", null);
 				Log.d(LOG_TAG, "Updating support");
 			} else {
 				_r += insertScript(SavedSupport.NAME, values, forDate);
@@ -490,22 +280,36 @@ public class DatabaseAdapter {
 		while (_i.hasNext()) {
 			ContentValues values = _i.next();
 			String act_title = (String) (values).get(SavedAct.ACT_TITLE);
-			_r += scripts.update(SavedAct.NAME, values, Table.DATE + "=\""
-					+ forDate + "\"" + SavedAct.ACT_TITLE + "=\"" + act_title
-					+ "\"", null);
+			_r += scripts.update(SavedAct.NAME, values, Table.DATE + "=\"" + forDate + "\"" + SavedAct.ACT_TITLE
+					+ "=\"" + act_title + "\"", null);
 			;
 		}
 		return _r;
 	}
 
-	public long insertScript(String table, ContentValues values) {
+	protected static long staticUpdateScript(Context context, ContentValues header, ArrayList<ContentValues> support,
+			ArrayList<ContentValues> acts, String forDate) throws SQLException {
+		long _r = -1;
+		DatabaseAdapter adapter = new DatabaseAdapter(context);
+		adapter.OpenScripts();
+		_r = adapter.updateScript(header, support, acts, forDate);
+		adapter.Close();
+		return _r;
+	}
+
+	protected static String getCurrentDate() {
 		Calendar _c = new GregorianCalendar();
-		String forDate = String.valueOf(_c.get(Calendar.DAY_OF_MONTH)) + "/"
-				+ String.valueOf(_c.get(Calendar.MONTH)) + "/"
-				+ String.valueOf(_c.get(Calendar.YEAR)) + "/"
-				+ String.valueOf(_c.get(Calendar.HOUR_OF_DAY)) + ":"
-				+ String.valueOf(_c.get(Calendar.MINUTE)) + ":"
-				+ String.valueOf(_c.get(Calendar.SECOND));
+		String date = String.valueOf(_c.get(Calendar.DAY_OF_MONTH)) + "/" + String.valueOf(_c.get(Calendar.MONTH))
+				+ "/" + String.valueOf(_c.get(Calendar.YEAR)) + "/" + String.valueOf(_c.get(Calendar.HOUR_OF_DAY))
+				+ ":" + String.valueOf(_c.get(Calendar.MINUTE)) + ":" + String.valueOf(_c.get(Calendar.SECOND));
+		return date;
+	}
+
+	private long insertScript(String table, ContentValues values) {
+		Calendar _c = new GregorianCalendar();
+		String forDate = String.valueOf(_c.get(Calendar.DAY_OF_MONTH)) + "/" + String.valueOf(_c.get(Calendar.MONTH))
+				+ "/" + String.valueOf(_c.get(Calendar.YEAR)) + "/" + String.valueOf(_c.get(Calendar.HOUR_OF_DAY))
+				+ ":" + String.valueOf(_c.get(Calendar.MINUTE)) + ":" + String.valueOf(_c.get(Calendar.SECOND));
 		long _l = 0;
 		try {
 			_l = insertScript(table, values, forDate);
@@ -515,56 +319,62 @@ public class DatabaseAdapter {
 		return _l;
 	}
 
-	private static String getDate() {
-		Calendar _c = new GregorianCalendar();
-		String date = String.valueOf(_c.get(Calendar.DAY_OF_MONTH)) + "/"
-				+ String.valueOf(_c.get(Calendar.MONTH)) + "/"
-				+ String.valueOf(_c.get(Calendar.YEAR)) + "/"
-				+ String.valueOf(_c.get(Calendar.HOUR_OF_DAY)) + ":"
-				+ String.valueOf(_c.get(Calendar.MINUTE)) + ":"
-				+ String.valueOf(_c.get(Calendar.SECOND));
-		return date;
-	}
-
-	private long insertScript(String table, ContentValues values, String forDate)
-			throws SQLException {
+	private long insertScript(String table, ContentValues values, String forDate) throws SQLException {
 		ContentValues _v = new ContentValues(values);
 		_v.put(Table.DATE, date);
 		long _r = scripts.insert(table, null, _v);
 		return _r;
 	}
 
-	protected long deleteScript(String forDate) {
+	protected static long insertScript(Context context, String table, ContentValues values, String title, String date) throws SQLException {
+		long _r = -1;
+		DatabaseAdapter adapter = new DatabaseAdapter(context);
+		ContentValues _values = new ContentValues(values);
+		_values.put(Table.DATE, date);
+		_values.put(Table.TITLE, title);
+		adapter.OpenScripts();
+		_r = adapter.insertScript(table, _values);
+		adapter.Close();
+		return _r;
+	}
+
+	private long deleteScript(String forDate) {
 		long _r = 0;
-		_r += scripts.delete(SavedScript.NAME, SavedScript.DATE + "=\""
-				+ forDate + "\"", null);
-		_r += scripts.delete(SavedAct.NAME, SavedAct.DATE + "=\"" + forDate
-				+ "\"", null);
-		_r += scripts.delete(SavedSupport.NAME, SavedSupport.DATE + "=\""
-				+ forDate + "\"", null);
+		_r += scripts.delete(SavedScript.NAME, SavedScript.DATE + "=\"" + forDate + "\"", null);
+		_r += scripts.delete(SavedAct.NAME, SavedAct.DATE + "=\"" + forDate + "\"", null);
+		_r += scripts.delete(SavedSupport.NAME, SavedSupport.DATE + "=\"" + forDate + "\"", null);
+		return _r;
+	}
+
+	protected static long deleteScript(Context context, String forDate) throws SQLException {
+		long _r = -1;
+		DatabaseAdapter adapter = new DatabaseAdapter(context);
+		adapter.OpenScripts();
+		_r = adapter.deleteScript(forDate);
+		adapter.Close();
 		return _r;
 	}
 
 	/*
-	 * ---------------------------------- OPERATION ON COLUMNS -----------------------------------
+	 * ---------------------------------- OPERATION ON COLUMNS
+	 * -----------------------------------
 	 */
 	/**
-	 * Size needed for randomize function. Always add some number to account for
+	 * Size needed for randomise function. Always add some number to account for
 	 * double roll.
 	 * 
 	 * @param table
 	 *            Table to get from
 	 * @param column
 	 *            Column I need to count
-	 * @return number of rows in that column for max value in randomize
+	 * @return number of rows in that column for max value in randomise
 	 *         function.
 	 */
-	public int getSize(String table, String column) {
+	private int getSize(String table, String column) {
 		if (table == null || column == null) {
 			return -1;
 		} else {
-			return database.rawQuery("SELECT " + column + " FROM " + table,
-					null).getCount();
+			return database.rawQuery("SELECT " + column + " FROM " + table, null).getCount();
 		}
 	}
 
@@ -575,27 +385,32 @@ public class DatabaseAdapter {
 	 * @param inColumn
 	 * @return
 	 */
-	public String getRandom(String fromTable, String inColumn) {
+	private String getRandom(String fromTable, String inColumn) {
 		Dice dice = new Dice(getSize(fromTable, inColumn));
-		String _random = getItemFromColumn(fromTable, inColumn, dice.getValue())
-				.getString(0);
+		String _random = getItemFromColumn(fromTable, inColumn, dice.getValue()).getString(0);
 		while (_random == null) {
-			_random = getItemFromColumn(fromTable, inColumn, dice.getValue())
-					.getString(0);
+			_random = getItemFromColumn(fromTable, inColumn, dice.getValue()).getString(0);
 		}
 		return _random;
 	}
 
-	public Cursor getColumn(String table, String column) {
+	protected static String getRandom(Context context, String table, String column) throws SQLException {
+		String _r = "";
+		DatabaseAdapter a = new DatabaseAdapter(context);
+		a.Open();
+		_r = a.getRandom(table, column);
+		a.Close();
+		return _r;
+	}
+
+	private Cursor getColumn(String table, String column) {
 		return database.rawQuery("SELECT " + column + " FROM " + table, null);
 	}
 
-	public Cursor getItemFromColumn(String fromTable, String inColumn,
-			int atIdPosition) {
-		Cursor mCursor = database.rawQuery("SELECT " + inColumn + " FROM "
-				+ fromTable + " WHERE _id=" + atIdPosition, null);
-		Log.v(LOG_TAG, "Selecting " + inColumn + " from " + fromTable + " at "
-				+ atIdPosition);
+	private Cursor getItemFromColumn(String fromTable, String inColumn, int atIdPosition) {
+		Cursor mCursor = database.rawQuery("SELECT " + inColumn + " FROM " + fromTable + " WHERE _id=" + atIdPosition,
+				null);
+		Log.v(LOG_TAG, "Selecting " + inColumn + " from " + fromTable + " at " + atIdPosition);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
@@ -610,12 +425,10 @@ public class DatabaseAdapter {
 	 * @param logIt
 	 * @return Cursor with a needed value to get with .getString(0)
 	 */
-	public Cursor getItemFromColumn(String fromTable, String inColumn,
-			int atIdPosition, boolean logIt) {
+	private Cursor getItemFromColumn(String fromTable, String inColumn, int atIdPosition, boolean logIt) {
 		Cursor mCursor = getItemFromColumn(fromTable, inColumn, atIdPosition);
 		if (logIt) {
-			Log.v(LOG_TAG, "Selecting " + inColumn + " from " + fromTable
-					+ " at " + atIdPosition);
+			Log.v(LOG_TAG, "Selecting " + inColumn + " from " + fromTable + " at " + atIdPosition);
 		}
 		if (mCursor != null) {
 			mCursor.moveToFirst();
@@ -624,7 +437,8 @@ public class DatabaseAdapter {
 	}
 
 	/*
-	 * ----------------------------------- THRILLING TALES -----------------------------------
+	 * ----------------------------------- THRILLING TALES
+	 * -----------------------------------
 	 */
 	/**
 	 * 
@@ -632,10 +446,8 @@ public class DatabaseAdapter {
 	 * @param forItem
 	 * @return
 	 */
-	private Cursor getDescription(String fromTable, String forItem)
-			throws CursorIndexOutOfBoundsException {
-		Cursor mCursor = database.rawQuery("SELECT "
-				+ Descriptions.DESCRIPTIONS + " FROM " + fromTable
+	private Cursor getDescription(String fromTable, String forItem) throws CursorIndexOutOfBoundsException {
+		Cursor mCursor = database.rawQuery("SELECT " + Descriptions.DESCRIPTIONS + " FROM " + fromTable
 				+ " WHERE title=\"" + forItem + "\";", null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
@@ -643,11 +455,10 @@ public class DatabaseAdapter {
 		return mCursor;
 	}
 
-	public String getDescription(String forItem) {
+	protected String getDescription(String forItem) {
 		String desc;
 		try {
-			desc = getDescription(Descriptions.DESCRIPTIONS, forItem)
-					.getString(0);
+			desc = getDescription(Descriptions.DESCRIPTIONS, forItem).getString(0);
 		} catch (CursorIndexOutOfBoundsException e) {
 			Log.d(LOG_TAG, "Description for " + forItem + " was not found");
 			desc = "";
@@ -655,18 +466,37 @@ public class DatabaseAdapter {
 		return desc;
 	}
 
+	protected static String getDescription(Context context, String forItem) throws SQLException {
+		DatabaseAdapter a = new DatabaseAdapter(context);
+		a.Open();
+		String _r = a.getDescription(forItem);
+		a.Close();
+		return _r;
+	}
+
 	/**
 	 * Uses db.update to put a new description for an item.
-	 * @param description Description for an item
-	 * @param forItem item that is to have a new description
+	 * 
+	 * @param description
+	 *            Description for an item
+	 * @param forItem
+	 *            item that is to have a new description
 	 * @return
 	 */
-	public long insertDescription(String description, String forItem) {
+	protected long insertDescription(String description, String forItem) {
 		ContentValues values = new ContentValues();
 		values.put(Descriptions.TITLE, forItem);
 		values.put(Descriptions.DESCRIPTIONS, description);
 		long rows = database.update(Descriptions.NAME, values, null, null);
 		return rows;
+	}
+	
+	protected static long insertDescription(Context context, String desc, String forItem) throws SQLException {
+		DatabaseAdapter a = new DatabaseAdapter(context);
+		a.Open();
+		long _r = a.insertDescription(desc, forItem);
+		a.Close();
+		return _r;
 	}
 
 	/**
@@ -681,8 +511,7 @@ public class DatabaseAdapter {
 	 *            inserting already existing values.
 	 * @return Rows affected in total
 	 */
-	public long insertItems(String table, HashMap<String, String> items,
-			boolean flushBeforeInsert) {
+	protected long insertItems(String table, HashMap<String, String> items, boolean flushBeforeInsert) {
 		ContentValues values = new ContentValues();
 		if (flushBeforeInsert) {
 			Log.v(LOG_TAG, "Flushing table " + table + " first!");
@@ -697,8 +526,7 @@ public class DatabaseAdapter {
 		return rows;
 	}
 
-	public long insertDescriptions(HashMap<String, String> descriptions,
-			boolean flushBeforeInsert) {
+	protected long insertDescriptions(HashMap<String, String> descriptions, boolean flushBeforeInsert) {
 		ContentValues values = new ContentValues();
 		if (flushBeforeInsert) {
 			Log.v(LOG_TAG, "Flushing:" + Descriptions.NAME);
@@ -723,14 +551,12 @@ public class DatabaseAdapter {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public long buildDatabase(boolean startFresh) throws FileNotFoundException,
-			IOException {
+	protected long buildDatabase(boolean startFresh) throws FileNotFoundException, IOException {
 		setState(DatabaseAdapter.INPROGRESS);
 		long rows = 0;
 		ConfigFileParser mConfigFileParser = new ConfigFileParser(mContext);
 		for (String table : MAIN_TABLES) {
-			rows = +insertItems(table, mConfigFileParser.getColumns(table),
-					startFresh);
+			rows = +insertItems(table, mConfigFileParser.getColumns(table), startFresh);
 		}
 		HashMap<String, String> descriptions;
 		try {
@@ -750,7 +576,7 @@ public class DatabaseAdapter {
 	}
 
 	// TODO Check database for 0 row tables and issue an refill of it.
-	public void checkDatabase() {
+	protected void checkDatabase() {
 		for (String _s : MAIN_TABLES) {
 			long _l = database.rawQuery("SELECT * FROM " + _s, null).getCount();
 			Log.v(LOG_TAG, _s + " \n" + _l);

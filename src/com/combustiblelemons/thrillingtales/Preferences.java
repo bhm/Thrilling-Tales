@@ -1,6 +1,6 @@
 package com.combustiblelemons.thrillingtales;
 
-import com.combustiblelemons.thrillingtales.DatabaseAdapter.Database;
+import static com.combustiblelemons.thrillingtales.Values.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -49,7 +49,7 @@ public class Preferences extends Activity {
 		settings = new Settings(context);
 		alert = new Builder(this);
 		databaseDialogBuilder = new Builder(this);		
-		Dice _dice = new Dice(settings.getSupportDice());		
+		Dice _dice = new Dice(Settings.getSupportDice(context));		
 		acts_number = (TextView) settings_view.findViewById(R.id.acts_number_tv);
 		minVal = (TextView) settings_view.findViewById(R.id.supportValMin_settings_tv);
 		maxVal = (TextView) settings_view.findViewById(R.id.supportValMax_settings_tv);		

@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item 
+
+    <item
         android:id="@+id/oi_generate"
+        android:icon="@drawable/ic_menu_refresh"
+        android:showAsAction="always"
         android:title="@string/oi_generate_text"/>
-    <item 
-         android:id="@+id/oi_save_script"
-         android:title="@string/oi_save_script"/>
-    <item 
-         android:id="@+id/oi_update_script"
-         android:title="@string/oi_update_script"/>
+    <item
+        android:id="@+id/oi_save_script"
+        android:icon="@drawable/ic_menu_save"
+        android:showAsAction="always"
+        android:title="@string/oi_save_script"/>
     <item
         android:id="@+id/oi_show_saved"
-        android:title="@string/oi_show_saved"
-        android:visible="false"/>
+        android:icon="@drawable/ic_menu_paste_holo_dark"
+        android:showAsAction="ifRoom"
+        android:title="@string/oi_show_saved"/>
     <item
-        android:id="@+id/oi_show_saved_alt"
-        android:title="@string/oi_show_saved_alt"/>
+        android:id="@+id/oi_update_script"
+        android:title="@string/oi_update_script"/>
     <item
         android:id="@+id/oi_settings"
-        android:title="@string/oi_settings" />
+        android:icon="@drawable/ic_menu_preferences"
+        android:showAsAction="collapseActionView"
+        android:title="@string/oi_settings"/>
     <item
         android:id="@+id/oi_about"
+        android:icon="@drawable/ic_menu_help"
+        android:showAsAction="collapseActionView"
         android:title="@string/oi_about_text"/>
-    <item
-        android:id="@+id/oi_quit"
-        android:title="@string/quit"/>    
+
 </menu>

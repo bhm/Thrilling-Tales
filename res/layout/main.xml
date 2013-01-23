@@ -2,7 +2,8 @@
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android" 
     android:id="@+id/vf_main"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="@color/black_pulp">
     <LinearLayout 
         android:id="@+id/ll_saved_frame_main"
         android:layout_width="fill_parent"

@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Thrilling Tales</string>
+    <string name="main_activity_label">A pulp story</string>
+    <string name="preferences_activity_label">Settings</string>
     <string name="text_about_the_app">	Have you noticed that all of these are whacky? 
    	    							  	No, then try out the app. Done? 
    	    							  	\nOk.
@@ -53,6 +55,9 @@
     <string name="makingdatabase">Making the database</string>
     <string name="nonesaved">Nothing here!</string>
     <string name="notdoneyet">I am not finished.</string>
+    <string name="hint_save_input">Name for the scenario</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
 
     <!-- PREFERENCES -->
 
