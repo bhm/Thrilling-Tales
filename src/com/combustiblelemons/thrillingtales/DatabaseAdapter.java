@@ -299,29 +299,24 @@ public class DatabaseAdapter {
 
 	protected static String getCurrentDate() {
 		Calendar _c = new GregorianCalendar();
-		String date = String.valueOf(_c.get(Calendar.DAY_OF_MONTH)) + "/" + String.valueOf(_c.get(Calendar.MONTH))
+		String date = String.valueOf(_c.get(Calendar.DAY_OF_MONTH)) + "/" + String.valueOf((_c.get(Calendar.MONTH)+1))
 				+ "/" + String.valueOf(_c.get(Calendar.YEAR)) + "/" + String.valueOf(_c.get(Calendar.HOUR_OF_DAY))
 				+ ":" + String.valueOf(_c.get(Calendar.MINUTE)) + ":" + String.valueOf(_c.get(Calendar.SECOND));
 		return date;
 	}
-
-	private long insertScript(String table, ContentValues values) {
-		Calendar _c = new GregorianCalendar();
-		String forDate = String.valueOf(_c.get(Calendar.DAY_OF_MONTH)) + "/" + String.valueOf(_c.get(Calendar.MONTH))
-				+ "/" + String.valueOf(_c.get(Calendar.YEAR)) + "/" + String.valueOf(_c.get(Calendar.HOUR_OF_DAY))
-				+ ":" + String.valueOf(_c.get(Calendar.MINUTE)) + ":" + String.valueOf(_c.get(Calendar.SECOND));
-		long _l = 0;
-		try {
-			_l = insertScript(table, values, forDate);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return _l;
-	}
+//
+//	private long insertScript(String table, ContentValues values, String forDate) {
+//		long _l = 0;
+//		try {
+//			_l = insertScript(table, values, forDate);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return _l;
+//	}
 
 	private long insertScript(String table, ContentValues values, String forDate) throws SQLException {
 		ContentValues _v = new ContentValues(values);
-		_v.put(Table.DATE, date);
 		long _r = scripts.insert(table, null, _v);
 		return _r;
 	}
@@ -332,9 +327,12 @@ public class DatabaseAdapter {
 		ContentValues _values = new ContentValues(values);
 		_values.put(Table.DATE, date);
 		_values.put(Table.TITLE, title);
-		adapter.OpenScripts();
-		_r = adapter.insertScript(table, _values);
-		adapter.Close();
+		try {
+			adapter.OpenScripts();
+			_r = adapter.insertScript(table, _values, date);
+		} finally {
+			adapter.Close();	
+		}		
 		return _r;
 	}
 

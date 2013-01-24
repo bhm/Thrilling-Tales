@@ -1,7 +1,5 @@
 package com.combustiblelemons.thrillingtales;
 
-import java.io.Serializable;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -71,10 +69,10 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		View _script = scriptFragment.getView();
+	public boolean onOptionsItemSelected(MenuItem item) {		
 		switch (item.getItemId()) {
 		case R.id.oi_generate:
+			View _script = (ViewGroup) vf_main.findViewById(R.id.ll_main);
 			PulpMachine.pulpAgain((ViewGroup) _script);
 			break;
 		case R.id.oi_save_script:

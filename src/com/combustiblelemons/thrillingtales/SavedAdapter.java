@@ -46,10 +46,6 @@ public class SavedAdapter extends BaseAdapter {
 				view = LayoutInflater.from(context).inflate(R.layout.single_saved_item, null);
 				TextView title = (TextView) view.findViewById(R.id.tv_single_saved_item_title);
 				TextView date = (TextView) view.findViewById(R.id.tv_single_saved_item_date);
-				if (title != null)
-					Log.d(TAG, "getView: title not null");
-				if (date != null)
-					Log.d(TAG, "getView: date not null");
 				String title_value = cursor.getString(cursor.getColumnIndex(TITLE));
 				if (title_value != null) {
 					title.setText(title_value);

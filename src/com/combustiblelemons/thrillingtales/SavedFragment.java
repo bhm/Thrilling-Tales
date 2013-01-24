@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,24 +23,20 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 	SavedAdapter adapter;
 	ScriptFragment script;
 	FragmentManager fmanager;
-	View script_view;
 	protected boolean SELECTED_FOR_EDIT;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		context = getActivity().getApplicationContext();
-		fmanager = getActivity().getSupportFragmentManager();
-		script = (ScriptFragment) fmanager.findFragmentByTag(SCRIPT_VIEW_FLAG);
-		script_view = script.getView();
+		context = getActivity().getApplicationContext();	
 		Cursor cursor;
 		try {
 			cursor = DatabaseAdapter.getSavedScripts(context);
 			adapter = new SavedAdapter(cursor, context);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			setListAdapter(adapter);
+		} finally {		
+			setListAdapter(adapter);			
 			getListView().setOnItemClickListener(this);
 			getListView().setOnItemLongClickListener(this);
 			getListView().setBackgroundColor(context.getResources().getColor(R.color.black_pulp));
