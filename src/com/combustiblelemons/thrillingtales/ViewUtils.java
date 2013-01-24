@@ -13,12 +13,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
-
 import static com.combustiblelemons.thrillingtales.Values.*;
 
 public class ViewUtils {
@@ -98,18 +94,18 @@ public class ViewUtils {
 	}
 
 	protected static boolean showEditControls() {
-		switchVisibility(View.GONE, ThrillingTales.description_back, ThrillingTales.description_reroll,
-				ThrillingTales.description_body);
-		switchVisibility(View.VISIBLE, ThrillingTales.description_save, ThrillingTales.description_cancel,
-				ThrillingTales.description_edit);
+		switchVisibility(View.GONE, DescriptionFragment.description_back, DescriptionFragment.description_reroll,
+				DescriptionFragment.description_body);
+		switchVisibility(View.VISIBLE, DescriptionFragment.description_save, DescriptionFragment.description_cancel,
+				DescriptionFragment.description_edit);
 		return false;
 	}
 
 	protected static boolean hideEditControls() {
-		switchVisibility(View.VISIBLE, ThrillingTales.description_back, ThrillingTales.description_reroll,
-				ThrillingTales.description_body);
-		switchVisibility(View.GONE, ThrillingTales.description_save, ThrillingTales.description_cancel,
-				ThrillingTales.description_edit);
+		switchVisibility(View.VISIBLE, DescriptionFragment.description_back, DescriptionFragment.description_reroll,
+				DescriptionFragment.description_body);
+		switchVisibility(View.GONE, DescriptionFragment.description_save, DescriptionFragment.description_cancel,
+				DescriptionFragment.description_edit);
 		return false;
 	}
 
@@ -184,46 +180,7 @@ public class ViewUtils {
 		} while (cursor.moveToNext());
 		return viewToFill;
 	}
-	
-//	private static boolean showDatesBar(boolean forceHide) {
-//		if (_datesBar == null) {
-//			Log.d(TAG, "_datesBar NULL");
-//			setupDatesBar(_datesBar.getContext());
-//			showDatesBar();
-//		}
-//		if (datesBarShown || forceHide) {
-//			_datesBar.setVisibility(View.GONE);
-//			Log.d(TAG, "_datesBar GONE");
-//			datesBarShown = false;
-//		} else {
-//			_datesBar.setVisibility(View.VISIBLE);
-//			Log.d(TAG, "_datesBar VISIBLE");
-//			datesBarShown = true;
-//		}
-//		return datesBarShown;
-//	}
 
-//	public static boolean showDatesBar() {
-//		return showDatesBar(false);
-//	}
-
-//	protected static void changeStyle(View view) {
-//		if (settings.useStyle()) {
-//			applyPulpFonts(view);
-//			applyBackground(true);
-//		} else {
-//			applyDefaultFonts(view);
-//			applyBackground(false);
-//		}
-//	}
-//
-//	protected static void applyBackground(boolean pulpBackground) {
-//		if (pulpBackground) {
-//			vf_main.setBackgroundDrawable(resources.getDrawable(R.drawable.background));
-//		} else {
-//			vf_main.setBackgroundDrawable(null);
-//		}
-//	}
 
 	protected static void applyDefaultFonts(View view) {
 		if (view != null) {

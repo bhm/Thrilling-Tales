@@ -49,6 +49,7 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
 		view = inflater.inflate(R.layout.main, null);
 		return view;
 	}
@@ -70,6 +71,10 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 		View parent = getView();
 		TextView _view = (TextView) parent.findViewWithTag(tag);
 		_view.setText(value);
+	}
+	
+	protected void loadScript(View parent, String forDate) {
+		PulpMachine.loadTheScript((ViewGroup) parent, forDate);
 	}
 
 	@Override

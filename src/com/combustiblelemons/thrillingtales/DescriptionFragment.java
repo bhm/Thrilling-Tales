@@ -47,12 +47,19 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 		description_edit = (EditText) view.findViewById(R.id.et_description_body);
 		description_reroll = (TextView) view.findViewById(R.id.tv_decription_reroll);
 		description_reroll.setOnClickListener(this);
+		description_back = (TextView) view.findViewById(R.id.tv_descriptions_back);
 		description_save = (TextView) view.findViewById(R.id.tv_decription_save);
 		description_save.setOnClickListener(this);
 		description_cancel = (TextView) view.findViewById(R.id.tv_decription_cancel);
 		description_cancel.setOnClickListener(this);
 		description_edit = (EditText) view.findViewById(R.id.et_description_body);
 		return view;
+	}
+	
+	@Override
+	public void onStart() {	
+		super.onStart();
+		Log.d(TAG, "DescriptionFragment.onStart()");
 	}
 
 	public interface onItemReRandomized {
@@ -102,10 +109,7 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 	}
 
 	@Override
-	public void onClick(View v) {
-		String tag = v.getTag().toString();
-		String item = tag.split(":")[0];
-		String column = tag.split(":")[1];
+	public void onClick(View v) {		
 		switch (v.getId()) {
 		default:
 			break;
@@ -125,6 +129,9 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			}
 			break;
 		case R.id.tv_decription_reroll:
+			String tag = v.getTag().toString();
+			String item = tag.split(":")[0];
+			String column = tag.split(":")[1];
 			try {
 				Log.d(TAG, "Reroll: " + item + " " + column);
 				RANDOM_HISTORY.add((String) description_title.getText());
@@ -135,11 +142,10 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			String _value = description_title.getText().toString();			
+			String _value = description_title.getText().toString();
 			listener.onDescriptionItemReRandomized(_value, v.getTag().toString());
 			break;
 		case R.id.tv_decription_save:
-			ViewUtils.hideEditControls();
 			ViewUtils.animateMultiple(ViewUtils.slideUp, description_back, description_reroll, description_body);
 			try {
 
@@ -168,12 +174,11 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			String currentDesc = description_body.getText().toString();
 			if (!(currentDesc).equalsIgnoreCase(v.getResources().getString(R.string.no_description))) {
 				description_edit.setText((String) description_body.getText());
-			}
+			}			
 			ViewUtils.showEditControls();
-			ViewUtils.animateMultiple(ViewUtils.slideUp, description_body, description_cancel, description_save,
-					description_edit);
+			ViewUtils.animateMultiple(ViewUtils.slideUp, description_cancel, description_save, description_edit);
 			return true;
 		}
 		return true;
-	}
-};
+	}	
+}

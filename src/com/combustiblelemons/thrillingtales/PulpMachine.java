@@ -8,13 +8,10 @@ import java.util.Iterator;
 
 import com.combustiblelemons.thrillingtales.Values.SavedScript;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,9 +30,7 @@ public class PulpMachine {
 	private static ArrayList<ContentValues> acts = new ArrayList<ContentValues>();
 	private static ArrayList<ContentValues> supportingCharacters = new ArrayList<ContentValues>();
 	private static String currentScriptShown;
-	private static boolean datesBarShown = false;
-	private static LinearLayout main_frame;
-	protected static HorizontalScrollView _datesBar;
+
 	protected FragmentManager fragmentManager;
 	private static OnClickListener listener;
 	private static OnLongClickListener longListener;
@@ -110,7 +105,7 @@ public class PulpMachine {
 			final TextView _single = (TextView) LayoutInflater.from(context).inflate(R.layout.singleitem, null);
 			final String _title = cursor.getString(cursor.getColumnIndex(column));
 			_single.setText(_title);
-			String ftag = column + "_text";
+			String ftag = _tag + ":" + column;
 			Log.d(TAG, "Future tag = " + ftag);
 			_single.setTag(ftag);
 			setupListeners(_single);
@@ -120,21 +115,23 @@ public class PulpMachine {
 	}
 
 	protected static void pulpAgain(ViewGroup parent) {
-		if (datesBarShown)
-			ThrillingTales.SCRIPT_CHANGED = true;
 		((ViewGroup) parent).removeAllViews();
 		pulpScript(parent);
 	}
-	
+
 	protected static void saveScript(ViewGroup parent) {
-		String title = DatabaseAdapter.getCurrentDate();		
-		saveScript(parent, title);
+		String title = DatabaseAdapter.getCurrentDate();
+		saveScript(parent, title, title);
 	}
 
 	protected static void saveScript(ViewGroup parent, String title) {
+		String date = DatabaseAdapter.getCurrentDate();
+		saveScript(parent, title, date);
+	}
+
+	protected static void saveScript(ViewGroup parent, String title, String date) {
 		header = new ContentValues();
 		acts = new ArrayList<ContentValues>();
-		String date = DatabaseAdapter.getCurrentDate();
 		supportingCharacters = new ArrayList<ContentValues>();
 		Context context = parent.getContext();
 		try {
@@ -145,12 +142,13 @@ public class PulpMachine {
 				DatabaseAdapter.insertScript(context, SavedAct.NAME, (ContentValues) _acts.next(), title, date);
 			}
 			Iterator<ContentValues> _support = supportingCharacters.iterator();
+			Log.d(TAG, "saveTheScript(" + title + ", " + date +"): supportingCharacters.size()" + supportingCharacters.size());
 			while (_support.hasNext()) {
 				DatabaseAdapter.insertScript(context, SavedSupport.NAME, (ContentValues) _support.next(), title, date);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	protected static void updateScript(ViewGroup parent) {
@@ -158,9 +156,8 @@ public class PulpMachine {
 		acts = new ArrayList<ContentValues>();
 		supportingCharacters = new ArrayList<ContentValues>();
 		Context context = parent.getContext();
-		try {			
+		try {
 			DatabaseAdapter.staticUpdateScript(context, header, supportingCharacters, acts, currentScriptShown);
-			ThrillingTales.SCRIPT_CHANGED = false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
@@ -206,7 +203,7 @@ public class PulpMachine {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	protected static void pulpScript(ViewGroup parent, int acts, String supportCharactersDice) {
@@ -241,24 +238,28 @@ public class PulpMachine {
 					String _title = (String) ((TextView) _v.findViewWithTag("act_title")).getText();
 					String _settings = (String) ((TextView) _v.findViewWithTag("settings:settings")).getText();
 					String _sequences = (String) ((TextView) _v.findViewWithTag("sequences:sequences")).getText();
-					String _participants = (String) ((TextView) _v.findViewWithTag("participants:participants")).getText();
-					String _complications = (String) ((TextView) _v.findViewWithTag("complications:complications")).getText();
+					String _participants = (String) ((TextView) _v.findViewWithTag("participants:participants"))
+							.getText();
+					String _complications = (String) ((TextView) _v.findViewWithTag("complications:complications"))
+							.getText();
 					String _plottwists = (String) ((TextView) _v.findViewWithTag("plottwists:plottwists")).getText();
 					Log.d(TAG, "Act: " + "\n" + _title + "\n" + _settings + "\n" + _sequences + "\n" + _participants
 							+ "\n" + _complications + "\n" + _plottwists);
 					ContentValues values = new ContentValues();
-					 values.put(SavedAct.ACT_TITLE, _title);
-					 values.put(SavedAct.SETTING, _settings);
-					 values.put(SavedAct.SEQUENCE, _sequences);
-					 values.put(SavedAct.PARTICIPANTS, _participants);
-					 values.put(SavedAct.COMPLICATIONS, _complications);
-					 values.put(SavedAct.PLOTTWIST, _plottwists);
+					values.put(SavedAct.ACT_TITLE, _title);
+					values.put(SavedAct.SETTING, _settings);
+					values.put(SavedAct.SEQUENCE, _sequences);
+					values.put(SavedAct.PARTICIPANTS, _participants);
+					values.put(SavedAct.COMPLICATIONS, _complications);
+					values.put(SavedAct.PLOTTWIST, _plottwists);
 					acts.add(values);
 				} else if (_tag == "supportingcharacters") {
 					ContentValues values = new ContentValues();
 					View _v = fromView;
-					String _descriptor1 = (String) ((TextView) _v.findViewWithTag("supportingcharacters:descriptor1")).getText();
-					String _descriptor2 = (String) ((TextView) _v.findViewWithTag("supportingcharacters:descriptor2")).getText();
+					String _descriptor1 = (String) ((TextView) _v.findViewWithTag("supportingcharacters:descriptor1"))
+							.getText();
+					String _descriptor2 = (String) ((TextView) _v.findViewWithTag("supportingcharacters:descriptor2"))
+							.getText();
 					String _type = (String) ((TextView) _v.findViewWithTag("supportingcharacters:type")).getText();
 					values.put(SavedSupport.DESCRIPTOR1, _descriptor1);
 					values.put(SavedSupport.DESCRIPTOR2, _descriptor2);
@@ -273,8 +274,8 @@ public class PulpMachine {
 					Log.d(TAG, "Villain " + _villain);
 					header.put(SavedScript.VILLAIN, _villain);
 				} else if (_tag == "fiendishplans") {
-					String _fiendishplan1 = (String) ((TextView) fromView.findViewWithTag("fiendishplans:fiendishplan1"))
-							.getText();
+					String _fiendishplan1 = (String) ((TextView) fromView
+							.findViewWithTag("fiendishplans:fiendishplan1")).getText();
 					header.put(SavedScript.FIENDISHPLAN1, _fiendishplan1);
 					header.put(SavedScript.FIENDISHPLAN2,
 							(String) ((TextView) fromView.findViewWithTag("fiendishplans:fiendishplan2")).getText());
@@ -282,7 +283,8 @@ public class PulpMachine {
 					header.put(SavedScript.LOCATION,
 							(String) ((TextView) fromView.findViewWithTag("locations:locations")).getText());
 				} else if (_tag == "hooks") {
-					header.put(SavedScript.HOOK, (String) ((TextView) fromView.findViewWithTag("hooks:hooks")).getText());
+					header.put(SavedScript.HOOK,
+							(String) ((TextView) fromView.findViewWithTag("hooks:hooks")).getText());
 				}
 
 			} else {
@@ -295,9 +297,10 @@ public class PulpMachine {
 			}
 		}
 	}
-	
-	protected static View showTheScript(ViewGroup parent, String forDate) {
+
+	protected static View loadTheScript(ViewGroup parent, String forDate) {
 		try {
+			parent.removeAllViews();
 			Context context = parent.getContext();
 			Cursor headerCursor = DatabaseAdapter.getScript(context, forDate);
 			Cursor actCursor = DatabaseAdapter.getActs(context, forDate);
@@ -305,32 +308,22 @@ public class PulpMachine {
 			View header = LayoutInflater.from(context).inflate(R.layout.header, null);
 			View support = LayoutInflater.from(context).inflate(R.layout.supportview, null);
 			ViewUtils.fillView(header, headerCursor);
-			((ViewGroup) parent).addView(header);
-			ViewUtils.fillView(support, supportCursor);
-			((ViewGroup) parent).addView(support);
+			parent.addView(header, parent.getChildCount());
+			Log.d(TAG, "\n\n" + parent.getClass().toString());
+			Log.d(TAG, "supportCursor.getCount() " + supportCursor.getCount() + " X " + supportCursor.getColumnCount());
+			ViewUtils.fillView(support, supportCursor);			
+			parent.addView(support, parent.getChildCount());
 			int act_c = 0;
 			do {
 				final View act = LayoutInflater.from(context).inflate(R.layout.act, null);
 				Log.d(TAG, "Act " + act_c++);
 				fillAct(act, actCursor, act_c);
 				act.setTag("act");
-				((ViewGroup) parent).addView(act);
-			} while (actCursor.moveToNext());
-
-			final LinearLayout _date = (LinearLayout) main_frame.findViewById(R.id.ll_item);
-			int dates = ((ViewGroup) _date).getChildCount();
-			for (int i = 0; i < dates; i++) {
-				View _v = _date.getChildAt(i);
-				((TextView) _v).setTextColor(ViewUtils.DARKGREY);
-				Log.d(TAG, ((TextView) _v).getText() + " has changed colour to dark gray");
-				if (((String) ((TextView) _v).getText()).equalsIgnoreCase(forDate)) {
-					((TextView) _v).setTextColor(ViewUtils.ALICEBLUE);
-				}
-			}
-			currentScriptShown = forDate;
+				parent.addView(act, parent.getChildCount());
+			} while (actCursor.moveToNext());			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 		return parent;
 	}
 

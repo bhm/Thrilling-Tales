@@ -45,15 +45,15 @@ public class SaveFragment extends SherlockFragment implements OnClickListener {
 			View script = scritpFragment.getView();		
 			if (title == null || title.length() == 0) {
 				title = input.getHint().toString();
-				PulpMachine.saveScript((ViewGroup) script, title);
+				PulpMachine.saveScript((ViewGroup) script, title, title);
 			} else {
 				PulpMachine.saveScript((ViewGroup) script, title);
 			}
 			Log.d(TAG, "Saving Ok: " + title);
 			//fallthrough or show saved?
 		case R.id.tv_save_cancel:	
-			Log.d(TAG, "Falling through to cancel.");
-			fmanager.beginTransaction().remove(this);
+			Log.d(TAG, "Falling through to cancel.");			
+			fmanager.popBackStack();
 			break;
 		}
 	}
