@@ -11,6 +11,10 @@
    	    							  	Usually \~1930s, where the most weird stuff happens to the normal \"super heroes\".
    	    							  	\n  Check out the <b>Thrilling Adventures</b> sourcebook for <b>Savage Worlds</b> by <b>Adamant Entertainment</b></string>
 
+    <!--  MENU STRINGS -->
+    <string name="menu_saved_delete_cancel">Cancel</string>
+    <string name="menu_saved_delete">Delete</string>
+    
     <!-- GENERATED VIEW STRINGS -->
     <string name="villain_title">Villain who is</string>
     <string name="fiendish_plot">Has a Fiendish Plan to</string>

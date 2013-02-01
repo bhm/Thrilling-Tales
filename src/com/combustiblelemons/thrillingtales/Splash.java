@@ -4,7 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static com.combustiblelemons.thrillingtales.Values.*;
+import static com.combustiblelemons.thrillingtales.Values.TAG;
+import static com.combustiblelemons.thrillingtales.Values.Database;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,21 +25,15 @@ public class Splash extends Activity {
 
 	private static Context context;
 	private static Settings settings;
-	private static final String LOG_TAG = "Thrilling Tales";
 	private static DatabaseAdapter database;
 	private static View loadMsg;
 	protected static Thread splashThread;
 	private static TextView message_tv;
-
-	@Override
-	protected void onDestroy() {
-		Log.d(LOG_TAG, "SPLASH onDestroy");
-		super.onDestroy();
-	}
 	
 	@Override
-	protected void onStart() {	
+	protected void onStart() {
 		super.onStart();
+		Log.d(TAG, "Current time new format " + DatabaseAdapter.getCurrentTime());
 		context = getApplicationContext();
 		ViewUtils.loadAnimations(context);
 		ViewUtils.loadColors(context);
@@ -51,21 +46,17 @@ public class Splash extends Activity {
 		final Intent intent = new Intent(Splash.this, ThrillingTales.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 
-		Log.d(LOG_TAG,
-				"||||\t||||\t||||\t||||\t SPLASH||||\t||||\t||||\t||||\t");
+		Log.d(TAG, "||||\t SPLASH||||\t");
 		context = getApplicationContext();
 		settings = new Settings(context);
 		loadMsg = LayoutInflater.from(context).inflate(R.layout.loading, null);
 		setContentView(loadMsg);
 
 		if (!settings.Exist()) {
-			Log.v(LOG_TAG,
-					"Creating settings in a file: "
-							+ settings.getSettingsFileAbsolutePath());
+			Log.v(TAG, "Creating settings in a file: " + settings.getSettingsFileAbsolutePath());
 			settings.writeConfig(true);
 		}
-		final String[] messages = context.getResources().getStringArray(
-				R.array.randomsplashmessages);
+		final String[] messages = context.getResources().getStringArray(R.array.randomsplashmessages);
 		final Dice message_dice = new Dice(messages.length);
 		message_tv = (TextView) loadMsg.findViewById(R.id.loading_message_tv);
 		database = new DatabaseAdapter(getApplicationContext());
@@ -85,7 +76,7 @@ public class Splash extends Activity {
 
 			@Override
 			public void run() {
-				Log.d(LOG_TAG, "\t\t\n\nSplash Thread Started!");
+				Log.d(TAG, "\t\t\n\nSplash Thread Started!");
 				do {
 					try {
 						Thread.sleep(5300);
@@ -138,8 +129,7 @@ public class Splash extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			message_tv.setText(context.getResources().getString(
-					R.string.notdoneyet));
+			message_tv.setText(context.getResources().getString(R.string.notdoneyet));
 		}
 		return false;
 	}

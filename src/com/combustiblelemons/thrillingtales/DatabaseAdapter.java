@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,15 +24,12 @@ import android.util.Log;
 
 import static com.combustiblelemons.thrillingtales.Values.*;
 
-public class DatabaseAdapter {
-	private static final String LOG_TAG = "Thrilling Tales";
+public class DatabaseAdapter {	
 	private Context mContext;
 	private static final String DATABASE_NAME = "thrillingtales";
 	private static final int DATABASE_VERSION = 1;
 	private static final String SCRIPTS_DATABASE_NAME = "scripts";
 	private static final int SCRIPTS_DATABASE_VERSION = 1;
-
-	private static String date = getCurrentDate();
 
 	private SQLiteDatabase database;
 	private SQLiteDatabase scripts;
@@ -54,7 +51,7 @@ public class DatabaseAdapter {
 		public void onCreate(SQLiteDatabase db) {
 			setState(DatabaseAdapter.INPROGRESS);
 			for (String i : MAIN_CREATION_STRINGS) {
-				Log.v(LOG_TAG, i);
+				Log.v(TAG, i);
 				db.execSQL(i);
 			}
 		}
@@ -63,7 +60,7 @@ public class DatabaseAdapter {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			setState(DatabaseAdapter.INPROGRESS);
 			for (String table : MAIN_TABLES) {
-				Log.w(LOG_TAG, "Upgrade from " + oldVersion + " to " + newVersion + ". Destroys all data");
+				Log.w(TAG, "Upgrade from " + oldVersion + " to " + newVersion + ". Destroys all data");
 				db.execSQL("DROP TABLE IF EXISTS " + table);
 			}
 		}
@@ -76,9 +73,9 @@ public class DatabaseAdapter {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			Log.v(LOG_TAG, "Creating Scripts database");
+			Log.v(TAG, "Creating Scripts database");
 			for (String _s : SCRIPTS_CREATION_STRINGS) {
-				Log.d(LOG_TAG, _s);
+				Log.d(TAG, _s);
 				db.execSQL(_s);
 			}
 		}
@@ -86,7 +83,7 @@ public class DatabaseAdapter {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			for (String _s : SCRITP_TABLES) {
-				Log.d(LOG_TAG, "Upgrade for " + _s + " from " + oldVersion + " to " + newVersion);
+				Log.d(TAG, "Upgrade for " + _s + " from " + oldVersion + " to " + newVersion);
 				db.execSQL("DROP TABLE IF EXISTS " + _s);
 			}
 		}
@@ -102,7 +99,7 @@ public class DatabaseAdapter {
 
 	protected void setState(int state) {
 		this.STATE = state;
-		Log.d(LOG_TAG, "State changed to " + this.STATE);
+		Log.d(TAG, "State changed to " + this.STATE);
 	}
 
 	/*
@@ -164,7 +161,6 @@ public class DatabaseAdapter {
 
 	public DatabaseAdapter OpenScripts() throws SQLException {
 		scripts = Scripts.getWritableDatabase();
-		date = getCurrentDate();
 		return this;
 	}
 
@@ -202,6 +198,17 @@ public class DatabaseAdapter {
 		return _c;
 	}
 
+	/**
+	 * <b>protected static Cursor getSavedScripts(Context context)</b>
+	 * <p>
+	 * Get cursor with all saved scripts.
+	 * 
+	 * @param context
+	 *            in which to open database
+	 * @return Cursor with saved scripts and it's data
+	 * @throws SQLException
+	 *             upon opening the database
+	 */
 	protected static Cursor getSavedScripts(Context context) throws SQLException {
 		DatabaseAdapter a = new DatabaseAdapter(context);
 		a.OpenScripts();
@@ -261,7 +268,7 @@ public class DatabaseAdapter {
 	private long updateScript(ContentValues header, ArrayList<ContentValues> support, ArrayList<ContentValues> acts,
 			String forDate) throws SQLException {
 		long _r = 0;
-		Log.d(LOG_TAG, "Updating script");
+		Log.d(TAG, "Updating script");
 		_r += scripts.update(SavedScript.NAME, header, Table.DATE + "=\"" + forDate + "\"", null);
 		Iterator<ContentValues> _i = support.iterator();
 		Cursor _support = getActs(forDate);
@@ -271,7 +278,7 @@ public class DatabaseAdapter {
 				int _id = _support.getInt(_support.getColumnIndex(SavedSupport.ID));
 				_r += scripts.update(SavedSupport.NAME, values, Table.DATE + "=\"" + forDate + "\"" + SavedSupport.ID
 						+ "=\"" + _id + "=\"", null);
-				Log.d(LOG_TAG, "Updating support");
+				Log.d(TAG, "Updating support");
 			} else {
 				_r += insertScript(SavedSupport.NAME, values, forDate);
 			}
@@ -298,22 +305,26 @@ public class DatabaseAdapter {
 	}
 
 	protected static String getCurrentDate() {
-		Calendar _c = new GregorianCalendar();
-		String date = String.valueOf(_c.get(Calendar.DAY_OF_MONTH)) + "/" + String.valueOf((_c.get(Calendar.MONTH)+1))
-				+ "/" + String.valueOf(_c.get(Calendar.YEAR)) + "/" + String.valueOf(_c.get(Calendar.HOUR_OF_DAY))
-				+ ":" + String.valueOf(_c.get(Calendar.MINUTE)) + ":" + String.valueOf(_c.get(Calendar.SECOND));
-		return date;
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat dateFormat = new SimpleDateFormat(Values.DATE_FORMAT);
+		return dateFormat.format(cal.getTime());
 	}
-//
-//	private long insertScript(String table, ContentValues values, String forDate) {
-//		long _l = 0;
-//		try {
-//			_l = insertScript(table, values, forDate);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return _l;
-//	}
+	
+	protected static String getCurrentTime() {
+		return getCurrentDate();
+	}
+
+	//
+	// private long insertScript(String table, ContentValues values, String
+	// forDate) {
+	// long _l = 0;
+	// try {
+	// _l = insertScript(table, values, forDate);
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// }
+	// return _l;
+	// }
 
 	private long insertScript(String table, ContentValues values, String forDate) throws SQLException {
 		ContentValues _v = new ContentValues(values);
@@ -321,7 +332,8 @@ public class DatabaseAdapter {
 		return _r;
 	}
 
-	protected static long insertScript(Context context, String table, ContentValues values, String title, String date) throws SQLException {
+	protected static long insertScript(Context context, String table, ContentValues values, String title, String date)
+			throws SQLException {
 		long _r = -1;
 		DatabaseAdapter adapter = new DatabaseAdapter(context);
 		ContentValues _values = new ContentValues(values);
@@ -331,28 +343,39 @@ public class DatabaseAdapter {
 			adapter.OpenScripts();
 			_r = adapter.insertScript(table, _values, date);
 		} finally {
-			adapter.Close();	
-		}		
+			adapter.Close();
+		}
 		return _r;
 	}
 
-	private long deleteScript(String forDate) {
-		long _r = 0;
+	private int deleteScript(String forDate) {
+		int _r = 0;
 		_r += scripts.delete(SavedScript.NAME, SavedScript.DATE + "=\"" + forDate + "\"", null);
 		_r += scripts.delete(SavedAct.NAME, SavedAct.DATE + "=\"" + forDate + "\"", null);
 		_r += scripts.delete(SavedSupport.NAME, SavedSupport.DATE + "=\"" + forDate + "\"", null);
 		return _r;
 	}
 
-	protected static long deleteScript(Context context, String forDate) throws SQLException {
-		long _r = -1;
+	protected static int deleteScript(Context context, String forDate) throws SQLException {
+		int _r = -1;
 		DatabaseAdapter adapter = new DatabaseAdapter(context);
 		adapter.OpenScripts();
 		_r = adapter.deleteScript(forDate);
 		adapter.Close();
 		return _r;
 	}
-
+	
+	protected static int deleteScripts(Context context, String...forDates) throws SQLException {
+		int _r = -1;
+		DatabaseAdapter adapter = new DatabaseAdapter(context);
+		adapter.OpenScripts();
+		for (String forDate : forDates) {
+			_r += adapter.deleteScript(forDate);	
+		}		
+		adapter.Close();
+		return _r;
+	}
+	
 	/*
 	 * ---------------------------------- OPERATION ON COLUMNS
 	 * -----------------------------------
@@ -401,33 +424,10 @@ public class DatabaseAdapter {
 		return _r;
 	}
 
-	private Cursor getColumn(String table, String column) {
-		return database.rawQuery("SELECT " + column + " FROM " + table, null);
-	}
-
 	private Cursor getItemFromColumn(String fromTable, String inColumn, int atIdPosition) {
 		Cursor mCursor = database.rawQuery("SELECT " + inColumn + " FROM " + fromTable + " WHERE _id=" + atIdPosition,
 				null);
-		Log.v(LOG_TAG, "Selecting " + inColumn + " from " + fromTable + " at " + atIdPosition);
-		if (mCursor != null) {
-			mCursor.moveToFirst();
-		}
-		return mCursor;
-	}
-
-	/**
-	 * 
-	 * @param fromTable
-	 * @param inColumn
-	 * @param atIdPosition
-	 * @param logIt
-	 * @return Cursor with a needed value to get with .getString(0)
-	 */
-	private Cursor getItemFromColumn(String fromTable, String inColumn, int atIdPosition, boolean logIt) {
-		Cursor mCursor = getItemFromColumn(fromTable, inColumn, atIdPosition);
-		if (logIt) {
-			Log.v(LOG_TAG, "Selecting " + inColumn + " from " + fromTable + " at " + atIdPosition);
-		}
+		Log.v(TAG, "Selecting " + inColumn + " from " + fromTable + " at " + atIdPosition);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
@@ -458,7 +458,7 @@ public class DatabaseAdapter {
 		try {
 			desc = getDescription(Descriptions.DESCRIPTIONS, forItem).getString(0);
 		} catch (CursorIndexOutOfBoundsException e) {
-			Log.d(LOG_TAG, "Description for " + forItem + " was not found");
+			Log.d(TAG, "Description for " + forItem + " was not found");
 			desc = "";
 		}
 		return desc;
@@ -488,7 +488,7 @@ public class DatabaseAdapter {
 		long rows = database.update(Descriptions.NAME, values, null, null);
 		return rows;
 	}
-	
+
 	protected static long insertDescription(Context context, String desc, String forItem) throws SQLException {
 		DatabaseAdapter a = new DatabaseAdapter(context);
 		a.Open();
@@ -512,13 +512,13 @@ public class DatabaseAdapter {
 	protected long insertItems(String table, HashMap<String, String> items, boolean flushBeforeInsert) {
 		ContentValues values = new ContentValues();
 		if (flushBeforeInsert) {
-			Log.v(LOG_TAG, "Flushing table " + table + " first!");
+			Log.v(TAG, "Flushing table " + table + " first!");
 			database.delete(table, null, null);
 		}
 		long rows = 0;
 		for (Map.Entry<String, String> item : items.entrySet()) {
 			values.put(item.getValue(), item.getKey());
-			Log.v(LOG_TAG, item.getValue() + " | " + item.getKey());
+			Log.v(TAG, item.getValue() + " | " + item.getKey());
 			rows = +database.insert(table, null, values);
 		}
 		return rows;
@@ -527,14 +527,14 @@ public class DatabaseAdapter {
 	protected long insertDescriptions(HashMap<String, String> descriptions, boolean flushBeforeInsert) {
 		ContentValues values = new ContentValues();
 		if (flushBeforeInsert) {
-			Log.v(LOG_TAG, "Flushing:" + Descriptions.NAME);
+			Log.v(TAG, "Flushing:" + Descriptions.NAME);
 			database.delete(Descriptions.NAME, null, null);
 		}
 		long rows = 0;
 		for (Map.Entry<String, String> item : descriptions.entrySet()) {
 			values.put(Descriptions.ITEM, item.getValue());
 			values.put(Descriptions.DESCRIPTIONS, item.getKey());
-			Log.v(LOG_TAG, item.getValue() + " | " + item.getKey());
+			Log.v(TAG, item.getValue() + " | " + item.getKey());
 			rows = +database.insert(Descriptions.NAME, null, values);
 		}
 		return rows;
@@ -558,7 +558,7 @@ public class DatabaseAdapter {
 		}
 		HashMap<String, String> descriptions;
 		try {
-			Log.v(LOG_TAG, "Attempt at inserting descriptions");
+			Log.v(TAG, "Attempt at inserting descriptions");
 			descriptions = mConfigFileParser.getDescriptions(null);
 			insertDescriptions(descriptions, true);
 		} catch (NotFoundException e) {
@@ -566,7 +566,7 @@ public class DatabaseAdapter {
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		} finally {
-			Log.d(LOG_TAG, "Closing database after build.");
+			Log.d(TAG, "Closing database after build.");
 			database.close();
 		}
 		setState(DatabaseAdapter.FINISHED);
@@ -577,7 +577,7 @@ public class DatabaseAdapter {
 	protected void checkDatabase() {
 		for (String _s : MAIN_TABLES) {
 			long _l = database.rawQuery("SELECT * FROM " + _s, null).getCount();
-			Log.v(LOG_TAG, _s + " \n" + _l);
+			Log.v(TAG, _s + " \n" + _l);
 		}
 	}
 

@@ -83,12 +83,23 @@ public class ViewUtils {
 	protected static void setUpListener(View view, OnLongClickListener listener) {
 		view.setOnLongClickListener(listener);
 	}
+	
+	protected static void switchVisibility(int visibility, View view) {
+		if (visibility == View.GONE) {
+			view.startAnimation(slideOutLeft);
+		} else if (visibility == View.VISIBLE) {
+			view.startAnimation(slideInRight);			
+		}
+		view.setVisibility(visibility);		
+	}
 
-	protected static int switchVisibility(int Visibility, View... views) {
-		int affected = 0;
-		for (int i = 0; i < views.length; i++) {
-			views[i].setVisibility(Visibility);
-			affected++;
+	protected static int switchVisibility(int Visibility, View...views) {
+		int affected = 0;		
+		for (View v : views) {
+			if (v != null) {
+				switchVisibility(Visibility, v);
+				affected++;
+			}
 		}
 		return affected;
 	}

@@ -3,6 +3,8 @@ package com.combustiblelemons.thrillingtales;
 
 public class Values {
 	
+	protected static final String DATE_FORMAT = "dd/MM/yyyy/HH:mm:ss";
+	
 	protected static class DescriptionFlags {
 		protected static final String VALUE_FLAG = "value";
 		protected static final String TAG_FLAG = "tag";

@@ -16,14 +16,11 @@
         android:icon="@drawable/ic_menu_paste_holo_dark"
         android:showAsAction="ifRoom"
         android:title="@string/oi_show_saved"/>
-    <item
-        android:id="@+id/oi_update_script"
-        android:title="@string/oi_update_script"/>
-    <item
+ <!--    <item
         android:id="@+id/oi_settings"
         android:icon="@drawable/ic_menu_preferences"
         android:showAsAction="collapseActionView"
-        android:title="@string/oi_settings"/>
+        android:title="@string/oi_settings"/>  -->
     <item
         android:id="@+id/oi_about"
         android:icon="@drawable/ic_menu_help"

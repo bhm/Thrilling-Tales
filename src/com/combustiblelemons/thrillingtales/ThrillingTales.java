@@ -64,12 +64,12 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflate = getSupportMenuInflater();
-		inflate.inflate(R.menu.menu, menu);
+		inflate.inflate(R.menu.menu_main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {		
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.oi_generate:
 			View _script = (ViewGroup) vf_main.findViewById(R.id.ll_main);
@@ -99,10 +99,9 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 				fmanager.beginTransaction().show(savedFragment);
 			}
 			break;
-		case R.id.oi_update_script:			
-			break;
-		case R.id.oi_settings:		
-			break;
+		// TODO Rewrite settings
+		// case R.id.oi_settings:
+		// break;
 		case R.id.oi_about:
 			/**
 			 * TODO Rewrite
@@ -128,7 +127,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK ) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (DescriptionFragment.description_edit != null && DescriptionFragment.description_edit.hasFocus()) {
 				ViewUtils.hideEditControls();
 			}
