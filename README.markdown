@@ -8,23 +8,16 @@
 >THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ----
-#QR CODE
-###Latest [*.apk package](https://github.com/bhm/Thrilling-Tales/raw/master/bin/Thrilling%20Tales.apk "THE PACKAGE").
-![QRCODE](https://github.com/bhm/Thrilling-Tales/raw/master/qrcode.png "QRCODE")
-
-----
 #Thrilling Tales ![ICON](https://raw.github.com/bhm/Thrilling-Tales/master/res/drawable-ldpi/ic_launcher.png "an ldpi icon")
 
-And Android app that generates pulp scenarios on the basis of a backend of tables taken from [Thrilling Tales handbook](http://rpg.drivethrustuff.com/product/64454/Thrilling-Tales-2nd-Edition-(Savage-Worlds)) for [Savage Worlds](http://en.wikipedia.org/wiki/Savage_Worlds).
+An Android app that generates pulp scenarios on the basis of what can be found in [Thrilling Tales handbook](http://rpg.drivethrustuff.com/product/64454/Thrilling-Tales-2nd-Edition-(Savage-Worlds)) for [Savage Worlds](http://en.wikipedia.org/wiki/Savage_Worlds).
 
 ![COVER]( https://raw.github.com/bhm/Thrilling-Tales/master/pulp-cover.jpg "CAREYZE CUSTOM COVER")
 
-
-###Belly
-Two SQLite databases. One for saved scripts/scenarios. Other with handful of tables for random generation.
-Now the app uses SherlockActionBar to provid ICS+ like UI
-
-#BREAK IT
+----
+#QR CODE
+###Latest [*.apk package](https://github.com/bhm/Thrilling-Tales/raw/master/bin/Thrilling%20Tales.apk "THE PACKAGE").
+![QRCODE](https://github.com/bhm/Thrilling-Tales/raw/master/qrcode.png "QRCODE")
 
 #VERSION
 
