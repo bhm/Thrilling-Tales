@@ -314,18 +314,6 @@ public class DatabaseAdapter {
 		return getCurrentDate();
 	}
 
-	//
-	// private long insertScript(String table, ContentValues values, String
-	// forDate) {
-	// long _l = 0;
-	// try {
-	// _l = insertScript(table, values, forDate);
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// }
-	// return _l;
-	// }
-
 	private long insertScript(String table, ContentValues values, String forDate) throws SQLException {
 		ContentValues _v = new ContentValues(values);
 		long _r = scripts.insert(table, null, _v);
@@ -426,8 +414,7 @@ public class DatabaseAdapter {
 
 	private Cursor getItemFromColumn(String fromTable, String inColumn, int atIdPosition) {
 		Cursor mCursor = database.rawQuery("SELECT " + inColumn + " FROM " + fromTable + " WHERE _id=" + atIdPosition,
-				null);
-		Log.v(TAG, "Selecting " + inColumn + " from " + fromTable + " at " + atIdPosition);
+				null);		
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}

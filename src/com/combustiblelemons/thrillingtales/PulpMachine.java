@@ -106,7 +106,7 @@ public class PulpMachine {
 			final String _title = cursor.getString(cursor.getColumnIndex(column));
 			_single.setText(_title);
 			String ftag = _tag + ":" + column;
-			Log.d(TAG, "Future tag = " + ftag);
+			Log.d(TAG, "Tag: " + ftag + " Value: " + _title);
 			_single.setTag(ftag);
 			setupListeners(_single);
 			_line.addView(_single);
@@ -308,9 +308,7 @@ public class PulpMachine {
 			View header = LayoutInflater.from(context).inflate(R.layout.header, null);
 			View support = LayoutInflater.from(context).inflate(R.layout.supportview, null);
 			ViewUtils.fillView(header, headerCursor);
-			parent.addView(header, parent.getChildCount());
-			Log.d(TAG, "\n\n" + parent.getClass().toString());
-			Log.d(TAG, "supportCursor.getCount() " + supportCursor.getCount() + " X " + supportCursor.getColumnCount());
+			parent.addView(header, parent.getChildCount());			
 			ViewUtils.fillView(support, supportCursor);			
 			parent.addView(support, parent.getChildCount());
 			int act_c = 0;
