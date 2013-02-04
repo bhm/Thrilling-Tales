@@ -72,9 +72,8 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.oi_generate:
-			View _script = (ViewGroup) vf_main.findViewById(R.id.ll_main);
-			View __script = (ViewGroup) scriptFragment.getView();
-			PulpMachine.pulpAgain((ViewGroup) __script);
+			View _script_view = (ViewGroup) scriptFragment.getView();
+			PulpMachine.pulpAgain((ViewGroup) _script_view);
 			break;
 		case R.id.oi_save_script:
 			SaveFragment savingFragment = (SaveFragment) fmanager.findFragmentByTag(SAVING_UI_FLAG);
