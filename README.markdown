@@ -17,7 +17,7 @@
 
 And Android app that generates pulp scenarios on the basis of a backend of tables taken from [Thrilling Tales handbook](http://rpg.drivethrustuff.com/product/64454/Thrilling-Tales-2nd-Edition-(Savage-Worlds)) for [Savage Worlds](http://en.wikipedia.org/wiki/Savage_Worlds).
 
-![COVER](http://www.rpgnow.com/images/92/64454.jpg "Image from rpgnow.com"))
+![COVER]( https://raw.github.com/bhm/Thrilling-Tales/master/pulp-cover.jpg "CAREYZE CUSTOM COVER")
 
 
 ###Belly
