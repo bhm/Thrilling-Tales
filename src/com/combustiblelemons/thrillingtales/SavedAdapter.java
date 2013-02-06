@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import static com.combustiblelemons.thrillingtales.Values.SavedScript.TITLE;
 import static com.combustiblelemons.thrillingtales.Values.SavedScript.DATE;
-import static com.combustiblelemons.thrillingtales.Values.TAG;
 
 public class SavedAdapter extends BaseAdapter {
 

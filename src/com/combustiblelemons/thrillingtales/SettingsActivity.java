@@ -25,8 +25,7 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 		super.onPostCreate(savedInstanceState);
 		setupSimplePreferencesScreen();
 	}
-
-	@SuppressWarnings("deprecation")
+	
 	private void setupSimplePreferencesScreen() {
 		if (!isSimplePreferences(this)) {
 			return;
