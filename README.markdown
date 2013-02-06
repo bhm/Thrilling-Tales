@@ -19,16 +19,19 @@ An Android app that generates pulp scenarios on the basis of what can be found i
 ###Latest [*.apk package](https://github.com/bhm/Thrilling-Tales/raw/master/bin/Thrilling%20Tales.apk "THE PACKAGE").
 ![QRCODE](https://github.com/bhm/Thrilling-Tales/raw/master/qrcode.png "QRCODE")
 
-#VERSION
+#CHANGELOG
+
+## 1.2.0
+* Stable release
+* Settings now work and fully moved to new APIs
+* Small fixes
 
 ## 1.1.7
 * Code clean up and major cut on objects created
 * Move to Fragments and SherlockActionbar framework
 * Slight UI redesign
 
-
 ## 1.0.2
-
 * Code clean up of megamoths
 
 ## 1.0.2
