@@ -3,6 +3,18 @@ package com.combustiblelemons.thrillingtales;
 
 public class Values {
 	
+	protected static class Preferences {
+		protected static final String SUPPORT_DICE_X = "support_dice_x";
+		protected static final String SUPPORT_DICE_Y = "support_dice_y";
+		protected static final String ACTS_NUMBER = "acts_key";		
+		protected static final int DEFAULT_SUPPORT_DICE_X = 2;
+		protected static final int DEFAULT_SUPPORT_DICE_Y = 4;
+		protected static final int DEFAULT_ACTS_NUMBER = 4;		
+		protected static final String DEFAULT_S_SUPPORT_DICE_X = "2";
+		protected static final String DEFAULT_S_SUPPORT_DICE_Y = "4";
+		protected static final String DEFAULT_S_ACTS_NUMBER = "4";	
+	}
+	
 	protected static final String DATE_FORMAT = "dd/MM/yyyy/HH:mm:ss";
 	
 	protected static class DescriptionFlags {
@@ -13,6 +25,7 @@ public class Values {
 	protected static class FragmentFalgs {
 		protected static final String SCRIPT_VIEW_FLAG = "script_fragment";
 		protected static final String DESCRIPTION_VIEW_FLAG = "description_fragment";
+		protected static final String SETTINGS_FRAGMENT = "settings_fragment";
 		protected static final String ABOUT_FLAG = "about_fragment";
 		protected static final String SAVED_FLAG = "saved_fragment";
 		protected static final String SAVING_UI_FLAG = "saveing_ui_fragment";

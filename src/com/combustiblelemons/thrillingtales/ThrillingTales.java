@@ -9,9 +9,8 @@ import com.combustiblelemons.thrillingtales.SavedFragment.onScriptItemSelected;
 import com.combustiblelemons.thrillingtales.ScriptFragment.onItemReReandomized;
 import com.combustiblelemons.thrillingtales.ScriptFragment.onItemSelected;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -34,8 +33,6 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	 *            ViewFlipper that holds views: About, Scenario and Description
 	 */
 	protected static ViewFlipper vf_main;
-
-	protected static AlertDialog.Builder dialog;
 	protected FragmentManager fmanager;
 	protected ScriptFragment scriptFragment;
 	protected DescriptionFragment descriptionFragment;
@@ -50,7 +47,6 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
-		dialog = new Builder(this);
 		vf_main = (ViewFlipper) LayoutInflater.from(context).inflate(R.layout.main, null);
 		setContentView(vf_main);
 		fmanager = getSupportFragmentManager();
@@ -74,7 +70,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 		case R.id.oi_generate:
 			View _script_view = (ViewGroup) scriptFragment.getView();
 			PulpMachine.pulpAgain((ViewGroup) _script_view);
-			break;
+			return true;
 		case R.id.oi_save_script:
 			SaveFragment savingFragment = (SaveFragment) fmanager.findFragmentByTag(SAVING_UI_FLAG);
 			if (savingFragment == null) {
@@ -86,7 +82,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 			} else {
 				fmanager.beginTransaction().show(savingFragment);
 			}
-			break;
+			return true;
 		case R.id.oi_show_saved:
 			SavedFragment savedFragment = (SavedFragment) fmanager.findFragmentByTag(SAVED_FLAG);
 			if (savedFragment == null) {
@@ -100,8 +96,10 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 			}
 			break;
 		// TODO Rewrite settings
-		// case R.id.oi_settings:
-		// break;
+		case R.id.oi_settings:
+			Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+			startActivity(intent);
+			return true;
 		case R.id.oi_about:
 			/**
 			 * TODO Rewrite
@@ -118,7 +116,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
 								R.anim.slide_out_left).show(about);
 			}
-			break;
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

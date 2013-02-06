@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="settings_activity_label">Settings</string>
+    <string name="pref_support_dice_x_key">support_dice_x</string>
+    <string name="pref_support_dice_y_key">support_dice_y</string>
+    <string name="pref_support_dice_header">Support dice</string>
+    <string name="pref_support_dice_x_title">Number of dice</string>
+    <string name="pref_support_dice_y_title">Dice size</string>
+
+    <integer-array name="pref_support_dice_x_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </integer-array>
+    <integer-array name="pref_support_dice_y_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </integer-array>
+    <integer-array name="pref_number_of_acts_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </integer-array>
+
+    <string-array name="pref_support_dice_x">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="pref_support_dice_y">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="pref_number_of_acts">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string name="pref_acts_header">Number of acts</string>
+    <string name="pref_acts_title">Number of acts</string>
+    <string name="pref_acts_key">acts_key</string>
+    <string name="pref_acts_number_key">acts_number</string>
+    <string name="pref_support_dice_x_summary">Defines how many dices would be thrown. Default is 2.</string>
+    <string name="pref_support_dice_y_summary">How many sides should have each of these dice. Default is d4.</string>
+    <string name="pref_acts_summary">A classic pulp adventure is to be composed of 4 acts. The last one should have a rough outline in which heroes fight their way out.</string>
+    <string name="pref_database_actions_header">Database</string>
+
+</resources>

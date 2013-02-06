@@ -10,8 +10,10 @@ import com.combustiblelemons.thrillingtales.Values.SavedScript;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import static com.combustiblelemons.thrillingtales.Values.*;
+import static com.combustiblelemons.thrillingtales.Values.Preferences.*;
 
 public class PulpMachine {
 	private static ContentValues header = new ContentValues();
@@ -212,9 +215,12 @@ public class PulpMachine {
 	}
 
 	protected static void pulpScript(ViewGroup parent) {
-		int acts = Settings.getActsNumber(parent.getContext());
-		String supportDice = Settings.getSupportDice(parent.getContext());
-		pulpScript(parent, acts, supportDice);
+		//FIXME For some reason framework saves Strings instead of Integer
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
+		int acts = Integer.valueOf(prefs.getString(ACTS_NUMBER, DEFAULT_S_ACTS_NUMBER));
+		int support_min = Integer.valueOf(prefs.getString(SUPPORT_DICE_X, DEFAULT_S_SUPPORT_DICE_X));
+		int support_max = Integer.valueOf( prefs.getString(SUPPORT_DICE_Y, DEFAULT_S_SUPPORT_DICE_Y));
+		pulpScript(parent, acts, support_min, support_max);
 	}
 
 	// TODO Future clean up, make it for-each
