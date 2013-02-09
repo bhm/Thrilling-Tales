@@ -48,8 +48,7 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
 		view = inflater.inflate(R.layout.main, null);
 		return view;
 	}
@@ -58,7 +57,9 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		PulpMachine.setListeners(this, this);
-		PulpMachine.pulpScript((ViewGroup) getView());
+		View parent = getView();
+		View _script_view = (ViewGroup) parent.findViewById(R.id.ll_main);
+		PulpMachine.pulpScript((ViewGroup) _script_view);
 	}
 
 	/**

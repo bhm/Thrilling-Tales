@@ -68,7 +68,9 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.oi_generate:
-			View _script_view = (ViewGroup) scriptFragment.getView();
+			scriptFragment = (ScriptFragment) fmanager.findFragmentByTag(SCRIPT_VIEW_FLAG);
+			View main = (ViewGroup) scriptFragment.getView();
+			View _script_view = (ViewGroup) main.findViewById(R.id.ll_main);
 			PulpMachine.pulpAgain((ViewGroup) _script_view);
 			return true;
 		case R.id.oi_save_script:
@@ -163,7 +165,9 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	 */
 	@Override
 	public void scriptItemSelected(String forDate) {
-		ViewGroup parent = (ViewGroup) vf_main.findViewById(R.id.ll_main);
-		scriptFragment.loadScript(parent, forDate);
+		scriptFragment = (ScriptFragment) fmanager.findFragmentByTag(SCRIPT_VIEW_FLAG);
+		View main = (ViewGroup) scriptFragment.getView();
+		View _script_view = (ViewGroup) main.findViewById(R.id.ll_main);
+		scriptFragment.loadScript(_script_view, forDate);
 	}
 }
