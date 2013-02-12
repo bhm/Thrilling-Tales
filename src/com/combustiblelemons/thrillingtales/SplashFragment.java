@@ -37,6 +37,12 @@ public class SplashFragment extends SherlockFragment {
 		public void onBuildFinished();
 	}
 
+	public void showNotDoneYet() {
+		if (tv_message != null) {
+			tv_message.setText(context.getResources().getString(R.string.notdoneyet));
+		}
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
