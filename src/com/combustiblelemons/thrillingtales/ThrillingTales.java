@@ -39,18 +39,17 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 		ViewUtils.loadAnimations(context);
 		getSupportActionBar().hide();
 		fmanager = getSupportFragmentManager();
-	
-	}
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Log.d(TAG, "On Start");
 		splashFragment = new SplashFragment();
 		FragmentTransaction t = fmanager.beginTransaction();
 		t.add(android.R.id.content, splashFragment, SPLASH_FRAGMENT_FLAG);
 		t.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
 		t.commit();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Log.d(TAG, "On Start");
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 				fmanager.beginTransaction()
 						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
 								R.anim.slide_out_left).addToBackStack(null)
-						.replace(android.R.id.content, savingFragment, SAVING_UI_FLAG).commit();
+						.add(android.R.id.content, savingFragment, SAVING_UI_FLAG).commit();
 			} else {
 				fmanager.beginTransaction().show(savingFragment);
 			}
@@ -88,7 +87,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 				fmanager.beginTransaction()
 						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
 								R.anim.slide_out_left).addToBackStack(null)
-						.replace(android.R.id.content, savedFragment, SAVED_FLAG).commit();
+						.add(android.R.id.content, savedFragment, SAVED_FLAG).commit();
 			} else {
 				fmanager.beginTransaction().show(savedFragment);
 			}
@@ -111,6 +110,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 						.add(android.R.id.content, about, ABOUT_FLAG).commit();
 			} else {
 				fmanager.beginTransaction()
+						.addToBackStack(null)
 						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
 								R.anim.slide_out_left).show(about);
 			}
@@ -127,13 +127,14 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 			if (DescriptionFragment.description_edit != null && DescriptionFragment.description_edit.hasFocus()) {
 				ViewUtils.hideEditControls();
 			}
-			/**
-			 * Check if splash fragment is visible
-			 */
+			if (splashFragment.isAdded()) {
+				Log.d(TAG, "ON KEYDOWN");
+				splashFragment.showNotDoneYet();
+				return true;
+			}
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
 
 	@Override
 	public void onDescriptionItemReRandomized(String value, String tag) {
@@ -157,7 +158,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 		fmanager.beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
 						R.anim.slide_out_left).addToBackStack(null)
-				.replace(android.R.id.content, descriptionFragment, DESCRIPTION_VIEW_FLAG).commit();
+				.add(android.R.id.content, descriptionFragment, DESCRIPTION_VIEW_FLAG).commit();
 	}
 
 	/**
@@ -165,21 +166,17 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	 */
 	@Override
 	public void scriptItemSelected(String forDate) {
-		scriptFragment = (ScriptFragment) fmanager.findFragmentByTag(SCRIPT_VIEW_FLAG);
-		View main = (ViewGroup) scriptFragment.getView();
-		View _script_view = (ViewGroup) main.findViewById(R.id.ll_main);
-		scriptFragment.loadScript(_script_view, forDate);
+		scriptFragment.loadScript(forDate);
 	}
 
 	@Override
 	public void onBuildFinished() {
-		Log.d(TAG, "onBuildFinished");
-		splashFragment = (SplashFragment) fmanager.findFragmentByTag(SPLASH_FRAGMENT_FLAG);
-		fmanager.beginTransaction().remove(splashFragment);
-		getSupportActionBar().show();		
+		fmanager.beginTransaction().remove(splashFragment).commit();
 		scriptFragment = new ScriptFragment();
 		Bundle args = new Bundle();
 		scriptFragment.setArguments(args);
-		fmanager.beginTransaction().add(android.R.id.content, scriptFragment, SCRIPT_VIEW_FLAG).commit();	
+		fmanager.beginTransaction().replace(android.R.id.content, scriptFragment, SCRIPT_VIEW_FLAG).commit();
+		getSupportActionBar().show();
+
 	}
 }
