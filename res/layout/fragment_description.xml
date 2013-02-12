@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_description"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/black_pulp" >
+
+    <TextView
+        android:id="@+id/tv_description_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:padding="@dimen/medium"
+        android:tag="descriptiontitle"
+        android:textColor="@color/aliceblue"
+        android:textSize="@dimen/large"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:id="@+id/sv_description_body"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_description_title"
+        android:layout_centerInParent="true" >
+
+        <LinearLayout
+            android:id="@+id/ll_sv_description_body"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="true" >
+
+            <TextView
+                android:id="@+id/tv_description_body"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="fill_vertical|fill_horizontal"
+                android:gravity="center"
+                android:hint="@string/no_description"
+                android:paddingLeft="@dimen/small"
+                android:paddingRight="@dimen/small"
+                android:longClickable="true"
+                android:textColor="@color/aliceblue"
+                android:textSize="@dimen/verysmall" />
+
+            <EditText
+                android:id="@+id/et_description_body"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:hint="@string/fill_description"
+                android:inputType="textCapSentences"
+                android:textSize="@dimen/medium"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_description_menu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_descriptions_back"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="@dimen/large"
+            android:text="@string/back"
+            android:textColor="@color/aliceblue"
+            android:textSize="@dimen/medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_decription_reroll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="@dimen/large"
+            android:text="@string/reroll"
+            android:textColor="@color/aliceblue"
+            android:textSize="@dimen/medium"
+            android:textStyle="bold" />
+        <!-- THIS IS ONLY FOR EDITING THE DESCRIPTIONS -->
+
+        <TextView
+            android:id="@+id/tv_decription_cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="@dimen/large"
+            android:text="@string/cancel"
+            android:textColor="@color/aliceblue"
+            android:textSize="@dimen/medium"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_decription_save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="@dimen/large"
+            android:text="@string/save"
+            android:textColor="@color/aliceblue"
+            android:textSize="@dimen/medium"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</RelativeLayout>

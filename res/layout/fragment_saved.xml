@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/vf_saved"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+    <LinearLayout 
+        android:id="@+id/ll_saved_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <HorizontalScrollView 
+            android:id="@+id/hs_saved_dates"            
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">            
+        </HorizontalScrollView>
+        <ScrollView 
+	        android:id="@+id/sv_saved_main"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	        <LinearLayout 
+	            android:id="@+id/ll_saved_main"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"
+	            android:gravity="center">            
+	        </LinearLayout>
+    	</ScrollView>
+    </LinearLayout>
+</ViewFlipper>
