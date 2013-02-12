@@ -26,6 +26,7 @@ public class Values {
 		protected static final String SCRIPT_VIEW_FLAG = "script_fragment";
 		protected static final String DESCRIPTION_VIEW_FLAG = "description_fragment";
 		protected static final String SETTINGS_FRAGMENT = "settings_fragment";
+		protected static final String SPLASH_FRAGMENT_FLAG = "splash_fragment";
 		protected static final String ABOUT_FLAG = "about_fragment";
 		protected static final String SAVED_FLAG = "saved_fragment";
 		protected static final String SAVING_UI_FLAG = "saveing_ui_fragment";

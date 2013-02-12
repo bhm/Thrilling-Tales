@@ -25,7 +25,7 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 	public interface onItemReReandomized {
 		public void onScriptItemReRandomized(String value, String tag);
 	}
-	
+
 	public interface onItemSelected {
 		public void itemTouched(String value, String tag);
 	}
@@ -33,6 +33,8 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		getSherlockActivity().getSupportActionBar().setTitle(
+				getActivity().getApplicationContext().getResources().getString(R.string.main_activity_label));
 		if (activity instanceof onItemReReandomized) {
 			listener = (onItemReReandomized) activity;
 		} else {
@@ -48,9 +50,8 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
-		view = inflater.inflate(R.layout.main, null);
-		return view;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_script, null);
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 		TextView _view = (TextView) parent.findViewWithTag(tag);
 		_view.setText(value);
 	}
-	
+
 	protected void loadScript(View parent, String forDate) {
 		PulpMachine.loadTheScript((ViewGroup) parent, forDate);
 	}
@@ -105,7 +106,7 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 			break;
 		case View.NO_ID:
 			Log.d(TAG, "Clicked in ScriptFragment. Value: " + value + " Tag: " + tag);
-			selectedListener.itemTouched(value, tag);			
+			selectedListener.itemTouched(value, tag);
 			break;
 		}
 	}

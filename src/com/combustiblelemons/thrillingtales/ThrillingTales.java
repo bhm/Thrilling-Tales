@@ -8,53 +8,49 @@ import com.combustiblelemons.thrillingtales.DescriptionFragment.onItemReRandomiz
 import com.combustiblelemons.thrillingtales.SavedFragment.onScriptItemSelected;
 import com.combustiblelemons.thrillingtales.ScriptFragment.onItemReReandomized;
 import com.combustiblelemons.thrillingtales.ScriptFragment.onItemSelected;
+import com.combustiblelemons.thrillingtales.SplashFragment.onDatabaseBuildFinished;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ViewFlipper;
-
 import static com.combustiblelemons.thrillingtales.Values.TAG;
 import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.TAG_FLAG;
 import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.VALUE_FLAG;
 import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.*;
 
 public class ThrillingTales extends SherlockFragmentActivity implements onItemReRandomized, onItemReReandomized,
-		onItemSelected, onScriptItemSelected {
-	protected static Context context;
-	/**
-	 * @param vf_main
-	 *            ViewFlipper that holds views: About, Scenario and Description
-	 */
-	protected static ViewFlipper vf_main;
+		onItemSelected, onScriptItemSelected, onDatabaseBuildFinished {
+
 	protected FragmentManager fmanager;
 	protected ScriptFragment scriptFragment;
 	protected DescriptionFragment descriptionFragment;
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Log.d(TAG, "On Start");
-	}
+	protected SplashFragment splashFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		context = getApplicationContext();
-		vf_main = (ViewFlipper) LayoutInflater.from(context).inflate(R.layout.main, null);
-		setContentView(vf_main);
+		Context context = getApplicationContext();
+		ViewUtils.loadAnimations(context);
+		getSupportActionBar().hide();
 		fmanager = getSupportFragmentManager();
-		scriptFragment = new ScriptFragment();
-		Bundle args = new Bundle();
-		scriptFragment.setArguments(args);
-		fmanager.beginTransaction().add(R.id.ll_main, scriptFragment, SCRIPT_VIEW_FLAG).commit();
-		Log.d(TAG, "Now pulp");
+	
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Log.d(TAG, "On Start");
+		splashFragment = new SplashFragment();
+		FragmentTransaction t = fmanager.beginTransaction();
+		t.add(android.R.id.content, splashFragment, SPLASH_FRAGMENT_FLAG);
+		t.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
+		t.commit();
 	}
 
 	@Override
@@ -131,9 +127,13 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 			if (DescriptionFragment.description_edit != null && DescriptionFragment.description_edit.hasFocus()) {
 				ViewUtils.hideEditControls();
 			}
+			/**
+			 * Check if splash fragment is visible
+			 */
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
 
 	@Override
 	public void onDescriptionItemReRandomized(String value, String tag) {
@@ -169,5 +169,17 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 		View main = (ViewGroup) scriptFragment.getView();
 		View _script_view = (ViewGroup) main.findViewById(R.id.ll_main);
 		scriptFragment.loadScript(_script_view, forDate);
+	}
+
+	@Override
+	public void onBuildFinished() {
+		Log.d(TAG, "onBuildFinished");
+		splashFragment = (SplashFragment) fmanager.findFragmentByTag(SPLASH_FRAGMENT_FLAG);
+		fmanager.beginTransaction().remove(splashFragment);
+		getSupportActionBar().show();		
+		scriptFragment = new ScriptFragment();
+		Bundle args = new Bundle();
+		scriptFragment.setArguments(args);
+		fmanager.beginTransaction().add(android.R.id.content, scriptFragment, SCRIPT_VIEW_FLAG).commit();	
 	}
 }

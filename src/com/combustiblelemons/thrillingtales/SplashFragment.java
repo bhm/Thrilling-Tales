@@ -1,72 +1,87 @@
 package com.combustiblelemons.thrillingtales;
 
+import static com.combustiblelemons.thrillingtales.Values.TAG;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static com.combustiblelemons.thrillingtales.Values.TAG;
-import static com.combustiblelemons.thrillingtales.Values.Database;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class Splash extends Activity {
+import com.actionbarsherlock.app.SherlockFragment;
+import com.combustiblelemons.thrillingtales.Values.Database;
 
-	private static Context context;
-	private static Settings settings;
-	private static DatabaseAdapter database;
-	private static View loadMsg;
+public class SplashFragment extends SherlockFragment {
+	protected Context context;
+	protected TextView tv_message;
+	protected DatabaseAdapter database;
 	protected static Thread splashThread;
-	private static TextView message_tv;
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Log.d(TAG, "Current time new format " + DatabaseAdapter.getCurrentTime());
-		context = getApplicationContext();
-		ViewUtils.loadAnimations(context);
-		ViewUtils.loadColors(context);
-		ViewUtils.loadCustomFonts(context);
+	protected View view;
+	private static int THREAD_FINISHED = 1000;
+	private static Settings settings;
+
+	protected onDatabaseBuildFinished listener;
+
+	public interface onDatabaseBuildFinished {
+		public void onBuildFinished();
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (activity instanceof onDatabaseBuildFinished) {
+			listener = (onDatabaseBuildFinished) activity;
+		} else {
+			throw new ClassCastException("Activity " + activity.toString()
+					+ " must implement onDatabaseBuildFinished interface");
+		}
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final Intent intent = new Intent(Splash.this, ThrillingTales.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+		context = getActivity().getApplicationContext();
+	}
 
-		Log.d(TAG, "||||\t SPLASH||||\t");
-		context = getApplicationContext();
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.fragment_splash, null);
+		return view;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		settings = new Settings(context);
-		loadMsg = LayoutInflater.from(context).inflate(R.layout.fragment_splash, null);
-		setContentView(loadMsg);
-
 		if (!settings.Exist()) {
 			Log.v(TAG, "Creating settings in a file: " + settings.getSettingsFileAbsolutePath());
 			settings.writeConfig(true);
 		}
 		final String[] messages = context.getResources().getStringArray(R.array.randomsplashmessages);
 		final Dice message_dice = new Dice(messages.length);
-		message_tv = (TextView) loadMsg.findViewById(R.id.loading_message_tv);
-		database = new DatabaseAdapter(getApplicationContext());
-
+		tv_message = (TextView) view.findViewById(R.id.loading_message_tv);
+		database = new DatabaseAdapter(context);
 		final Handler handle = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				ViewUtils.animate(message_tv, ViewUtils.slideOutRight);
-				message_tv.setText((String) msg.obj);
-				ViewUtils.animate(message_tv, ViewUtils.slideInLeft);
+				if (msg.arg1 == THREAD_FINISHED) {
+					Log.d(TAG, "CALLING onBuildFinished");
+					listener.onBuildFinished();
+				}
+				ViewUtils.animate(tv_message, ViewUtils.slideOutRight);
+				tv_message.setText((String) msg.obj);
+				ViewUtils.animate(tv_message, ViewUtils.slideInLeft);
 			}
 		};
 
@@ -89,7 +104,7 @@ public class Splash extends Activity {
 					mHandle.sendMessage(msg);
 				} while (database.getState() != DatabaseAdapter.FINISHED);
 				Message msg = mHandle.obtainMessage();
-				msg.obj = "Done!";
+				msg.arg1 = THREAD_FINISHED;
 				mHandle.sendMessage(msg);
 			}
 		});
@@ -112,25 +127,17 @@ public class Splash extends Activity {
 						e.printStackTrace();
 					} finally {
 						database.Close();
-						Splash.this.startActivity(intent);
-						splashThread.stop();
-						finish();
+						Message msg = new Message();
+						msg.arg1 = THREAD_FINISHED;
+						handle.sendMessage(msg);
 					}
 				} else {
-					Splash.this.startActivity(intent);
-					finish();
+					Message msg = new Message();
+					msg.arg1 = THREAD_FINISHED;
+					handle.sendMessage(msg);
 				}
 			}
 		});
 		databasethread.start();
-
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			message_tv.setText(context.getResources().getString(R.string.notdoneyet));
-		}
-		return false;
 	}
 }

@@ -40,7 +40,7 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 		/**
 		 * Inflate the view
 		 */
-		View view = inflater.inflate(R.layout.descriptionview, null);
+		View view = inflater.inflate(R.layout.fragment_description, null);
 		description_title = (TextView) view.findViewById(R.id.tv_description_title);
 		description_body = (TextView) view.findViewById(R.id.tv_description_body);
 		description_body.setOnLongClickListener(this);

@@ -10,8 +10,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class AboutFragment extends SherlockFragment {
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.about, null);
-		return view;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
+		return inflater.inflate(R.layout.fragment_about, null);
 	}
 }
