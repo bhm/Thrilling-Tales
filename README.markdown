@@ -21,6 +21,10 @@ An Android app that generates pulp scenarios on the basis of what can be found i
 
 #CHANGELOG
 
+## 1.2.1
+* Moved Splash to Fragment
+* Threading changes
+
 ## 1.2.0
 * Stable release
 * Settings now work and fully moved to new APIs
