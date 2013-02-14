@@ -24,6 +24,7 @@ An Android app that generates pulp scenarios on the basis of what can be found i
 ## 1.2.2
 * Two themes implemented. Still requires restart.
 * Minor UI tweaks.
+
 ## 1.2.1
 * Moved Splash to Fragment
 * Threading changes
