@@ -20,24 +20,29 @@ import static com.combustiblelemons.thrillingtales.Values.TAG;
 public class SettingsActivity extends SherlockPreferenceActivity {
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
 	private static Context context;
+	private static String currentlyPrefix;
+	private static String regex = currentlyPrefix + ".*";
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		setupSimplePreferencesScreen();
 		context = getApplicationContext();
+		currentlyPrefix = context.getString(R.string.pref_current_prefix);
+		
+		setupSimplePreferencesScreen();
 	}
-	
+
 	private void setupSimplePreferencesScreen() {
 		if (!isSimplePreferences(this)) {
 			return;
 		}
 		addPreferencesFromResource(R.xml.pref_dice_pool);
 		addPreferencesFromResource(R.xml.pref_acts_number);
-
+		addPreferencesFromResource(R.xml.pref_theme);
 		bindPreferenceSummaryToValue(findPreference(ACTS_NUMBER));
 		bindPreferenceSummaryToValue(findPreference(SUPPORT_DICE_X));
 		bindPreferenceSummaryToValue(findPreference(SUPPORT_DICE_Y));
+		bindPreferenceSummaryToValue(findPreference(THEME_KEY));
 	}
 
 	/** {@inheritDoc} */
@@ -73,17 +78,15 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 		}
 	}
 
-
 	private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object value) {
-			String stringValue = value.toString();
-			if (preference instanceof ListPreference) {
-				ListPreference listPreference = (ListPreference) preference;
-				int index = listPreference.findIndexOfValue(stringValue);
-				preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
-			} else {
-				preference.setSummary(stringValue);				
+			if (preference instanceof ListPreference) {						
+				String newValue = (String) ((ListPreference) preference).getEntries()[((ListPreference) preference)
+						.findIndexOfValue((String) value)];
+				String currentSummary = preference.getSummary().toString() + currentlyPrefix;	
+				String newSummary = currentSummary.replaceFirst(regex, currentlyPrefix + newValue.toString());
+				preference.setSummary(newSummary);
 			}
 			return true;
 		}
@@ -98,7 +101,7 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	 * 
 	 * @see #sBindPreferenceSummaryToValueListener
 	 */
-	private static void bindPreferenceSummaryToValue(Preference preference) {	
+	private static void bindPreferenceSummaryToValue(Preference preference) {
 		preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 		sBindPreferenceSummaryToValueListener.onPreferenceChange(preference, PreferenceManager
 				.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
@@ -114,11 +117,6 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			addPreferencesFromResource(R.xml.pref_dice_pool);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
 			bindPreferenceSummaryToValue(findPreference(SUPPORT_DICE_X));
 			bindPreferenceSummaryToValue(findPreference(SUPPORT_DICE_Y));
 		}
@@ -134,12 +132,17 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			addPreferencesFromResource(R.xml.pref_acts_number);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
 			bindPreferenceSummaryToValue(findPreference(ACTS_NUMBER));
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public static class ThemePreferenceFragment extends PreferenceFragment {
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			addPreferencesFromResource(R.xml.pref_theme);
+			bindPreferenceSummaryToValue(findPreference(THEME_KEY));
 		}
 	}
 }

@@ -25,7 +25,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings_activity_label"
-            android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
+            android:theme="@style/Theme.Sherlock.NoActionBar" >
         </activity>
     </application>
 

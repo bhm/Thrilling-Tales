@@ -8,5 +8,8 @@
     <header
         android:fragment="${packageName}.${activityClass}$DicePreferenceFragment"
         android:title="@string/pref_support_dice_header" />
+      <header
+        android:fragment="${packageName}.${activityClass}$ThemePreferenceFragment"
+        android:title="@string/pref_theme_header" />
 
 </preference-headers>

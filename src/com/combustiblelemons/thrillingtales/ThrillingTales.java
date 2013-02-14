@@ -9,10 +9,13 @@ import com.combustiblelemons.thrillingtales.SavedFragment.onScriptItemSelected;
 import com.combustiblelemons.thrillingtales.ScriptFragment.onItemReReandomized;
 import com.combustiblelemons.thrillingtales.ScriptFragment.onItemSelected;
 import com.combustiblelemons.thrillingtales.SplashFragment.onDatabaseBuildFinished;
+import com.combustiblelemons.thrillingtales.Values.Preferences;
+import com.combustiblelemons.thrillingtales.Values.Preferences.Themes;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -34,6 +37,18 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		String theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(
+				Preferences.THEME_KEY, Preferences.DEFAULT_S_THEME);
+		switch (Integer.valueOf(theme)) {
+		case Themes.Mucha:
+			setTheme(R.style.Theme_mucha);
+			break;
+		case Themes.Pulp:
+			setTheme(R.style.Theme_pulp);
+			break;
+		default:
+			break;
+		}
 		super.onCreate(savedInstanceState);
 		Context context = getApplicationContext();
 		ViewUtils.loadAnimations(context);
@@ -44,12 +59,6 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 		t.add(android.R.id.content, splashFragment, SPLASH_FRAGMENT_FLAG);
 		t.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
 		t.commit();
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Log.d(TAG, "On Start");
 	}
 
 	@Override
@@ -92,15 +101,11 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 				fmanager.beginTransaction().show(savedFragment);
 			}
 			break;
-		// TODO Rewrite settings
 		case R.id.oi_settings:
 			Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.oi_about:
-			/**
-			 * TODO Rewrite
-			 */
 			AboutFragment about = (AboutFragment) fmanager.findFragmentByTag(ABOUT_FLAG);
 			if (about == null) {
 				about = new AboutFragment();
@@ -119,6 +124,16 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 			return super.onOptionsItemSelected(item);
 		}
 		return false;
+	}
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus) {
+			if (splashFragment.isAdded()) {
+				splashFragment.startSplashAnimation();
+			}
+		}
 	}
 
 	@Override

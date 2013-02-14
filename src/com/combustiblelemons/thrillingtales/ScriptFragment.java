@@ -61,6 +61,7 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 		PulpMachine.setListeners(this, this);
 		View _script_view = (ViewGroup) getView().findViewById(R.id.ll_main);
 		PulpMachine.pulpScript((ViewGroup) _script_view);
+		setRetainInstance(true);
 	}
 
 	/**

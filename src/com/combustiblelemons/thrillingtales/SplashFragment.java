@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -25,11 +27,13 @@ import com.combustiblelemons.thrillingtales.Values.Database;
 public class SplashFragment extends SherlockFragment {
 	protected Context context;
 	protected TextView tv_message;
+	protected ImageView iv_splash;
 	protected DatabaseAdapter database;
 	protected static Thread splashThread;
 	protected View view;
 	private static int THREAD_FINISHED = 1000;
 	private static Settings settings;
+	private static AnimationDrawable splash;
 
 	protected onDatabaseBuildFinished listener;
 
@@ -64,7 +68,7 @@ public class SplashFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_splash, null);
 		return view;
-	}
+	}	
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -77,12 +81,14 @@ public class SplashFragment extends SherlockFragment {
 		final String[] messages = context.getResources().getStringArray(R.array.randomsplashmessages);
 		final Dice message_dice = new Dice(messages.length);
 		tv_message = (TextView) view.findViewById(R.id.loading_message_tv);
+		iv_splash = (ImageView) view.findViewById(R.id.loading_image);
+		iv_splash.setBackgroundResource(R.drawable.new_animation);
+		splash = (AnimationDrawable) iv_splash.getBackground();		
 		database = new DatabaseAdapter(context);
 		final Handler handle = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				if (msg.arg1 == THREAD_FINISHED) {
-					Log.d(TAG, "CALLING onBuildFinished");
+				if (msg.arg1 == THREAD_FINISHED) {					
 					listener.onBuildFinished();
 				}
 				ViewUtils.animate(tv_message, ViewUtils.slideOutRight);
@@ -145,5 +151,9 @@ public class SplashFragment extends SherlockFragment {
 			}
 		});
 		databasethread.start();
+	}
+
+	public void startSplashAnimation() {		
+		splash.start();
 	}
 }
