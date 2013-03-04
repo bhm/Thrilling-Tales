@@ -9,7 +9,8 @@
         android:id="@+id/ll_single_saved_item_titles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" >
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/tv_single_saved_item_title"

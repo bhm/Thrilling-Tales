@@ -11,9 +11,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -21,7 +23,8 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class DescriptionFragment extends SherlockFragment implements OnLongClickListener, OnClickListener {
+public class DescriptionFragment extends SherlockFragment implements OnLongClickListener, OnClickListener,
+		OnTouchListener {
 	protected static View description_view;
 	protected static TextView description_title;
 	protected static TextView description_body;
@@ -53,11 +56,12 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 		description_cancel = (TextView) view.findViewById(R.id.tv_decription_cancel);
 		description_cancel.setOnClickListener(this);
 		description_edit = (EditText) view.findViewById(R.id.et_description_body);
+		view.setOnTouchListener(this);
 		return view;
 	}
-	
+
 	@Override
-	public void onStart() {	
+	public void onStart() {
 		super.onStart();
 		Log.d(TAG, "DescriptionFragment.onStart()");
 	}
@@ -109,7 +113,7 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 	}
 
 	@Override
-	public void onClick(View v) {		
+	public void onClick(View v) {
 		switch (v.getId()) {
 		default:
 			break;
@@ -174,11 +178,16 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			String currentDesc = description_body.getText().toString();
 			if (!(currentDesc).equalsIgnoreCase(v.getResources().getString(R.string.no_description))) {
 				description_edit.setText((String) description_body.getText());
-			}			
+			}
 			ViewUtils.showEditControls();
 			ViewUtils.animateMultiple(ViewUtils.slideUp, description_cancel, description_save, description_edit);
 			return true;
 		}
 		return true;
-	}	
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		return true;
+	}
 }
