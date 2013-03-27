@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/oi_send"
+        android:icon="@drawable/ic_menu_start_conversation"
+        android:showAsAction="always"
+        android:title="@string/oi_start_conversation"/>
+    <item
+        android:id="@+id/oi_settings"
+        android:icon="@drawable/ic_menu_preferences"
+        android:showAsAction="always"
+        android:title="@string/oi_settings"/>
+
+</menu>

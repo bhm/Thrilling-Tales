@@ -21,14 +21,19 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
 	private static Context context;
 	private static String currentlyPrefix;
-	private static String regex = currentlyPrefix + ".*";
+	private static String regex;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		context = getApplicationContext();
+		currentlyPrefix = context.getString(R.string.pref_current_prefix);
+		regex = currentlyPrefix + ".*";
+	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		context = getApplicationContext();
-		currentlyPrefix = context.getString(R.string.pref_current_prefix);
-		
 		setupSimplePreferencesScreen();
 	}
 
@@ -81,10 +86,10 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object value) {
-			if (preference instanceof ListPreference) {						
+			if (preference instanceof ListPreference) {
 				String newValue = (String) ((ListPreference) preference).getEntries()[((ListPreference) preference)
 						.findIndexOfValue((String) value)];
-				String currentSummary = preference.getSummary().toString() + currentlyPrefix;	
+				String currentSummary = preference.getSummary().toString() + currentlyPrefix;
 				String newSummary = currentSummary.replaceFirst(regex, currentlyPrefix + newValue.toString());
 				preference.setSummary(newSummary);
 			}

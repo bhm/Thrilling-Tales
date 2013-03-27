@@ -11,10 +11,9 @@
    	    							  	Usually \~1930s, where the most weird stuff happens to the normal \"super heroes\".
    	    							  	\n  Check out the <b>Thrilling Adventures</b> sourcebook for <b>Savage Worlds</b> by <b>Adamant Entertainment</b></string>
 
-    <!--  MENU STRINGS -->
-    <string name="menu_saved_delete_cancel">Cancel</string>
-    <string name="menu_saved_delete">Delete</string>
-    
+    <!-- MENU STRINGS -->
+
+
     <!-- GENERATED VIEW STRINGS -->
     <string name="villain_title">Villain who is</string>
     <string name="fiendish_plot">Has a Fiendish Plan to</string>
@@ -25,17 +24,13 @@
     <string name="sequence">during which happens</string>
     <string name="participants">Participants</string>
     <string name="complications">complicated by</string>
-    <string name="plottwist">Plot Twist for act is</string>
+    <string name="plottwist">Plot Twist for this act is</string>
     <string name="act">Act</string>
     <string name="act1">Act 1</string>
     <string name="act2">Act 2</string>
     <string name="act3">Act 3</string>
 
-    <!-- ITEM OPTIONS -->
-    <string name="lock">LOCK</string>
-    <string name="reroll">REROLL</string>
-
-    <!-- INTERFACE -->
+    <!-- MENU -->
     <string name="oi_about_text">About</string>
     <string name="oi_generate_text">Pulp it up again</string>
     <string name="oi_save_script">Save the Script</string>
@@ -43,68 +38,52 @@
     <string name="oi_settings">Settings</string>
     <string name="oi_show_saved">Saved</string>
     <string name="oi_show_saved_alt">Show Saved</string>
+    <string name="oi_start_conversation">Send an email</string>
+    <string name="menu_saved_delete_cancel">Cancel</string>
+    <string name="menu_saved_delete">Delete</string>
+
+    <!-- MESSAGES USER WILL SEE AS FEEDBACK -->
+    <string name="loading">Loading</string>
+    <string name="makingdatabase">Making the database</string>
+    <string name="nonesaved">Nothing here!</string>
     <string name="processing_database">Doing magick!</string>
-    <string name="exit">Do you want to exit?</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="notdoneyet">I am not finished.</string>
+
+    <!-- DESCRIPTION FRAGMENT -->
     <string name="edit">EDIT</string>
     <string name="back">PREVIOUS</string>
     <string name="save">SAVE</string>
     <string name="cancel">CANCEL</string>
-    <string name="quit">Quit</string>
     <string name="no_description">Looks like there is no description for it.
         							\n Tap and Hold to begin inserting one.</string>
     <string name="fill_description">Here, write any description you want.</string>
-    <string name="loading">Loading</string>
-    <string name="makingdatabase">Making the database</string>
-    <string name="nonesaved">Nothing here!</string>
-    <string name="notdoneyet">I am not finished.</string>
-    <string name="hint_save_input">Name for the scenario</string>
+    <string name="lock">LOCK</string>
+    <string name="reroll">REROLL</string>
+
+    <!-- SAVE FRAGMENT -->
+    <string name="hint_save_input">Name for a scenario</string>
     <string name="date">Date</string>
     <string name="title">Title</string>
 
     <!-- PREFERENCES -->
-
     <string name="support_header">SUPPORT DICE POOL</string>
     <string name="number_of_acts">Number of acts</string>
-    <string name="acts_summary">Classic adventure composes of 4 acts. The last one should have a rough outline in which heroes fight their way out.</string>
+    <string name="acts_summary">Classic adventure is composed of 4 acts. The last one should have a rough outline in which heroes fight their way out.</string>
     <string name="acts_header">NUMBER OF ACTS</string>
     <string name="less">LESS</string>
     <string name="more">MORE</string>
     <string name="acts_number_default">3</string>
-    <string name="rebuild_database">REBUILD THE DATABASE</string>
-    <string name="rebuild_database_summary">It will delete everything in the backend database and reread all base files. Should you remove it, all entries you made will be removed.</string>
-    <string name="rebuild_database_question">Are you sure you want to rebuild whole database? Do we have the technology?</string>
-    <string name="rebuild_database_yes">Yes, we can rebuild it</string>
-    <string name="rebuild_database_no">I missclicked! NO!</string>
-    <string name="remove_scripts">REMOVE ALL SAVED SCRIPTS</string>
-    <string name="remove_scripts_summary">Clean all the saved scripts. Yep, all of them. At least I hope so!</string>
-    <string name="remove_scripts_question">Do your really want to remove all of the saved scripts? All memories will be wiped!</string>
-    <string name="remove_scripts_yes">LET ME FORGET!</string>
-    <string name="remove_scripts_no">NO! I never tapped and holden THAT!</string>
-    <string name="are_you">Are you</string>
-    <string name="really"> really </string>
-    <string name="sure_">sure you need that manny?</string>
     <string name="dice">d</string>
     <string name="support_summary">Choose a dice pool for support characters. Default value is a pool of 2d4</string>
-    <string name="use_style_on">MAXIMUM PULP ON</string>
-    <string name="use_style_off">MAXIMUM PULP OFF</string>
     <string name="use_style_summary">Use different background and font with different colour. Enter the Pulp!</string>
 
-    <!-- DIMENOSIONS. PRIME NUMBERS -->
-    <dimen name="verysmall">13sp</dimen>
-    <dimen name="small">17sp</dimen>
-    <dimen name="medium">19sp</dimen>
-    <dimen name="large">23sp</dimen>
-    <dimen name="verylarge">27sp</dimen>
+    <!-- SEND AN EMAIL -->
+    <string name="email_recepient_address">bustiblelemon@gmail.com</string>
+    <string name="email_subject">From Thrilling Tales app</string>
+    <string name="email_body_prefix">Hi, \n\t I was just using your app and </string>
 
-    <!-- COLORS -->
-    <color name="aliceblue">#F0F8FF</color>
-    <color name="darkgray">#545454</color>
-    <color name="lightgray">#FCFCFB</color>
-    <color name="darkgrey_pulp">#3D3D3D</color>
-    <color name="black_pulp">#000000</color>
-    <color name="active">#F0F8FF</color>
-    <color name="notactive">#545454</color>
+    <!-- ABOUT FRAGMENT -->
+    <string name="description_cover">This is the cover and the poster for the app.</string>
+    <string name="noemailapp">Smartphone but no email app? That doesn\'t sound right.</string>
 
 </resources>
