@@ -23,10 +23,13 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class AboutFragment extends SherlockFragment implements OnTouchListener, OnClickListener {
 
+	private ActionBar bar; 
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		getSherlockActivity().getSupportActionBar().hide();
+		bar = getSherlockActivity().getSupportActionBar();
 	}
 
 	@Override
@@ -36,6 +39,13 @@ public class AboutFragment extends SherlockFragment implements OnTouchListener, 
 		_r.findViewById(R.id.iv_about_cover).setOnClickListener(this);
 		setHasOptionsMenu(true);
 		return _r;
+	}
+
+	@Override
+	public void onPause() {	
+		super.onPause();
+		if (!bar.isShowing())
+			bar.show();		
 	}
 
 	@Override
@@ -79,8 +89,7 @@ public class AboutFragment extends SherlockFragment implements OnTouchListener, 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.iv_about_cover:
-			ActionBar bar = getSherlockActivity().getSupportActionBar();
+		case R.id.iv_about_cover:			
 			if (bar.isShowing()) {
 				bar.hide();
 			} else {
