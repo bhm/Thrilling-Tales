@@ -15,9 +15,6 @@ An Android app that generates pulp scenarios on the basis of what can be found i
 ![COVER]( https://raw.github.com/bhm/Thrilling-Tales/master/pulp-cover.jpg "CAREYZE CUSTOM COVER")
 
 ----
-#QR CODE
-###Latest [*.apk package](https://github.com/bhm/Thrilling-Tales/raw/master/bin/Thrilling%20Tales.apk "THE PACKAGE").
-![QRCODE](https://github.com/bhm/Thrilling-Tales/raw/master/qrcode.png "QRCODE")
 
 #CHANGELOG
 
