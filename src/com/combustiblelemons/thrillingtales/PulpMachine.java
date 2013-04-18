@@ -1,12 +1,16 @@
 package com.combustiblelemons.thrillingtales;
 
 import static com.combustiblelemons.thrillingtales.Values.TAG;
+import static com.combustiblelemons.thrillingtales.Values.Preferences.ACTS_NUMBER;
+import static com.combustiblelemons.thrillingtales.Values.Preferences.DEFAULT_S_ACTS_NUMBER;
+import static com.combustiblelemons.thrillingtales.Values.Preferences.DEFAULT_S_SUPPORT_DICE_X;
+import static com.combustiblelemons.thrillingtales.Values.Preferences.DEFAULT_S_SUPPORT_DICE_Y;
+import static com.combustiblelemons.thrillingtales.Values.Preferences.SUPPORT_DICE_X;
+import static com.combustiblelemons.thrillingtales.Values.Preferences.SUPPORT_DICE_Y;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.combustiblelemons.thrillingtales.Values.SavedScript;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,15 +22,27 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import static com.combustiblelemons.thrillingtales.Values.*;
-import static com.combustiblelemons.thrillingtales.Values.Preferences.*;
+
+import com.combustiblelemons.thrillingtales.Values.Complications;
+import com.combustiblelemons.thrillingtales.Values.Fiendishplans;
+import com.combustiblelemons.thrillingtales.Values.Hooks;
+import com.combustiblelemons.thrillingtales.Values.Locations;
+import com.combustiblelemons.thrillingtales.Values.Participants;
+import com.combustiblelemons.thrillingtales.Values.PlotTwist;
+import com.combustiblelemons.thrillingtales.Values.SavedAct;
+import com.combustiblelemons.thrillingtales.Values.SavedScript;
+import com.combustiblelemons.thrillingtales.Values.SavedSupport;
+import com.combustiblelemons.thrillingtales.Values.Sequences;
+import com.combustiblelemons.thrillingtales.Values.Setting;
+import com.combustiblelemons.thrillingtales.Values.SupportingCharacters;
+import com.combustiblelemons.thrillingtales.Values.Villains;
 
 public class PulpMachine {
 	private static ContentValues header = new ContentValues();
@@ -65,7 +81,7 @@ public class PulpMachine {
 			String[] columns = Settings.getColumns(context, item);
 			for (final String column : columns) {
 				final TextView single = (TextView) LayoutInflater.from(context).inflate(R.layout.singleitem, null);
-				final String text = DatabaseAdapter.getRandom(context, item, column);
+				final String text = Databases.getRandom(context, item, column);
 				single.setText(text);
 				single.setTag(item + ":" + column);
 				setupListeners(single);
@@ -109,7 +125,7 @@ public class PulpMachine {
 			final String _title = cursor.getString(cursor.getColumnIndex(column));
 			_single.setText(_title);
 			String ftag = _tag + ":" + column;
-			Log.d(TAG, "Tag: " + ftag + " Value: " + _title);
+//			Log.d(TAG, "Tag: " + ftag + " Value: " + _title);
 			_single.setTag(ftag);
 			setupListeners(_single);
 			_line.addView(_single);
@@ -123,12 +139,12 @@ public class PulpMachine {
 	}
 
 	protected static void saveScript(ViewGroup parent) {
-		String title = DatabaseAdapter.getCurrentDate();
+		String title = Databases.getCurrentDate();
 		saveScript(parent, title, title);
 	}
 
 	protected static void saveScript(ViewGroup parent, String title) {
-		String date = DatabaseAdapter.getCurrentDate();
+		String date = Databases.getCurrentDate();
 		saveScript(parent, title, date);
 	}
 
@@ -139,15 +155,17 @@ public class PulpMachine {
 		Context context = parent.getContext();
 		try {
 			PulpMachine.parseTheScript(parent);
-			DatabaseAdapter.insertScript(context, SavedScript.NAME, header, title, date);
+			Databases.insertScript(context, SavedScript.NAME, header, title, date);
 			Iterator<ContentValues> _acts = acts.iterator();
 			while (_acts.hasNext()) {
-				DatabaseAdapter.insertScript(context, SavedAct.NAME, (ContentValues) _acts.next(), title, date);
+				Databases.insertScript(context, SavedAct.NAME, (ContentValues) _acts.next(), title, date);
 			}
 			Iterator<ContentValues> _support = supportingCharacters.iterator();
-			Log.d(TAG, "saveTheScript(" + title + ", " + date +"): supportingCharacters.size()" + supportingCharacters.size());
+//			Log.d(TAG,
+//					"saveTheScript(" + title + ", " + date + "): supportingCharacters.size()"
+//							+ supportingCharacters.size());
 			while (_support.hasNext()) {
-				DatabaseAdapter.insertScript(context, SavedSupport.NAME, (ContentValues) _support.next(), title, date);
+				Databases.insertScript(context, SavedSupport.NAME, (ContentValues) _support.next(), title, date);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -160,7 +178,7 @@ public class PulpMachine {
 		supportingCharacters = new ArrayList<ContentValues>();
 		Context context = parent.getContext();
 		try {
-			DatabaseAdapter.staticUpdateScript(context, header, supportingCharacters, acts, currentScriptShown);
+			Databases.staticUpdateScript(context, header, supportingCharacters, acts, currentScriptShown);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
@@ -215,11 +233,11 @@ public class PulpMachine {
 	}
 
 	protected static void pulpScript(ViewGroup parent) {
-		//FIXME For some reason framework saves Strings instead of Integer
+		// FIXME For some reason framework saves Strings instead of Integer
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
 		int acts = Integer.valueOf(prefs.getString(ACTS_NUMBER, DEFAULT_S_ACTS_NUMBER));
 		int support_min = Integer.valueOf(prefs.getString(SUPPORT_DICE_X, DEFAULT_S_SUPPORT_DICE_X));
-		int support_max = Integer.valueOf( prefs.getString(SUPPORT_DICE_Y, DEFAULT_S_SUPPORT_DICE_Y));
+		int support_max = Integer.valueOf(prefs.getString(SUPPORT_DICE_Y, DEFAULT_S_SUPPORT_DICE_Y));
 		pulpScript(parent, acts, support_min, support_max);
 	}
 
@@ -308,23 +326,23 @@ public class PulpMachine {
 		try {
 			parent.removeAllViews();
 			Context context = parent.getContext();
-			Cursor headerCursor = DatabaseAdapter.getScript(context, forDate);
-			Cursor actCursor = DatabaseAdapter.getActs(context, forDate);
-			Cursor supportCursor = DatabaseAdapter.getSupportCharacters(context, forDate);
+			Cursor headerCursor = Databases.getScript(context, forDate);
+			Cursor actCursor = Databases.getActs(context, forDate);
+			Cursor supportCursor = Databases.getSupportCharacters(context, forDate);
 			View header = LayoutInflater.from(context).inflate(R.layout.header, null);
 			View support = LayoutInflater.from(context).inflate(R.layout.supportview, null);
 			ViewUtils.fillView(header, headerCursor);
-			parent.addView(header, parent.getChildCount());			
-			ViewUtils.fillView(support, supportCursor);			
+			parent.addView(header, parent.getChildCount());
+			ViewUtils.fillView(support, supportCursor);
 			parent.addView(support, parent.getChildCount());
 			int act_c = 0;
 			do {
 				final View act = LayoutInflater.from(context).inflate(R.layout.act, null);
 				Log.d(TAG, "Act " + act_c++);
-				fillAct(act, actCursor, act_c);
+				PulpMachine.fillAct(act, actCursor, act_c);
 				act.setTag("act");
 				parent.addView(act, parent.getChildCount());
-			} while (actCursor.moveToNext());			
+			} while (actCursor.moveToNext());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -341,7 +359,8 @@ public class PulpMachine {
 				if (_tag.equalsIgnoreCase("act_title")) {
 					((TextView) _v).setText(((TextView) _v).getText() + " " + actCount);
 				} else {
-					((ViewGroup) viewToFill).addView(populate(viewToFill.getContext(), _tag, cursor), i + 1);
+					((ViewGroup) viewToFill)
+							.addView(PulpMachine.populate(viewToFill.getContext(), _tag, cursor), i + 1);
 				}
 			}
 		}

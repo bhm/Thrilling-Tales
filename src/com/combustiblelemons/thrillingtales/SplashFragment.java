@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,6 +32,7 @@ public class SplashFragment extends SherlockFragment {
 	protected static Thread splashThread;
 	protected View view;
 	private static int THREAD_FINISHED = 1000;
+	private static Handler handler;
 	private static Settings settings;
 	private static AnimationDrawable splash;
 
@@ -85,11 +86,15 @@ public class SplashFragment extends SherlockFragment {
 		iv_splash.setBackgroundResource(R.drawable.new_animation);
 		splash = (AnimationDrawable) iv_splash.getBackground();		
 		database = new DatabaseAdapter(context);
-		final Handler handle = new Handler() {
+		handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				if (msg.arg1 == THREAD_FINISHED) {					
-					listener.onBuildFinished();
+				if (msg.arg1 == THREAD_FINISHED) {
+					try {
+						listener.onBuildFinished();
+					} catch (IllegalArgumentException e) {
+						//TODO Work around, should unregister all calls
+					}
 				}
 				ViewUtils.animate(tv_message, ViewUtils.slideOutRight);
 				tv_message.setText((String) msg.obj);
@@ -98,9 +103,7 @@ public class SplashFragment extends SherlockFragment {
 		};
 
 		splashThread = new Thread(new Runnable() {
-			@SuppressLint("HandlerLeak")
-			Handler mHandle = handle;
-
+			Handler mHandle = handler;
 			@Override
 			public void run() {
 				Log.d(TAG, "\t\t\n\nSplash Thread Started!");
@@ -141,16 +144,49 @@ public class SplashFragment extends SherlockFragment {
 						database.Close();
 						Message msg = new Message();
 						msg.arg1 = THREAD_FINISHED;
-						handle.sendMessage(msg);
+						handler.sendMessage(msg);
 					}
 				} else {
 					Message msg = new Message();
 					msg.arg1 = THREAD_FINISHED;
-					handle.sendMessage(msg);
+					handler.sendMessage(msg);
 				}
 			}
 		});
 		databasethread.start();
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		handler.removeCallbacksAndMessages(null);
+	}
+	
+	private class  databaseCreator extends AsyncTask<Void, Integer, Integer> {
+
+		@Override
+		protected void onPreExecute() {			
+			super.onPreExecute();
+			
+		}
+		@Override
+		protected Integer doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(values);
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+		}
+		
 	}
 
 	public void startSplashAnimation() {		

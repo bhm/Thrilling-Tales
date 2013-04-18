@@ -1,82 +1,94 @@
 package com.combustiblelemons.thrillingtales;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.*;
-import static com.combustiblelemons.thrillingtales.Values.TAG;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
-public class SaveFragment extends SherlockFragment implements OnClickListener, OnTouchListener {
-	EditText input;
+public class SaveFragment extends SherlockFragment implements OnTouchListener {
 	private InputMethodManager inputMethodManager;
+	View view;
+	private EditText entryField;
+
+	public interface OnRetreiveScriptView {
+		public View getScriptView();
+	}
+
+	private OnRetreiveScriptView callback;
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (activity instanceof OnRetreiveScriptView) {
+			callback = (OnRetreiveScriptView) activity;
+		} else {
+			throw new ClassCastException(activity.getClass().toString() + " should implement "
+					+ OnRetreiveScriptView.class.toString());
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.custom_ui, null);
-		v.setOnTouchListener(this);
-		return v;
+		view = inflater.inflate(R.layout.fragment_save, null);
+		setHasOptionsMenu(true);
+		entryField = (EditText) view.findViewById(R.id.save_menu_entryfield);
+		entryField.setHint(Databases.getCurrentDate());
+		return view;
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		View view = getView();
-		input = (EditText) view.findViewById(R.id.et_save_input);
-		input.setHint(DatabaseAdapter.getCurrentDate());
-		TextView save = (TextView) view.findViewById(R.id.tv_save_ok);
-		save.setOnClickListener(this);
-		TextView cancel = (TextView) view.findViewById(R.id.tv_save_cancel);
-		cancel.setOnClickListener(this);
-		inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		menu.clear();
+		inflater.inflate(R.menu.save_fragment, menu);
 	}
 
 	@Override
-	public void onClick(View v) {
-		FragmentManager fmanager = getActivity().getSupportFragmentManager();
-		ScriptFragment scritpFragment = (ScriptFragment) fmanager.findFragmentByTag(SCRIPT_VIEW_FLAG);
-		switch (v.getId()) {
-		default:
-			break;
-		case R.id.tv_save_ok:
-			String title = input.getText().toString();
-			String date = DatabaseAdapter.getCurrentDate();
-			View script = scritpFragment.getView();
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_save_save:
+			String title = entryField.getText().toString();
+			String date = Databases.getCurrentDate();
+			View script = callback.getScriptView();
 			if (title.length() == 0) {
 				try {
-					title = input.getHint().toString();
+					title = entryField.getHint().toString();
 					date = title;
 				} finally {
 					PulpMachine.saveScript((ViewGroup) script, title, title);
 				}
 			} else {
 				try {
-					title = input.getText().toString();
-					date = DatabaseAdapter.getCurrentDate();
+					title = entryField.getText().toString();
+					date = Databases.getCurrentDate();
 				} finally {
 					PulpMachine.saveScript((ViewGroup) script, title, date);
 				}
 			}
-			Log.d(TAG, "Saving Ok: " + title);
-			Log.d(TAG, "Saving for date: " + date);
-			// fallthrough or show saved?
-		case R.id.tv_save_cancel:
-			inputMethodManager.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-			Log.d(TAG, "Falling through to cancel.");
-			fmanager.popBackStack();
-			break;
+		case R.id.menu_saved_cancel:
+			inputMethodManager.hideSoftInputFromWindow(entryField.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+			getFragmentManager().popBackStack();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 	}
 
 	@Override

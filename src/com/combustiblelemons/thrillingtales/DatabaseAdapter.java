@@ -1,12 +1,16 @@
 package com.combustiblelemons.thrillingtales;
 
+import static com.combustiblelemons.thrillingtales.Values.MAIN_CREATION_STRINGS;
+import static com.combustiblelemons.thrillingtales.Values.MAIN_TABLES;
+import static com.combustiblelemons.thrillingtales.Values.SCRIPTS_CREATION_STRINGS;
+import static com.combustiblelemons.thrillingtales.Values.SCRITP_TABLES;
+import static com.combustiblelemons.thrillingtales.Values.TAG;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,14 +26,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.combustiblelemons.thrillingtales.Values.*;
+import com.combustiblelemons.thrillingtales.Values.Database;
+import com.combustiblelemons.thrillingtales.Values.Descriptions;
+import com.combustiblelemons.thrillingtales.Values.SavedAct;
+import com.combustiblelemons.thrillingtales.Values.SavedScript;
+import com.combustiblelemons.thrillingtales.Values.SavedSupport;
+import com.combustiblelemons.thrillingtales.Values.Table;
 
-public class DatabaseAdapter {	
+public class DatabaseAdapter {
 	private Context mContext;
 	private static final String DATABASE_NAME = "thrillingtales";
 	private static final int DATABASE_VERSION = 1;
 	private static final String SCRIPTS_DATABASE_NAME = "scripts";
 	private static final int SCRIPTS_DATABASE_VERSION = 1;
+
+	private static final String DATE_SELECTION = "date=?";
 
 	private SQLiteDatabase database;
 	private SQLiteDatabase scripts;
@@ -174,169 +185,67 @@ public class DatabaseAdapter {
 	 * ----------------------------------------
 	 */
 
-	private Cursor getAllScripts() throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT * FROM " + SavedScript.NAME, null);
-		if (_c != null) {
-			_c.moveToFirst();
-		}
-		return _c;
+	Cursor getAllScripts() throws SQLException {
+		Cursor cur = scripts.query(SavedScript.NAME, null, null, null, null, null, null);
+		return cur != null ? (cur.moveToFirst() ? cur : null) : null;
 	}
 
-	protected static Cursor getAllScripts(Context context) throws SQLException {
-		DatabaseAdapter a = new DatabaseAdapter(context);
-		a.OpenScripts();
-		Cursor cursor = a.getAllScripts();
-		a.Close();
-		return cursor;
+	Cursor getDates() throws SQLException {
+		Cursor cur = scripts.query(SavedScript.NAME, new String[] { SavedScript.DATE, SavedScript.TITLE }, null, null,
+				null, null, null);
+		return cur != null ? (cur.moveToFirst() ? cur : null) : null;
 	}
 
-	private Cursor getDates() throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT date, title FROM " + SavedScript.NAME, null);
-		if (_c != null) {
-			_c.moveToFirst();
-		}
-		return _c;
+	Cursor getScript(String forDate) throws SQLException {
+		Cursor cur = scripts.query(SavedScript.NAME, null, DATE_SELECTION, new String[] { forDate }, null, null, null);
+		return cur != null ? (cur.moveToFirst() ? cur : null) : null;
 	}
 
-	/**
-	 * <b>protected static Cursor getSavedScripts(Context context)</b>
-	 * <p>
-	 * Get cursor with all saved scripts.
-	 * 
-	 * @param context
-	 *            in which to open database
-	 * @return Cursor with saved scripts and it's data
-	 * @throws SQLException
-	 *             upon opening the database
-	 */
-	protected static Cursor getSavedScripts(Context context) throws SQLException {
-		DatabaseAdapter a = new DatabaseAdapter(context);
-		a.OpenScripts();
-		Cursor cursor = a.getDates();
-		a.Close();
-		return cursor;
+	Cursor getActs(String forDate) throws SQLException {
+		Cursor cur = scripts.query(SavedAct.NAME, null, DATE_SELECTION, new String[] { forDate }, null, null,
+				SavedAct.TITLE + " ASC");
+		return cur != null ? (cur.moveToFirst() ? cur : null) : null;
 	}
 
-	private Cursor getScript(String forDate) throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT * FROM " + SavedScript.NAME + " WHERE " + SavedScript.DATE + "=\""
-				+ forDate + "\"", null);
-		if (_c != null)
-			_c.moveToFirst();
-		return _c;
+	Cursor getSupportCharacters(String forDate) throws SQLException {
+		Cursor cur = scripts.query(SavedSupport.NAME, null, DATE_SELECTION, new String[] { forDate }, null, null, null);
+		return cur != null ? (cur.moveToFirst() ? cur : null) : null;
 	}
 
-	protected static Cursor getScript(Context context, String forDate) throws SQLException {
-		DatabaseAdapter a = new DatabaseAdapter(context);
-		a.OpenScripts();
-		Cursor cursor = a.getScript(forDate);
-		a.Close();
-		return cursor;
-	}
-
-	private Cursor getActs(String forDate) throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT * from " + SavedAct.NAME + " WHERE " + SavedAct.DATE + "=\"" + forDate
-				+ "\" ORDER BY " + SavedAct.TITLE + " ASC", null);
-		if (_c != null)
-			_c.moveToFirst();
-		return _c;
-	}
-
-	protected static Cursor getActs(Context context, String forDate) throws SQLException {
-		DatabaseAdapter a = new DatabaseAdapter(context);
-		a.OpenScripts();
-		Cursor cursor = a.getActs(forDate);
-		a.Close();
-		return cursor;
-	}
-
-	private Cursor getSupportCharacters(String forDate) throws SQLException {
-		Cursor _c = scripts.rawQuery("SELECT * from " + SavedSupport.NAME + " WHERE " + SavedSupport.DATE + "=\""
-				+ forDate + "\"", null);
-		if (_c != null)
-			_c.moveToFirst();
-		return _c;
-	}
-
-	protected static Cursor getSupportCharacters(Context context, String forDate) throws SQLException {
-		DatabaseAdapter a = new DatabaseAdapter(context);
-		a.OpenScripts();
-		Cursor cursor = a.getSupportCharacters(forDate);
-		a.Close();
-		return cursor;
-	}
-
-	private long updateScript(ContentValues header, ArrayList<ContentValues> support, ArrayList<ContentValues> acts,
+	long updateScript(ContentValues header, ArrayList<ContentValues> support, ArrayList<ContentValues> acts,
 			String forDate) throws SQLException {
 		long _r = 0;
 		Log.d(TAG, "Updating script");
-		_r += scripts.update(SavedScript.NAME, header, Table.DATE + "=\"" + forDate + "\"", null);
+		_r += scripts.update(SavedScript.NAME, header, Table.DATE + "=?", new String[] { forDate });
 		Iterator<ContentValues> _i = support.iterator();
 		Cursor _support = getActs(forDate);
 		while (_i.hasNext()) {
 			ContentValues values = _i.next();
 			if (_support.moveToNext()) {
 				int _id = _support.getInt(_support.getColumnIndex(SavedSupport.ID));
-				_r += scripts.update(SavedSupport.NAME, values, Table.DATE + "=\"" + forDate + "\"" + SavedSupport.ID
-						+ "=\"" + _id + "=\"", null);
+				_r += scripts.update(SavedSupport.NAME, values, Table.DATE + "=? AND " + SavedSupport.ID + "=?",
+						new String[] { forDate, String.valueOf(_id) });
 				Log.d(TAG, "Updating support");
 			} else {
-				_r += insertScript(SavedSupport.NAME, values, forDate);
+				_r += this.insertScript(SavedSupport.NAME, values, forDate);
 			}
 		}
 		_i = acts.iterator();
 		while (_i.hasNext()) {
 			ContentValues values = _i.next();
 			String act_title = (String) (values).get(SavedAct.ACT_TITLE);
-			_r += scripts.update(SavedAct.NAME, values, Table.DATE + "=\"" + forDate + "\"" + SavedAct.ACT_TITLE
-					+ "=\"" + act_title + "\"", null);
-			;
+			_r += scripts.update(SavedAct.NAME, values, Table.DATE + "=? AND " + SavedAct.ACT_TITLE + "=?", new String[] {forDate, act_title});
 		}
 		return _r;
 	}
 
-	protected static long staticUpdateScript(Context context, ContentValues header, ArrayList<ContentValues> support,
-			ArrayList<ContentValues> acts, String forDate) throws SQLException {
-		long _r = -1;
-		DatabaseAdapter adapter = new DatabaseAdapter(context);
-		adapter.OpenScripts();
-		_r = adapter.updateScript(header, support, acts, forDate);
-		adapter.Close();
-		return _r;
-	}
-
-	protected static String getCurrentDate() {
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat dateFormat = new SimpleDateFormat(Values.DATE_FORMAT);
-		return dateFormat.format(cal.getTime());
-	}
-	
-	protected static String getCurrentTime() {
-		return getCurrentDate();
-	}
-
-	private long insertScript(String table, ContentValues values, String forDate) throws SQLException {
+	long insertScript(String table, ContentValues values, String forDate) throws SQLException {
 		ContentValues _v = new ContentValues(values);
 		long _r = scripts.insert(table, null, _v);
 		return _r;
 	}
 
-	protected static long insertScript(Context context, String table, ContentValues values, String title, String date)
-			throws SQLException {
-		long _r = -1;
-		DatabaseAdapter adapter = new DatabaseAdapter(context);
-		ContentValues _values = new ContentValues(values);
-		_values.put(Table.DATE, date);
-		_values.put(Table.TITLE, title);
-		try {
-			adapter.OpenScripts();
-			_r = adapter.insertScript(table, _values, date);
-		} finally {
-			adapter.Close();
-		}
-		return _r;
-	}
-
-	private int deleteScript(String forDate) {
+	int deleteScript(String forDate) {
 		int _r = 0;
 		_r += scripts.delete(SavedScript.NAME, SavedScript.DATE + "=\"" + forDate + "\"", null);
 		_r += scripts.delete(SavedAct.NAME, SavedAct.DATE + "=\"" + forDate + "\"", null);
@@ -344,41 +253,6 @@ public class DatabaseAdapter {
 		return _r;
 	}
 
-	protected static int deleteScript(Context context, String forDate) throws SQLException {
-		int _r = -1;
-		DatabaseAdapter adapter = new DatabaseAdapter(context);
-		adapter.OpenScripts();
-		_r = adapter.deleteScript(forDate);
-		adapter.Close();
-		return _r;
-	}
-	
-	protected static int deleteScripts(Context context, String...forDates) throws SQLException {
-		int _r = -1;
-		DatabaseAdapter adapter = new DatabaseAdapter(context);
-		adapter.OpenScripts();
-		for (String forDate : forDates) {
-			_r += adapter.deleteScript(forDate);	
-		}		
-		adapter.Close();
-		return _r;
-	}
-	
-	/*
-	 * ---------------------------------- OPERATION ON COLUMNS
-	 * -----------------------------------
-	 */
-	/**
-	 * Size needed for randomise function. Always add some number to account for
-	 * double roll.
-	 * 
-	 * @param table
-	 *            Table to get from
-	 * @param column
-	 *            Column I need to count
-	 * @return number of rows in that column for max value in randomise
-	 *         function.
-	 */
 	private int getSize(String table, String column) {
 		if (table == null || column == null) {
 			return -1;
@@ -387,14 +261,7 @@ public class DatabaseAdapter {
 		}
 	}
 
-	/**
-	 * Get an extracted string from the table. Uses getItemFromColumn.
-	 * 
-	 * @param fromTable
-	 * @param inColumn
-	 * @return
-	 */
-	private String getRandom(String fromTable, String inColumn) {
+	String getRandom(String fromTable, String inColumn) {
 		Dice dice = new Dice(getSize(fromTable, inColumn));
 		String _random = getItemFromColumn(fromTable, inColumn, dice.getValue()).getString(0);
 		while (_random == null) {
@@ -403,41 +270,18 @@ public class DatabaseAdapter {
 		return _random;
 	}
 
-	protected static String getRandom(Context context, String table, String column) throws SQLException {
-		String _r = "";
-		DatabaseAdapter a = new DatabaseAdapter(context);
-		a.Open();
-		_r = a.getRandom(table, column);
-		a.Close();
-		return _r;
-	}
-
 	private Cursor getItemFromColumn(String fromTable, String inColumn, int atIdPosition) {
-		Cursor mCursor = database.rawQuery("SELECT " + inColumn + " FROM " + fromTable + " WHERE _id=" + atIdPosition,
-				null);		
-		if (mCursor != null) {
-			mCursor.moveToFirst();
-		}
-		return mCursor;
+		String selection = Table.ID + "=?";
+		Cursor cur = database.query(fromTable, new String[] { inColumn }, selection,
+				new String[] { String.valueOf(atIdPosition) }, null, null, null);
+		return cur != null ? (cur.moveToFirst() ? cur : null) : null;
 	}
 
-	/*
-	 * ----------------------------------- THRILLING TALES
-	 * -----------------------------------
-	 */
-	/**
-	 * 
-	 * @param fromTable
-	 * @param forItem
-	 * @return
-	 */
 	private Cursor getDescription(String fromTable, String forItem) throws CursorIndexOutOfBoundsException {
-		Cursor mCursor = database.rawQuery("SELECT " + Descriptions.DESCRIPTIONS + " FROM " + fromTable
-				+ " WHERE title=\"" + forItem + "\";", null);
-		if (mCursor != null) {
-			mCursor.moveToFirst();
-		}
-		return mCursor;
+		String selection = Descriptions.TITLE + "=?";
+		Cursor cur = database.query(fromTable, new String[] { Descriptions.DESCRIPTIONS }, selection,
+				new String[] { forItem }, null, null, null);
+		return cur != null ? (cur.moveToFirst() ? cur : null) : null;
 	}
 
 	protected String getDescription(String forItem) {
@@ -451,37 +295,12 @@ public class DatabaseAdapter {
 		return desc;
 	}
 
-	protected static String getDescription(Context context, String forItem) throws SQLException {
-		DatabaseAdapter a = new DatabaseAdapter(context);
-		a.Open();
-		String _r = a.getDescription(forItem);
-		a.Close();
-		return _r;
-	}
-
-	/**
-	 * Uses db.update to put a new description for an item.
-	 * 
-	 * @param description
-	 *            Description for an item
-	 * @param forItem
-	 *            item that is to have a new description
-	 * @return
-	 */
 	protected long insertDescription(String description, String forItem) {
 		ContentValues values = new ContentValues();
 		values.put(Descriptions.TITLE, forItem);
 		values.put(Descriptions.DESCRIPTIONS, description);
 		long rows = database.update(Descriptions.NAME, values, null, null);
 		return rows;
-	}
-
-	protected static long insertDescription(Context context, String desc, String forItem) throws SQLException {
-		DatabaseAdapter a = new DatabaseAdapter(context);
-		a.Open();
-		long _r = a.insertDescription(desc, forItem);
-		a.Close();
-		return _r;
 	}
 
 	/**
@@ -560,7 +379,6 @@ public class DatabaseAdapter {
 		return rows;
 	}
 
-	// TODO Check database for 0 row tables and issue an refill of it.
 	protected void checkDatabase() {
 		for (String _s : MAIN_TABLES) {
 			long _l = database.rawQuery("SELECT * FROM " + _s, null).getCount();

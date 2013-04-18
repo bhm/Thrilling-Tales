@@ -1,9 +1,13 @@
 package com.combustiblelemons.thrillingtales;
 
 import java.io.File;
+
+import com.combustiblelemons.thrillingtales.Values.Preferences;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import static com.combustiblelemons.thrillingtales.Values.SettingValues.*;
 
 public class Settings {
@@ -18,8 +22,9 @@ public class Settings {
 
 	public Settings(Context context) {
 		this.context = context;
-		settings = context.getSharedPreferences(SETTINGS_FILE, Context.MODE_PRIVATE);
+		settings = context.getSharedPreferences(SETTINGS_FILE, Context.MODE_PRIVATE);		
 	}
+	
 
 	/**
 	 * Use it to write all the necessary information via SharedPreferences
@@ -156,19 +161,11 @@ public class Settings {
 		editor.putString(KEY_SUPPORT_DICE, dice);
 		return editor.commit();
 	}
-
-	protected boolean useStyle(boolean useStyle) {
-		Editor editor = settings.edit();
-		editor.putBoolean(USE_BACKGROUND, useStyle);
-		return editor.commit();
+	
+	protected static int getThemeId(Context context) {
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
+		int id = Integer.valueOf(p.getString(Preferences.THEME_KEY, Preferences.DEFAULT_S_THEME));
+		return id;
 	}
 
-	protected static boolean isUsingStyle(Context context) {
-		return context.getSharedPreferences(SETTINGS_FILE, Context.MODE_PRIVATE).getBoolean(USE_BACKGROUND,
-				KEY_USE_BACKGROUND_DEFAULT);
-	}
-
-	protected boolean useStyle() {
-		return settings.getBoolean(USE_BACKGROUND, KEY_USE_BACKGROUND_DEFAULT);
-	}
 }

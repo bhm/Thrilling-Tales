@@ -19,12 +19,12 @@
     <item
         android:id="@+id/oi_settings"
         android:icon="@drawable/ic_menu_preferences"
-        android:showAsAction="collapseActionView"
+        android:showAsAction="ifRoom"
         android:title="@string/oi_settings"/>
     <item
         android:id="@+id/oi_about"
         android:icon="@drawable/ic_menu_help"
-        android:showAsAction="collapseActionView"
+        android:showAsAction="ifRoom"
         android:title="@string/oi_about_text"/>
 
 </menu>

@@ -27,7 +27,7 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 	SavedAdapter adapter;
 	ScriptFragment script;
 	FragmentManager fmanager;
-	ListView lview;
+	ListView listView;
 	protected boolean SELECTED_FOR_EDIT;
 
 	private onScriptItemSelected listener;
@@ -51,7 +51,7 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 		getListView().setOnItemClickListener(this);
 		getListView().setOnItemLongClickListener(this);
 		getListView().setBackgroundColor(context.getResources().getColor(R.color.black_pulp));
-		lview = getListView();
+		listView = getListView();
 	}
 
 	@Override
@@ -83,21 +83,21 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 			DELETEING = true;
 			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 			getActivity().supportInvalidateOptionsMenu();
-			int count = lview.getChildCount();
+			int count = listView.getChildCount();
 			for (int i = 0; i < count; i++) {
-				View child = lview.getChildAt(i);
+				View child = listView.getChildAt(i);
 				ViewUtils.switchVisibility(View.VISIBLE, child.findViewById(R.id.ctv_single_saved_item_title));
 				ViewUtils.switchVisibility(View.GONE, child.findViewById(R.id.tv_single_saved_item_title));
 			}
 			return true;
 		case R.id.menu_saved_delete:
-			SparseBooleanArray checked = lview.getCheckedItemPositions();
+			SparseBooleanArray checked = listView.getCheckedItemPositions();
 			Log.d(TAG, "Checked.size(): " + checked.size());
 			ArrayList<String> dates = new ArrayList<String>();
 			for (int i = 0; i < checked.size(); i++) {
 				if (checked.get(checked.keyAt(i))) {
 					Log.d(TAG, "Position: " + checked.keyAt(i) + " is true");
-					String date = lview.getAdapter().getItem(checked.keyAt(i)).toString();
+					String date = listView.getAdapter().getItem(checked.keyAt(i)).toString();
 					Log.d(TAG, "Item: " + date);		
 					dates.add(date);
 				}					
@@ -106,20 +106,20 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 				Log.d(TAG, "Selected: " + date);
 			}
 			try {
-				DatabaseAdapter.deleteScripts(context, dates.toArray(new String[dates.size()]));
+				Databases.deleteScripts(context, dates.toArray(new String[dates.size()]));
 			} catch (SQLException e) {			
 				e.printStackTrace();
 			}
 			adapter = new SavedAdapter(context);
-			lview.setAdapter(adapter);
+			listView.setAdapter(adapter);
 			adapter.notifyDataSetChanged();
 		case R.id.menu_saved_delete_cancel:
 			DELETEING = false;
 			getActivity().supportInvalidateOptionsMenu();
 			adapter.resetSelections();
-			count = lview.getChildCount();
+			count = listView.getChildCount();
 			for (int i = 0; i < count; i++) {
-				View child = lview.getChildAt(i);
+				View child = listView.getChildAt(i);
 				ViewUtils.switchVisibility(View.GONE, child.findViewById(R.id.ctv_single_saved_item_title));
 				ViewUtils.switchVisibility(View.VISIBLE, child.findViewById(R.id.tv_single_saved_item_title));
 			}
@@ -149,9 +149,9 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 			DELETEING = true;
 			getActivity().supportInvalidateOptionsMenu();		
-			int count = lview.getChildCount();
+			int count = listView.getChildCount();
 			for (int i = 0; i < count; i++) {
-				View child = lview.getChildAt(i);
+				View child = listView.getChildAt(i);
 				ViewUtils.switchVisibility(View.VISIBLE, child.findViewById(R.id.ctv_single_saved_item_title));
 				ViewUtils.switchVisibility(View.GONE, child.findViewById(R.id.tv_single_saved_item_title));
 			}

@@ -5,6 +5,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.combustiblelemons.thrillingtales.DescriptionFragment.onItemReRandomized;
+import com.combustiblelemons.thrillingtales.SaveFragment.OnRetreiveScriptView;
 import com.combustiblelemons.thrillingtales.SavedFragment.onScriptItemSelected;
 import com.combustiblelemons.thrillingtales.ScriptFragment.onItemReReandomized;
 import com.combustiblelemons.thrillingtales.ScriptFragment.onItemSelected;
@@ -28,7 +29,7 @@ import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.VALUE
 import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.*;
 
 public class ThrillingTales extends SherlockFragmentActivity implements onItemReRandomized, onItemReReandomized,
-		onItemSelected, onScriptItemSelected, onDatabaseBuildFinished {
+		onItemSelected, onScriptItemSelected, onDatabaseBuildFinished, OnRetreiveScriptView {
 
 	protected FragmentManager fmanager;
 	protected ScriptFragment scriptFragment;
@@ -37,18 +38,8 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		String theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(
-				Preferences.THEME_KEY, Preferences.DEFAULT_S_THEME);
-		switch (Integer.valueOf(theme)) {
-		case Themes.Mucha:
-			setTheme(R.style.Theme_mucha);
-			break;
-		case Themes.Pulp:
-			setTheme(R.style.Theme_pulp);
-			break;
-		default:
-			break;
-		}
+		int themeId = Settings.getThemeId(getApplicationContext());
+		setTheme(Themes.getTheme(themeId));
 		super.onCreate(savedInstanceState);
 		Context context = getApplicationContext();
 		ViewUtils.loadAnimations(context);
@@ -193,5 +184,10 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 		fmanager.beginTransaction().replace(android.R.id.content, scriptFragment, SCRIPT_VIEW_FLAG).commit();
 		getSupportActionBar().show();
 
+	}
+
+	@Override
+	public View getScriptView() {
+		return scriptFragment.getThisView();
 	}
 }

@@ -22,6 +22,7 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	private static Context context;
 	private static String currentlyPrefix;
 	private static String regex;
+	private static int SCREENLAYOUT_SIZE_XLARGE = 0x00000004;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	 * example, 10" tablets are extra-large.
 	 */
 	private static boolean isXLargeTablet(Context context) {
-		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= SettingsActivity.SCREENLAYOUT_SIZE_XLARGE ;
 	}
 
 	/**

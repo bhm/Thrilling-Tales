@@ -25,7 +25,7 @@ public class SavedAdapter extends BaseAdapter {
 		this.context = context;
 		this.checked = new SparseBooleanArray();
 		try {
-			this.cursor = DatabaseAdapter.getSavedScripts(this.context);
+			this.cursor = Databases.getSavedScripts(this.context);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

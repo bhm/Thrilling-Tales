@@ -38,14 +38,14 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 		if (activity instanceof onItemReReandomized) {
 			listener = (onItemReReandomized) activity;
 		} else {
-			throw new ClassCastException(activity.toString()
-					+ " should implement ScriptFragment.onItemReRandomized listener");
+			throw new ClassCastException(activity.getClass().toString()
+					+ " should implement " + listener.getClass().toString());
 		}
 		if (activity instanceof onItemSelected) {
 			selectedListener = (onItemSelected) activity;
 		} else {
 			throw new ClassCastException(activity.toString()
-					+ " should implement ScriptFragment.onItemSelected listener");
+					+ " should implement " + selectedListener.getClass().toString());
 		}
 	}
 
@@ -79,6 +79,10 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 		View _script_view = (ViewGroup) getView().findViewById(R.id.ll_main);
 		PulpMachine.loadTheScript((ViewGroup) _script_view, forDate);
 	}
+	
+	public View getThisView() {
+		return this.getView();
+	}
 
 	@Override
 	public boolean onLongClick(View v) {
@@ -87,7 +91,7 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 			String item = tag.split(":")[0];
 			String column = tag.split(":")[1];
 			Log.d(TAG, "Getting new random. Item: " + item + " column:" + column);
-			((TextView) v).setText(DatabaseAdapter.getRandom(v.getContext(), item, column));
+			((TextView) v).setText(Databases.getRandom(v.getContext(), item, column));
 			ViewUtils.animate(v, ViewUtils.slideInLeft);
 		} catch (SQLException e) {
 			e.printStackTrace();

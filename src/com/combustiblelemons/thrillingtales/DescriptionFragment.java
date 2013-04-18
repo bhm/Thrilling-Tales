@@ -77,7 +77,7 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 		description_title.setText(value);
 		description_reroll.setTag(tag);
 		try {
-			description_body.setText(DatabaseAdapter.getDescription(context, value));
+			description_body.setText(Databases.getDescription(context, value));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -105,7 +105,7 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 		Log.d(TAG, "DescriptionFragment.onActivityCreated(): " + value + " " + tag);
 		description_title.setText(value);
 		try {
-			description_body.setText(DatabaseAdapter.getDescription(context, value));
+			description_body.setText(Databases.getDescription(context, value));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +123,7 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 				String prevTitle = RANDOM_HISTORY.get(_previousValuesSize - 1);
 				description_title.setText(prevTitle);
 				try {
-					description_body.setText(DatabaseAdapter.getDescription(context, prevTitle));
+					description_body.setText(Databases.getDescription(context, prevTitle));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
@@ -139,9 +139,9 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			try {
 				Log.d(TAG, "Reroll: " + item + " " + column);
 				RANDOM_HISTORY.add((String) description_title.getText());
-				String new_title = DatabaseAdapter.getRandom(context, item, column);
+				String new_title = Databases.getRandom(context, item, column);
 				description_title.setText(new_title);
-				description_body.setText(DatabaseAdapter.getDescription(context, new_title));
+				description_body.setText(Databases.getDescription(context, new_title));
 				ViewUtils.animateMultiple(ViewUtils.slideInLeft, description_title, description_body);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -153,10 +153,9 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			ViewUtils.animateMultiple(ViewUtils.slideUp, description_back, description_reroll, description_body);
 			try {
 
-				DatabaseAdapter.insertDescription(context, description_edit.getText().toString(), description_title
-						.getText().toString());
-				description_body.setText(DatabaseAdapter
-						.getDescription(context, description_title.getText().toString()));
+				Databases.insertDescription(context, description_edit.getText().toString(), description_title.getText()
+						.toString());
+				description_body.setText(Databases.getDescription(context, description_title.getText().toString()));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
