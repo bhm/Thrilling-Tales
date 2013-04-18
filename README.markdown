@@ -12,11 +12,17 @@
 
 An Android app that generates pulp scenarios on the basis of what can be found in [Thrilling Tales handbook](http://rpg.drivethrustuff.com/product/64454/Thrilling-Tales-2nd-Edition-(Savage-Worlds)) for [Savage Worlds](http://en.wikipedia.org/wiki/Savage_Worlds).
 
+![QRMARKET](https://raw.github.com/bhm/Thrilling-Tales/master/qr-market.png "Scane it with your phone")
+
 ![COVER]( https://raw.github.com/bhm/Thrilling-Tales/master/pulp-cover.jpg "CAREYZE CUSTOM COVER")
 
 ----
 
 #CHANGELOG
+
+## 1.2.4
+* Should be faster now
+* THEMES! YEYO!
 
 ## 1.2.2
 * Two themes implemented. Still requires restart.
