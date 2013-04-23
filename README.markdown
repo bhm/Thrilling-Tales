@@ -20,6 +20,10 @@ An Android app that generates pulp scenarios on the basis of what can be found i
 
 #CHANGELOG
 
+## 1.2.6
+* Corss fragment communication rewritten
+* Nullpointer fixed
+
 ## 1.2.4
 * Should be faster now
 * THEMES! YEYO!
