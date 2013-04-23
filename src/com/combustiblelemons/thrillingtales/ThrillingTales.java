@@ -1,35 +1,37 @@
 package com.combustiblelemons.thrillingtales;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.combustiblelemons.thrillingtales.DescriptionFragment.onItemReRandomized;
-import com.combustiblelemons.thrillingtales.SaveFragment.OnRetreiveScriptView;
-import com.combustiblelemons.thrillingtales.SavedFragment.onScriptItemSelected;
-import com.combustiblelemons.thrillingtales.ScriptFragment.onItemReReandomized;
-import com.combustiblelemons.thrillingtales.ScriptFragment.onItemSelected;
-import com.combustiblelemons.thrillingtales.SplashFragment.onDatabaseBuildFinished;
-import com.combustiblelemons.thrillingtales.Values.Preferences;
-import com.combustiblelemons.thrillingtales.Values.Preferences.Themes;
-
+import static com.combustiblelemons.thrillingtales.Values.TAG;
+import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.TAG_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.VALUE_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.ABOUT_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.DESCRIPTION_VIEW_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.SAVED_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.SAVING_UI_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.SCRIPT_VIEW_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.SPLASH_FRAGMENT_FLAG;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import static com.combustiblelemons.thrillingtales.Values.TAG;
-import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.TAG_FLAG;
-import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.VALUE_FLAG;
-import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.*;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.combustiblelemons.thrillingtales.AboutFragment.OnShowAboutFragment;
+import com.combustiblelemons.thrillingtales.DescriptionFragment.onItemReRandomized;
+import com.combustiblelemons.thrillingtales.SaveFragment.OnRetreiveScriptView;
+import com.combustiblelemons.thrillingtales.SaveFragment.OnShowSaveTheScriptFragment;
+import com.combustiblelemons.thrillingtales.SavedFragment.OnScriptItemSelected;
+import com.combustiblelemons.thrillingtales.SavedFragment.OnShowSavedFragment;
+import com.combustiblelemons.thrillingtales.ScriptFragment.onItemReReandomized;
+import com.combustiblelemons.thrillingtales.ScriptFragment.onItemSelected;
+import com.combustiblelemons.thrillingtales.SplashFragment.onDatabaseBuildFinished;
+import com.combustiblelemons.thrillingtales.Values.Preferences.Themes;
 
 public class ThrillingTales extends SherlockFragmentActivity implements onItemReRandomized, onItemReReandomized,
-		onItemSelected, onScriptItemSelected, onDatabaseBuildFinished, OnRetreiveScriptView {
+		onItemSelected, OnScriptItemSelected, onDatabaseBuildFinished, OnRetreiveScriptView, OnShowAboutFragment,
+		OnShowSaveTheScriptFragment, OnShowSavedFragment {
 
 	protected FragmentManager fmanager;
 	protected ScriptFragment scriptFragment;
@@ -51,71 +53,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 		t.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
 		t.commit();
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflate = getSupportMenuInflater();
-		inflate.inflate(R.menu.menu_main, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.oi_generate:
-			scriptFragment = (ScriptFragment) fmanager.findFragmentByTag(SCRIPT_VIEW_FLAG);
-			View main = (ViewGroup) scriptFragment.getView();
-			View _script_view = (ViewGroup) main.findViewById(R.id.ll_main);
-			PulpMachine.pulpAgain((ViewGroup) _script_view);
-			return true;
-		case R.id.oi_save_script:
-			SaveFragment savingFragment = (SaveFragment) fmanager.findFragmentByTag(SAVING_UI_FLAG);
-			if (savingFragment == null) {
-				savingFragment = new SaveFragment();
-				fmanager.beginTransaction()
-						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
-								R.anim.slide_out_left).addToBackStack(null)
-						.add(android.R.id.content, savingFragment, SAVING_UI_FLAG).commit();
-			} else {
-				fmanager.beginTransaction().show(savingFragment);
-			}
-			return true;
-		case R.id.oi_show_saved:
-			SavedFragment savedFragment = (SavedFragment) fmanager.findFragmentByTag(SAVED_FLAG);
-			if (savedFragment == null) {
-				savedFragment = new SavedFragment();
-				fmanager.beginTransaction()
-						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
-								R.anim.slide_out_left).addToBackStack(null)
-						.add(android.R.id.content, savedFragment, SAVED_FLAG).commit();
-			} else {
-				fmanager.beginTransaction().show(savedFragment);
-			}
-			break;
-		case R.id.oi_settings:
-			Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-			startActivity(intent);
-			return true;
-		case R.id.oi_about:
-			AboutFragment about = (AboutFragment) fmanager.findFragmentByTag(ABOUT_FLAG);
-			if (about == null) {
-				about = new AboutFragment();
-				fmanager.beginTransaction()
-						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
-								R.anim.slide_out_left).addToBackStack(null)
-						.add(android.R.id.content, about, ABOUT_FLAG).commit();
-			} else {
-				fmanager.beginTransaction()
-						.addToBackStack(null)
-						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
-								R.anim.slide_out_left).show(about);
-			}
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		return false;
-	}
+	
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
@@ -189,5 +127,52 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 	@Override
 	public View getScriptView() {
 		return scriptFragment.getThisView();
+	}
+
+	@Override
+	public void onShowSaveFragment() {
+		SaveFragment savingFragment = (SaveFragment) fmanager.findFragmentByTag(SAVING_UI_FLAG);
+		if (savingFragment == null) {
+			savingFragment = new SaveFragment();
+			fmanager.beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+							R.anim.slide_out_left).addToBackStack(null)
+					.add(android.R.id.content, savingFragment, SAVING_UI_FLAG).commit();
+		} else {
+			fmanager.beginTransaction().show(savingFragment);
+		}
+
+	}
+
+	@Override
+	public void onShowAbout() {
+		AboutFragment about = (AboutFragment) fmanager.findFragmentByTag(ABOUT_FLAG);
+		if (about == null) {
+			about = new AboutFragment();
+			fmanager.beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+							R.anim.slide_out_left).addToBackStack(null).add(android.R.id.content, about, ABOUT_FLAG)
+					.commit();
+		} else {
+			fmanager.beginTransaction()
+					.addToBackStack(null)
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+							R.anim.slide_out_left).show(about);
+		}
+
+	}
+
+	@Override
+	public void onShowSavedScriptsFragment() {
+		SavedFragment savedFragment = (SavedFragment) fmanager.findFragmentByTag(SAVED_FLAG);
+		if (savedFragment == null) {
+			savedFragment = new SavedFragment();
+			fmanager.beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+							R.anim.slide_out_left).addToBackStack(null)
+					.add(android.R.id.content, savedFragment, SAVED_FLAG).commit();
+		} else {
+			fmanager.beginTransaction().show(savedFragment);
+		}
 	}
 }

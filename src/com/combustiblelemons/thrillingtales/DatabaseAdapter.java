@@ -291,6 +291,9 @@ public class DatabaseAdapter {
 		} catch (CursorIndexOutOfBoundsException e) {
 			Log.d(TAG, "Description for " + forItem + " was not found");
 			desc = "";
+		} catch (NullPointerException e) {
+			Log.d(TAG, "Encountered null at");
+			desc = "";
 		}
 		return desc;
 	}

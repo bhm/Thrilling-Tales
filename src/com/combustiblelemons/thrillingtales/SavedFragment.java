@@ -30,10 +30,14 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 	ListView listView;
 	protected boolean SELECTED_FOR_EDIT;
 
-	private onScriptItemSelected listener;
+	private OnScriptItemSelected onScriptItemSelected;
 
-	public interface onScriptItemSelected {
+	public interface OnScriptItemSelected {
 		public void scriptItemSelected(String forDate);
+	}
+	
+	public interface OnShowSavedFragment {
+		public void onShowSavedScriptsFragment();
 	}
 
 	@Override
@@ -57,11 +61,11 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if (activity instanceof onScriptItemSelected) {
-			listener = (onScriptItemSelected) activity;
+		if (activity instanceof OnScriptItemSelected) {
+			onScriptItemSelected = (OnScriptItemSelected) activity;
 		} else {
-			throw new ClassCastException(activity.toString()
-					+ " Must implement onScriptItemSelected.scriptItemSelected(String forDate)");
+			throw new ClassCastException(activity.getClass().toString()
+					+ " should implement " + onScriptItemSelected.getClass().toString());
 		}
 	}
 
@@ -138,7 +142,7 @@ public class SavedFragment extends SherlockListFragment implements OnItemClickLi
 		} else {
 			TextView date = (TextView) view.findViewById(R.id.tv_single_saved_item_date);
 			String _date = date.getText().toString();
-			listener.scriptItemSelected(_date);
+			onScriptItemSelected.scriptItemSelected(_date);
 			getActivity().getSupportFragmentManager().popBackStack();
 		}
 	}

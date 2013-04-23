@@ -26,6 +26,10 @@ public class SaveFragment extends SherlockFragment implements OnTouchListener {
 	}
 
 	private OnRetreiveScriptView callback;
+	
+	public interface OnShowSaveTheScriptFragment {
+		public void onShowSaveFragment();
+	}
 
 	@Override
 	public void onAttach(Activity activity) {

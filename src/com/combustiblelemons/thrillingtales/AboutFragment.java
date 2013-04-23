@@ -5,8 +5,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,13 +21,19 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class AboutFragment extends SherlockFragment implements OnTouchListener, OnClickListener {
 
-	private ActionBar bar; 
-	
+	private ActionBar bar;
+
+	public interface OnShowAboutFragment {
+		public void onShowAbout();
+	}
+
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		getSherlockActivity().getSupportActionBar().hide();
 		bar = getSherlockActivity().getSupportActionBar();
+		
 	}
 
 	@Override
@@ -42,10 +46,10 @@ public class AboutFragment extends SherlockFragment implements OnTouchListener, 
 	}
 
 	@Override
-	public void onPause() {	
+	public void onPause() {
 		super.onPause();
 		if (!bar.isShowing())
-			bar.show();		
+			bar.show();
 	}
 
 	@Override
@@ -89,7 +93,7 @@ public class AboutFragment extends SherlockFragment implements OnTouchListener, 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.iv_about_cover:			
+		case R.id.iv_about_cover:
 			if (bar.isShowing()) {
 				bar.hide();
 			} else {

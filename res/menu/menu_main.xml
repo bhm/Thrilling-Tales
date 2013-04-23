@@ -2,29 +2,29 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/oi_generate"
+        android:id="@+id/menu_reroll_script"
         android:icon="@drawable/ic_menu_refresh"
         android:showAsAction="always"
-        android:title="@string/oi_generate_text"/>
+        android:title="@string/menu_reroll"/>
     <item
-        android:id="@+id/oi_save_script"
+        android:id="@+id/menu_save_script"
         android:icon="@drawable/ic_menu_save"
         android:showAsAction="always"
-        android:title="@string/oi_save_script"/>
+        android:title="@string/menu_save"/>
     <item
-        android:id="@+id/oi_show_saved"
+        android:id="@+id/menu_show_saved_scripts"
         android:icon="@drawable/ic_menu_paste_holo_dark"
         android:showAsAction="ifRoom"
-        android:title="@string/oi_show_saved"/>
+        android:title="@string/menu_show_saved"/>
     <item
-        android:id="@+id/oi_settings"
+        android:id="@+id/menu_settings"
         android:icon="@drawable/ic_menu_preferences"
         android:showAsAction="ifRoom"
-        android:title="@string/oi_settings"/>
+        android:title="@string/menu_settings"/>
     <item
-        android:id="@+id/oi_about"
+        android:id="@+id/menu_about"
         android:icon="@drawable/ic_menu_help"
         android:showAsAction="ifRoom"
-        android:title="@string/oi_about_text"/>
+        android:title="@string/menu_about"/>
 
 </menu>

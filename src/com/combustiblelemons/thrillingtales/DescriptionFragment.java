@@ -22,6 +22,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class DescriptionFragment extends SherlockFragment implements OnLongClickListener, OnClickListener,
 		OnTouchListener {
@@ -37,6 +40,22 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 	private onItemReRandomized listener;
 	private Context context;
 	private InputMethodManager inputMethodManager;
+	private String tag;
+
+	public interface onItemReRandomized {
+		public void onDescriptionItemReRandomized(String value, String tag);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (activity instanceof onItemReRandomized) {
+			listener = (onItemReRandomized) activity;
+		} else {
+			throw new ClassCastException(activity.toString()
+					+ " should implement DescriptionFragment.onItemReRandomized listener");
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,41 +76,8 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 		description_cancel.setOnClickListener(this);
 		description_edit = (EditText) view.findViewById(R.id.et_description_body);
 		view.setOnTouchListener(this);
+		setHasOptionsMenu(true);
 		return view;
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		Log.d(TAG, "DescriptionFragment.onStart()");
-	}
-
-	public interface onItemReRandomized {
-		public void onDescriptionItemReRandomized(String value, String tag);
-	}
-
-	protected void changeDescription(String value, String tag) {
-		/**
-		 * Change title and retrieve new description
-		 */
-		description_title.setText(value);
-		description_reroll.setTag(tag);
-		try {
-			description_body.setText(Databases.getDescription(context, value));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if (activity instanceof onItemReRandomized) {
-			listener = (onItemReRandomized) activity;
-		} else {
-			throw new ClassCastException(activity.toString()
-					+ " should implement DescriptionFragment.onItemReRandomized listener");
-		}
 	}
 
 	@Override
@@ -101,7 +87,7 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 		inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		Bundle args = getArguments();
 		String value = args.getString(VALUE_FLAG);
-		String tag = args.getString(TAG_FLAG);
+		tag = args.getString(TAG_FLAG);
 		Log.d(TAG, "DescriptionFragment.onActivityCreated(): " + value + " " + tag);
 		description_title.setText(value);
 		try {
@@ -110,6 +96,39 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			e.printStackTrace();
 		}
 		description_reroll.setTag(tag);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
+		inflater.inflate(R.menu.description_menu, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case R.id.menu_description_reroll:
+			this.rerollDescription();
+		default:
+			return super.onOptionsItemSelected(item);	
+		}
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Log.d(TAG, "DescriptionFragment.onStart()");
+	}
+
+	protected void changeDescription(String value, String tag) {
+		this.tag = tag;
+		description_title.setText(value);
+		description_reroll.setTag(tag);
+		try {
+			description_body.setText(Databases.getDescription(context, value));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -133,21 +152,7 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			}
 			break;
 		case R.id.tv_decription_reroll:
-			String tag = v.getTag().toString();
-			String item = tag.split(":")[0];
-			String column = tag.split(":")[1];
-			try {
-				Log.d(TAG, "Reroll: " + item + " " + column);
-				RANDOM_HISTORY.add((String) description_title.getText());
-				String new_title = Databases.getRandom(context, item, column);
-				description_title.setText(new_title);
-				description_body.setText(Databases.getDescription(context, new_title));
-				ViewUtils.animateMultiple(ViewUtils.slideInLeft, description_title, description_body);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			String _value = description_title.getText().toString();
-			listener.onDescriptionItemReRandomized(_value, v.getTag().toString());
+			this.rerollDescription();
 			break;
 		case R.id.tv_decription_save:
 			ViewUtils.animateMultiple(ViewUtils.slideUp, description_back, description_reroll, description_body);
@@ -166,6 +171,24 @@ public class DescriptionFragment extends SherlockFragment implements OnLongClick
 			ViewUtils.animateMultiple(ViewUtils.slideUp, description_back, description_reroll, description_body);
 			break;
 		}
+	}
+
+	private void rerollDescription() {		
+		String item = tag.split(":")[0];
+		String column = tag.split(":")[1];
+		try {
+			Log.d(TAG, "Reroll: " + item + " " + column);
+			RANDOM_HISTORY.add((String) description_title.getText());
+			String new_title = Databases.getRandom(context, item, column);
+			description_title.setText(new_title);
+			description_body.setText(Databases.getDescription(context, new_title));
+			ViewUtils.animateMultiple(ViewUtils.slideInLeft, description_title, description_body);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		String _value = description_title.getText().toString();
+		listener.onDescriptionItemReRandomized(_value, tag);
+		
 	}
 
 	@Override

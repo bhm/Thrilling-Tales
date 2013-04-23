@@ -1,9 +1,12 @@
 package com.combustiblelemons.thrillingtales;
 
 import static com.combustiblelemons.thrillingtales.Values.TAG;
+
 import java.sql.SQLException;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +17,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.combustiblelemons.thrillingtales.AboutFragment.OnShowAboutFragment;
+import com.combustiblelemons.thrillingtales.SaveFragment.OnShowSaveTheScriptFragment;
+import com.combustiblelemons.thrillingtales.SavedFragment.OnShowSavedFragment;
 
 public class ScriptFragment extends SherlockFragment implements OnClickListener, OnLongClickListener {
 
-	View view;
-
+	private Context context;
+	private View view;
+	private ViewGroup scriptView;
 	private onItemReReandomized listener;
 	private onItemSelected selectedListener;
 
@@ -30,6 +40,12 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 		public void itemTouched(String value, String tag);
 	}
 
+	private OnShowAboutFragment onShowAboutFragment;
+	private OnShowSavedFragment onShowSavedFragment;
+	private OnShowSaveTheScriptFragment onShowSaveTheScriptFragment;
+
+
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -38,15 +54,34 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 		if (activity instanceof onItemReReandomized) {
 			listener = (onItemReReandomized) activity;
 		} else {
-			throw new ClassCastException(activity.getClass().toString()
-					+ " should implement " + listener.getClass().toString());
+			throw new ClassCastException(activity.getClass().toString() + " should implement "
+					+ listener.getClass().toString());
 		}
 		if (activity instanceof onItemSelected) {
 			selectedListener = (onItemSelected) activity;
 		} else {
-			throw new ClassCastException(activity.toString()
-					+ " should implement " + selectedListener.getClass().toString());
+			throw new ClassCastException(activity.toString() + " should implement "
+					+ selectedListener.getClass().toString());
 		}
+		if (activity instanceof OnShowAboutFragment) {
+			onShowAboutFragment = (OnShowAboutFragment) activity;
+		} else {
+			throw new ClassCastException(activity.getClass().toString() + " should implement "
+					+ onShowAboutFragment.getClass().toString());
+		}
+		if (activity instanceof OnShowSavedFragment) {
+			onShowSavedFragment = (OnShowSavedFragment) activity;
+		} else {
+			throw new ClassCastException(activity.getClass().toString() + " should implement "
+					+ onShowSavedFragment.getClass().toString());
+		}
+		if (activity instanceof OnShowSaveTheScriptFragment) {
+			onShowSaveTheScriptFragment = (OnShowSaveTheScriptFragment) activity;
+		} else {
+			throw new ClassCastException(activity.getClass().toString() + " should implement "
+					+ onShowSaveTheScriptFragment.getClass().toString());
+		}
+
 	}
 
 	@Override
@@ -59,27 +94,54 @@ public class ScriptFragment extends SherlockFragment implements OnClickListener,
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		PulpMachine.setListeners(this, this);
-		View _script_view = (ViewGroup) getView().findViewById(R.id.ll_main);
-		PulpMachine.pulpScript((ViewGroup) _script_view);
+		scriptView = (ViewGroup) view.findViewById(R.id.script_view);
+		PulpMachine.pulpScript((ViewGroup) scriptView);
 		setRetainInstance(true);
+		setHasOptionsMenu(true);
+		this.context = getActivity().getApplicationContext();
 	}
 
-	/**
-	 * Use it to set it to a new value.
-	 * 
-	 * @param tag
-	 * @param title
-	 */
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
+		inflater.inflate(R.menu.menu_main, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_reroll_script:
+			PulpMachine.pulpAgain(scriptView);
+			return true;
+		case R.id.menu_save_script:
+			onShowSaveTheScriptFragment.onShowSaveFragment();
+			return true;
+		case R.id.menu_show_saved_scripts:
+			onShowSavedFragment.onShowSavedScriptsFragment();
+			return true;
+		case R.id.menu_about:
+			onShowAboutFragment.onShowAbout();
+			return true;
+		case R.id.menu_settings:
+			Intent intent = new Intent(context, SettingsActivity.class);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+
+	}
+
 	protected void setTitle(String value, String tag) {
-		TextView _view = (TextView)  getView().findViewWithTag(tag);
+		TextView _view = (TextView) getView().findViewWithTag(tag);
 		_view.setText(value);
 	}
 
 	protected void loadScript(String forDate) {		
-		View _script_view = (ViewGroup) getView().findViewById(R.id.ll_main);
-		PulpMachine.loadTheScript((ViewGroup) _script_view, forDate);
+		scriptView = (ViewGroup) getView().findViewById(R.id.script_view);
+		PulpMachine.loadTheScript((ViewGroup) scriptView, forDate);
 	}
-	
+
 	public View getThisView() {
 		return this.getView();
 	}
