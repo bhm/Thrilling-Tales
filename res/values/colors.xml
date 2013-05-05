@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- COLORS -->
+    <color name="aliceblue">#F0F8FF</color>
+    <color name="darkgray">#545454</color>
+    <color name="lightgray">#FCFCFB</color>
+    <color name="darkgrey_pulp">#3D3D3D</color>
+    <color name="black_pulp">#000000</color>
+    <color name="active">#F0F8FF</color>
+    <color name="notactive">#545454</color>
+
+</resources>

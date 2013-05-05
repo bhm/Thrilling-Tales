@@ -1,210 +1,178 @@
 package com.combustiblelemons.thrillingtales;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
+import static com.combustiblelemons.thrillingtales.Values.TAG;
+import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.TAG_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.DescriptionFlags.VALUE_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.ABOUT_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.DESCRIPTION_VIEW_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.SAVED_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.SAVING_UI_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.SCRIPT_VIEW_FLAG;
+import static com.combustiblelemons.thrillingtales.Values.FragmentFalgs.SPLASH_FRAGMENT_FLAG;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ViewFlipper;
 
-public class ThrillingTales extends Activity {
-	protected static Context context;
-	private static final String LOG_TAG = "Thrilling Tales";
-	private static Settings settings;
-	private static View main;
-	private static ViewFlipper vf_main;
-	private static InputMethodManager inputMethodManager;
-	protected static View description_view;
-	protected static View about_view;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.combustiblelemons.thrillingtales.AboutFragment.OnShowAboutFragment;
+import com.combustiblelemons.thrillingtales.DescriptionFragment.onItemReRandomized;
+import com.combustiblelemons.thrillingtales.SaveFragment.OnRetreiveScriptView;
+import com.combustiblelemons.thrillingtales.SaveFragment.OnShowSaveTheScriptFragment;
+import com.combustiblelemons.thrillingtales.SavedFragment.OnScriptItemSelected;
+import com.combustiblelemons.thrillingtales.SavedFragment.OnShowSavedFragment;
+import com.combustiblelemons.thrillingtales.ScriptFragment.onItemReReandomized;
+import com.combustiblelemons.thrillingtales.ScriptFragment.onItemSelected;
+import com.combustiblelemons.thrillingtales.SplashFragment.onDatabaseBuildFinished;
+import com.combustiblelemons.thrillingtales.Values.Preferences.Themes;
 
-	private static ViewSetup setup;
-	protected static boolean SCRIPT_CHANGED = false;
-	protected static int SAVED_SHOWN = -1; // -1 on start, 0 hidden, 1 shown
-	protected static AlertDialog.Builder dialog;
-	protected static boolean EXISTS = false;
+public class ThrillingTales extends SherlockFragmentActivity implements onItemReRandomized, onItemReReandomized,
+		onItemSelected, OnScriptItemSelected, onDatabaseBuildFinished, OnRetreiveScriptView, OnShowAboutFragment,
+		OnShowSaveTheScriptFragment, OnShowSavedFragment {
 
-	protected Dialog splash;
+	protected FragmentManager fmanager;
+	protected ScriptFragment scriptFragment;
+	protected DescriptionFragment descriptionFragment;
+	protected SplashFragment splashFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		int themeId = Settings.getThemeId(getApplicationContext());
+		setTheme(Themes.getTheme(themeId));
 		super.onCreate(savedInstanceState);
-		context = getApplicationContext();
-		dialog = new Builder(this);
-		settings = new Settings(ThrillingTales.this);
-		inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		vf_main = (ViewFlipper) LayoutInflater.from(context).inflate(
-				R.layout.main, null);
-		main = vf_main.findViewById(R.id.ll_main);
-		setContentView(vf_main);
-		setup = new ViewSetup(context, settings, main, vf_main,
-				inputMethodManager);
-		Log.d(LOG_TAG, "Now pulp");
-		setup.pulpScript();
-		EXISTS = true;
+		Context context = getApplicationContext();
+		ViewUtils.loadAnimations(context);
+		getSupportActionBar().hide();
+		fmanager = getSupportFragmentManager();
+		splashFragment = new SplashFragment();
+		FragmentTransaction t = fmanager.beginTransaction();
+		t.add(android.R.id.content, splashFragment, SPLASH_FRAGMENT_FLAG);
+		t.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
+		t.commit();
 	}
+	
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Log.d(LOG_TAG, "On Start");
-		context = getApplicationContext();
-		settings = new Settings(ThrillingTales.this);
-		setup.changeStyle(vf_main);
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		Log.d(LOG_TAG, "On Pause");
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		ViewSetup._datesBar = null;
-		Log.d(LOG_TAG, "On Destroy");
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus) {
+			if (splashFragment.isAdded()) {
+				splashFragment.startSplashAnimation();
+			}
+		}
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			return handleQuit();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflate = getMenuInflater();
-		inflate.inflate(R.menu.menu, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// menu.findItem(R.id.oi_settings).setVisible(false);
-		if (SCRIPT_CHANGED) {
-			menu.findItem(R.id.oi_update_script).setVisible(true);
-			menu.findItem(R.id.oi_save_script).setVisible(false);
-		} else if (!SCRIPT_CHANGED) {
-			menu.findItem(R.id.oi_save_script).setVisible(true);
-			menu.findItem(R.id.oi_update_script).setVisible(false);
-		}
-		if (SAVED_SHOWN == 1) {
-			menu.findItem(R.id.oi_show_saved_alt).setTitle("Hide saved");
-		} else if (SAVED_SHOWN == 0 || SAVED_SHOWN == -1) {
-			menu.findItem(R.id.oi_show_saved_alt).setTitle("Show saved");
-		}
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.oi_about:
-			if (about_view == null) {
-				Log.v(LOG_TAG, "Inflating About");
-				about_view = LayoutInflater.from(getApplicationContext())
-						.inflate(R.layout.about, null);
-				vf_main.addView(about_view);
-				vf_main.showNext();
+			if (DescriptionFragment.description_edit != null && DescriptionFragment.description_edit.hasFocus()) {
+				ViewUtils.hideEditControls();
 			}
-			break;
-		case R.id.oi_save_script:
-			setup.saveScript();
-			break;
-		case R.id.oi_update_script:
-			setup.updateScript();
-			break;
-		case R.id.oi_show_saved_alt:
-			if (ThrillingTales.SAVED_SHOWN == 0
-					|| ThrillingTales.SAVED_SHOWN == -1)
-				ThrillingTales.SAVED_SHOWN = 1;
-			else
-				ThrillingTales.SAVED_SHOWN = 0;
-			setup.showDatesBar();
-			break;
-		case R.id.oi_generate:
-			setup.pulpAgain();
-			SCRIPT_CHANGED = false;
-			break;
-		case R.id.oi_settings:
-			Intent intent = new Intent(this, Preferences.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			ThrillingTales.this.startActivity(intent);
-			break;
-		case R.id.oi_quit:
-			handleQuit(true);
-			Log.d(LOG_TAG, "Quitting!");
-			break;
-		default:
-			return super.onOptionsItemSelected(item);
+			if (splashFragment.isAdded()) {
+				Log.d(TAG, "ON KEYDOWN");
+				splashFragment.showNotDoneYet();
+				return true;
+			}
 		}
-		return false;
+		return super.onKeyDown(keyCode, event);
 	}
 
-	protected boolean handleQuit(Boolean forceQuit) {
-		description_view = vf_main.findViewById(R.id.rl_description);
-		if (description_view != null
-				&& description_view.getVisibility() == View.VISIBLE
-				&& forceQuit != true) {
-			vf_main.showPrevious();
-			vf_main.removeView(description_view);
-			description_view = null;
-			return false;
-		} else if (about_view != null
-				&& about_view.getVisibility() == View.VISIBLE
-				&& forceQuit != true) {
-			vf_main.showPrevious();
-			vf_main.removeView(about_view);
-			about_view = null;
-			return false;
+	@Override
+	public void onDescriptionItemReRandomized(String value, String tag) {
+		scriptFragment.setTitle(value, tag);
+	}
+
+	@Override
+	public void onScriptItemReRandomized(String value, String tag) {
+		if (descriptionFragment != null) {
+			descriptionFragment.changeDescription(value, tag);
+		}
+	}
+
+	@Override
+	public void itemTouched(String value, String tag) {
+		descriptionFragment = new DescriptionFragment();
+		Bundle args = new Bundle();
+		args.putString(VALUE_FLAG, value);
+		args.putString(TAG_FLAG, tag);
+		descriptionFragment.setArguments(args);
+		fmanager.beginTransaction()
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+						R.anim.slide_out_left).addToBackStack(null)
+				.add(android.R.id.content, descriptionFragment, DESCRIPTION_VIEW_FLAG).commit();
+	}
+
+	/**
+	 * Called from list of saved scripts
+	 */
+	@Override
+	public void scriptItemSelected(String forDate) {
+		scriptFragment.loadScript(forDate);
+	}
+
+	@Override
+	public void onBuildFinished() {
+		fmanager.beginTransaction().remove(splashFragment).commit();
+		scriptFragment = new ScriptFragment();
+		Bundle args = new Bundle();
+		scriptFragment.setArguments(args);
+		fmanager.beginTransaction().replace(android.R.id.content, scriptFragment, SCRIPT_VIEW_FLAG).commit();
+		getSupportActionBar().show();
+
+	}
+
+	@Override
+	public View getScriptView() {
+		return scriptFragment.getThisView();
+	}
+
+	@Override
+	public void onShowSaveFragment() {
+		SaveFragment savingFragment = (SaveFragment) fmanager.findFragmentByTag(SAVING_UI_FLAG);
+		if (savingFragment == null) {
+			savingFragment = new SaveFragment();
+			fmanager.beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+							R.anim.slide_out_left).addToBackStack(null)
+					.add(android.R.id.content, savingFragment, SAVING_UI_FLAG).commit();
 		} else {
-			// final Context context = ThrillingTales.this;
-			AlertDialog.Builder exit = new Builder(this);
-			exit.setTitle("");
-			exit.setMessage(context.getResources().getString(R.string.exit))
-					.setPositiveButton("Yes",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									ThrillingTales.this.finish();
-								}
-							})
-					.setNegativeButton("No",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									Log.d(LOG_TAG, "No, do not exit");
-									dialog.cancel();
-								}
-							});
-			AlertDialog exitDialog = exit.create();
-			exitDialog.show();
-			return true;
+			fmanager.beginTransaction().show(savingFragment);
 		}
+
 	}
 
-	protected boolean handleQuit() {
-		return handleQuit(false);
+	@Override
+	public void onShowAbout() {
+		AboutFragment about = (AboutFragment) fmanager.findFragmentByTag(ABOUT_FLAG);
+		if (about == null) {
+			about = new AboutFragment();
+			fmanager.beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+							R.anim.slide_out_left).addToBackStack(null).add(android.R.id.content, about, ABOUT_FLAG)
+					.commit();
+		} else {
+			fmanager.beginTransaction()
+					.addToBackStack(null)
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+							R.anim.slide_out_left).show(about);
+		}
+
+	}
+
+	@Override
+	public void onShowSavedScriptsFragment() {
+		SavedFragment savedFragment = (SavedFragment) fmanager.findFragmentByTag(SAVED_FLAG);
+		if (savedFragment == null) {
+			savedFragment = new SavedFragment();
+			fmanager.beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right,
+							R.anim.slide_out_left).addToBackStack(null)
+					.add(android.R.id.content, savedFragment, SAVED_FLAG).commit();
+		} else {
+			fmanager.beginTransaction().show(savedFragment);
+		}
 	}
 }

@@ -1,40 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.combustiblelemons.thrillingtales"
-      android:versionCode="3"
-      android:versionName="1.0.3">
-      <uses-sdk android:minSdkVersion="4"
-     			android:targetSdkVersion="4"/>
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-        
-        <activity android:name=".Splash"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.NoTitleBar"
-                  android:launchMode="singleTop">
+    package="com.combustiblelemons.thrillingtales"
+    android:versionCode="10"
+    android:versionName="1.2.6" >
+
+    <uses-sdk
+        android:minSdkVersion="4"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher" >
+        <activity
+            android:name=".ThrillingTales"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.pulp" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
-            android:name=".ThrillingTales"
-            android:label="ThrillingTales"
-            android:theme="@android:style/Theme.NoTitleBar">            
-        </activity>
-        <activity 
-            android:name=".About"
-            android:label="About"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
-        <activity 
-            android:name=".Preferences"
-            android:label="Preferences"
-            android:theme="@android:style/Theme.NoTitleBar">            
-        </activity>
-        <activity 
-            android:name=".Saved"
-            android:label="Saved"
-            android:theme="@android:style/Theme.NoTitleBar">            
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings_activity_label"
+            android:theme="@style/Theme.Sherlock.NoActionBar" >
         </activity>
     </application>
-</manifest> 
+
+</manifest>

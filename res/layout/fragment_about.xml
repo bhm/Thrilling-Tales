@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_about_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:background="@color/black_pulp">
+
+    <ImageView
+        android:id="@+id/iv_about_cover"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/description_cover"
+        android:gravity="center"
+        android:scaleType="fitCenter"
+        android:src="@drawable/pulp_cover" />
+
+</LinearLayout>

@@ -8,27 +8,45 @@
 >THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ----
-#QR CODE
-###Latest [*.apk package](https://github.com/bhm/Thrilling-Tales/blob/master/bin/ThrillingTales.apk?raw=true "THE PACKAGE").
-![QRCODE](https://github.com/bhm/Thrilling-Tales/raw/master/qrcode.png "QRCODE")
-
-----
 #Thrilling Tales ![ICON](https://raw.github.com/bhm/Thrilling-Tales/master/res/drawable-ldpi/ic_launcher.png "an ldpi icon")
 
-And Android app that generates pulp scenarios on the basis of a backend of tables taken from [Thrilling Tales handbook](http://rpg.drivethrustuff.com/product/64454/Thrilling-Tales-2nd-Edition-(Savage-Worlds)) for [Savage Worlds](http://en.wikipedia.org/wiki/Savage_Worlds).
+An Android app that generates pulp scenarios on the basis of what can be found in [Thrilling Tales handbook](http://rpg.drivethrustuff.com/product/64454/Thrilling-Tales-2nd-Edition-(Savage-Worlds)) for [Savage Worlds](http://en.wikipedia.org/wiki/Savage_Worlds).
 
-![COVER](http://www.rpgnow.com/images/92/64454.jpg "Image from rpgnow.com"))
+![QRMARKET](https://raw.github.com/bhm/Thrilling-Tales/master/qr-market.png "Scane it with your phone")
 
+![COVER]( https://raw.github.com/bhm/Thrilling-Tales/master/pulp-cover.jpg "CAREYZE CUSTOM COVER")
 
-###Belly
-Two SQLite databases. One for saved scripts/scenarios. Other with handful of tables for random generation.
+----
 
-#BREAK IT
+#CHANGELOG
 
-#VERSION
+## 1.2.6
+* Corss fragment communication rewritten
+* Nullpointer fixed
+
+## 1.2.4
+* Should be faster now
+* THEMES! YEYO!
+
+## 1.2.2
+* Two themes implemented. Still requires restart.
+* Minor UI tweaks.
+
+## 1.2.1
+* Moved Splash to Fragment
+* Threading changes
+
+## 1.2.0
+* Stable release
+* Settings now work and fully moved to new APIs
+* Small fixes
+
+## 1.1.7
+* Code clean up and major cut on objects created
+* Move to Fragments and SherlockActionbar framework
+* Slight UI redesign
 
 ## 1.0.2
-
 * Code clean up of megamoths
 
 ## 1.0.2

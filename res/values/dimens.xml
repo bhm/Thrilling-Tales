@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- DIMENOSIONS. PRIME NUMBERS -->
+    <dimen name="verysmall">13sp</dimen>
+    <dimen name="small">17sp</dimen>
+    <dimen name="medium">19sp</dimen>
+    <dimen name="large">23sp</dimen>
+    <dimen name="verylarge">27sp</dimen>
+
+</resources>

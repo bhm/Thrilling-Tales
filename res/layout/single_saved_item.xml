@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/verysmall"
+    android:paddingTop="@dimen/verysmall" >
+
+    <LinearLayout
+        android:id="@+id/ll_single_saved_item_titles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_single_saved_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/verysmall"
+            android:paddingRight="@dimen/verysmall"
+            android:text="@string/title"
+            android:textColor="@color/aliceblue"
+            android:textSize="@dimen/medium"
+            android:textStyle="bold" />
+
+        <CheckedTextView
+            android:id="@+id/ctv_single_saved_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkMark="@drawable/custom_checkbox"
+            android:checked="false"
+            android:paddingLeft="@dimen/verysmall"
+            android:paddingRight="@dimen/small"
+            android:text="@string/title"
+            android:textColor="@color/aliceblue"
+            android:textSize="@dimen/medium"
+            android:textStyle="bold"
+            android:visibility="gone" >
+        </CheckedTextView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_single_saved_item_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_single_saved_item_titles"
+        android:paddingLeft="@dimen/verysmall"
+        android:paddingRight="@dimen/verysmall"
+        android:text="@string/date"
+        android:textColor="@color/aliceblue"
+        android:textSize="@dimen/verysmall"
+        android:textStyle="bold|italic" />
+
+</RelativeLayout>
