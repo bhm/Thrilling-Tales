@@ -3,13 +3,13 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="${packageName}.${activityClass}$ActsPreferenceFragment"
+        android:fragment="com.combustiblelemons.thrillingtales.SettingsActivity$ActsPreferenceFragment"
         android:title="@string/pref_acts_header" />
     <header
-        android:fragment="${packageName}.${activityClass}$DicePreferenceFragment"
+        android:fragment="com.combustiblelemons.thrillingtales.SettingsActivity$DicePreferenceFragment"
         android:title="@string/pref_support_dice_header" />
       <header
-        android:fragment="${packageName}.${activityClass}$ThemePreferenceFragment"
+        android:fragment="com.combustiblelemons.thrillingtales.SettingsActivity$ThemePreferenceFragment"
         android:title="@string/pref_theme_header" />
 
 </preference-headers>
