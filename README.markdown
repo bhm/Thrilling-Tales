@@ -20,6 +20,10 @@ An Android app that generates pulp scenarios on the basis of what can be found i
 
 #CHANGELOG
 
+## 1.3.0
+
+* Crash and loop on splash should be fixed
+
 ## 1.2.8
 * Fix for tablets.
 * Milestone 1: Better support for landscape fragments

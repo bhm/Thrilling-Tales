@@ -10,11 +10,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,17 +35,12 @@ public class SplashFragment extends SherlockFragment {
 	private static Handler handler;
 	private static Settings settings;
 	private static AnimationDrawable splash;
+	private static boolean BUILDING_DATABASE_DONE;
 
 	protected onDatabaseBuildFinished listener;
 
 	public interface onDatabaseBuildFinished {
 		public void onBuildFinished();
-	}
-
-	public void showNotDoneYet() {
-		if (tv_message != null) {
-			tv_message.setText(context.getResources().getString(R.string.notdoneyet));
-		}
 	}
 
 	@Override
@@ -92,9 +87,10 @@ public class SplashFragment extends SherlockFragment {
 				if (msg.arg1 == THREAD_FINISHED) {
 					try {
 						listener.onBuildFinished();
-					} catch (IllegalArgumentException e) {
+					} catch (Exception e) {
 						//TODO Work around, should unregister all calls
 					}
+					BUILDING_DATABASE_DONE = true;
 				}
 				ViewUtils.animate(tv_message, ViewUtils.slideOutRight);
 				tv_message.setText((String) msg.obj);
@@ -162,34 +158,29 @@ public class SplashFragment extends SherlockFragment {
 		handler.removeCallbacksAndMessages(null);
 	}
 	
-	private class  databaseCreator extends AsyncTask<Void, Integer, Integer> {
-
-		@Override
-		protected void onPreExecute() {			
-			super.onPreExecute();
-			
-		}
-		@Override
-		protected Integer doInBackground(Void... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			// TODO Auto-generated method stub
-			super.onProgressUpdate(values);
-		}
-		
-		@Override
-		protected void onPostExecute(Integer result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-		}
-		
-	}
 
 	public void startSplashAnimation() {		
 		splash.start();
 	}
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (!BUILDING_DATABASE_DONE) {
+			this.showNotDoneYet();
+			return true;
+		} else {
+			listener.onBuildFinished();
+			return false;
+		}
+	}
+	
+	public void showNotDoneYet() {
+		if (tv_message != null) {
+			tv_message.setText(context.getResources().getString(R.string.notdoneyet));
+		}
+	}
+
+	public boolean buildingDone() {
+		return BUILDING_DATABASE_DONE;
+	}
+
 }

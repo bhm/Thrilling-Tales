@@ -64,6 +64,18 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 			}
 		}
 	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (splashFragment != null) {
+			if (splashFragment.isVisible()) {
+				if (splashFragment.buildingDone()) {
+					fmanager.beginTransaction().detach(splashFragment);
+				}
+			}
+		}
+	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -73,8 +85,7 @@ public class ThrillingTales extends SherlockFragmentActivity implements onItemRe
 			}
 			if (splashFragment.isAdded()) {
 				Log.d(TAG, "ON KEYDOWN");
-				splashFragment.showNotDoneYet();
-				return true;
+				return splashFragment.onKeyDown(keyCode, event);				
 			}
 		}
 		return super.onKeyDown(keyCode, event);
