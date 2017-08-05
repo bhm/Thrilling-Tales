@@ -18,6 +18,8 @@ An Android app that generates pulp scenarios on the basis of what can be found i
 
 ----
 
+## This is a very old code. Deprecated at this point
+
 #CHANGELOG
 
 ## 1.3.0
